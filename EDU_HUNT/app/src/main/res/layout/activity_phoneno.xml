@@ -1,55 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_main"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    tools:context=".Phoneno"
+    >
+
     <LinearLayout
-        android:background="@drawable/white_bg"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <ImageView
-            android:onClick="phone"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/top_logo"
+
+    <ImageView
+        android:background="@drawable/bachi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <TextView
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+91 "
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
             />
+        <EditText
+            android:inputType="number"
+            android:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="40dp"
+            android:padding="12dp"
+            android:hint="Mobile No."
+            />
+
     </LinearLayout>
 
     <TextView
-        android:id="@+id/login_id"
-        android:onClick="Login"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/color_main"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_radius"
-        android:text="LOGIN"
-        />
-
-    <TextView
-        android:onClick="Signup"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="30dp"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_radius_balck"
-        android:text="SIGNUP"
+        android:text="SUBMIT"
         />
     <View
         android:layout_width="match_parent"
@@ -71,7 +82,7 @@
             android:src="@drawable/black_logo"
             />
         <TextView
-            android:onClick="avy"
+            android:layout_marginTop="-10dp"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,6 +93,7 @@
             android:text="POWERED  BY  EDU  TOUCH  COACHING  INSTITUTE"
             />
         <ImageView
+            android:layout_marginTop="-15dp"
             android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,4 +102,5 @@
             />
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
