@@ -8,6 +8,7 @@
     tools:context=".Login">
 
     <TextView
+        android:onClick="back"
         android:id="@+id/back"
         android:layout_width="16dp"
         android:layout_height="16dp"
@@ -17,6 +18,7 @@
         android:layout_alignParentStart="true" />
 
     <TextView
+        android:fontFamily="@font/avian_bold"
         android:onClick="Register"
         android:textStyle="bold"
         android:textSize="12sp"
@@ -35,6 +37,7 @@
         android:orientation="vertical"
         >
         <TextView
+            android:fontFamily="@font/avian_bold"
             android:id="@+id/temp"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -45,10 +48,11 @@
             android:layout_marginLeft="20dp"
             />
         <TextView
+            android:textStyle="italic"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="There are many variations of passages of Lorem Ipsum available, but the majority have sufferes alteration in some form, by injected humour."
+            android:text="There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour."
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             />
@@ -96,14 +100,15 @@
                     android:id="@+id/forget"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Forget Password ? "
-                    android:textStyle="italic"
+                    android:text="Forgot Password ? "
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="21dp"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="21dp" />
 
                 <TextView
+                    android:fontFamily="@font/avian_bold"
+                    android:onClick="submit"
                     android:id="@+id/submit"
                     android:textStyle="bold"
                     android:layout_alignParentRight="true"
@@ -147,8 +152,8 @@
             android:textColor="@color/color_main"
             android:textAlignment="center"
             android:gravity="center"
-            android:fontFamily="@font/yanone_regular"
-            android:text="POWERED  BY  EDU  TOUCH  COACHING  INSTITUTE"
+            android:fontFamily="@font/avian_bold"
+            android:text="powered by edu touch coaching institute"
             />
 
     </LinearLayout>

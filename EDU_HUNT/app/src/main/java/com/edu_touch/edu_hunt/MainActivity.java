@@ -26,13 +26,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void avy(View view) {
-        i = new Intent(MainActivity.this,otp.class);
-        startActivity(i);
-    }
-
-    public void phone(View view) {
-        i = new Intent(MainActivity.this,Phoneno.class);
-        startActivity(i);
-    }
 }
