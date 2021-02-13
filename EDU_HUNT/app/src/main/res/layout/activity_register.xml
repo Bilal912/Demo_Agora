@@ -84,6 +84,8 @@
                     android:hint="Phone no"
                     />
                 <EditText
+                    android:enabled="false"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:inputType="text"
                     android:textSize="14sp"
                     android:layout_width="match_parent"
@@ -196,7 +198,7 @@
                 <LinearLayout
                     android:layout_marginTop="30dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
                     android:gravity="center"
                     >
@@ -225,7 +227,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="20dp"
                     android:background="@android:color/transparent"
                     />
 

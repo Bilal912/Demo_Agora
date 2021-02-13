@@ -130,9 +130,9 @@
                     android:layout_centerVertical="true"
                     android:id="@+id/icon"
                     android:layout_toRightOf="@id/side"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/tempy_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/teacher"
                     android:layout_marginLeft="10dp" />
 
                 <TextView

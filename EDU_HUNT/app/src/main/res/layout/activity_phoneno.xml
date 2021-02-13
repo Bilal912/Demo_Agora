@@ -29,6 +29,7 @@
         android:gravity="center"
         >
         <TextView
+            android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"
             android:fontFamily="@font/avian_bold"
             android:textStyle="bold"
             android:textColor="@color/black"

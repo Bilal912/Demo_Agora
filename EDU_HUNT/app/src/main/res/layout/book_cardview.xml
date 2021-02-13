@@ -6,17 +6,17 @@
     android:background="@drawable/white_stroke"
     >
     <ImageView
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         android:layout_centerHorizontal="true"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
         android:src="@drawable/bookshelf"
         android:id="@+id/icon"
         />
     <TextView
         android:fontFamily="@font/avian_bold"
-        android:layout_marginBottom="10dp"
-        android:textSize="14sp"
+        android:layout_marginBottom="15dp"
+        android:textSize="12sp"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:gravity="center"
