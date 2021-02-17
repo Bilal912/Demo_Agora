@@ -6,12 +6,24 @@
     android:layout_height="match_parent"
     android:background="@color/color_main"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".Forgot">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:visibility="gone"
+        android:background="@color/white"
+        android:id="@+id/anime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:lottie_rawRes="@raw/loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
 
     <LinearLayout
         android:background="@drawable/white_bg"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:orientation="vertical"
         >
         <ImageView
@@ -35,39 +47,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
+            <EditText
+                android:gravity="center"
+                android:id="@+id/femail"
+                android:fontFamily="@font/avian_bold"
+                android:textColorHint="@color/black"
+                android:inputType="number"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:padding="12dp"
+                android:hint="Enter Your Email"
+                />
+
             <com.skydoves.elasticviews.ElasticButton
+                android:onClick="forgot"
                 app:button_duration="250"
                 app:button_scale="0.87"
                 android:fontFamily="@font/avian_bold"
-        android:id="@+id/login_id"
-        android:onClick="Login"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textColor="@color/color_main"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_radius"
-        android:text="LOGIN"
-        />
-
-            <com.skydoves.elasticviews.ElasticButton
-                app:button_duration="250"
-                app:button_scale="0.87"
-        android:fontFamily="@font/avian_bold"
-        android:onClick="Signup"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/white"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_radius_balck"
-        android:text="SIGNUP"
-        />
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_radius_balck"
+                android:text="SUBMIT"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -106,6 +114,5 @@
                 />
         </LinearLayout>
     </RelativeLayout>
-
 
 </LinearLayout>

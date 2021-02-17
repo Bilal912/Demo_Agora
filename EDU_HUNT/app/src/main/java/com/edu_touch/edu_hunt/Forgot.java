@@ -3,7 +3,6 @@ package com.edu_touch.edu_hunt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,9 +17,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
-import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,77 +29,58 @@ import es.dmoral.toasty.Toasty;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
-public class Phoneno extends AppCompatActivity {
-EditText Phone;
+public class Forgot extends AppCompatActivity {
+EditText editText;
     LottieAnimationView animationView;
-    String name,email,pass,classes,address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phoneno);
+        setContentView(R.layout.activity_forgot);
+
         animationView = (LottieAnimationView) findViewById(R.id.anime);
-
-        Phone = findViewById(R.id.number);
-
-        name = getIntent().getStringExtra("name");
-        email = getIntent().getStringExtra("email_id");
-        pass = getIntent().getStringExtra("password");
-        address = getIntent().getStringExtra("address");
-        classes = getIntent().getStringExtra("class");
+        editText = findViewById(R.id.femail);
     }
 
-    public void submit(View view) {
+    public void forgot(View view) {
 
-        if (TextUtils.isEmpty(Phone.getText().toString())){
-            makeText(Phoneno.this, "Number is required", LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(editText.getText().toString())){
+            makeText(Forgot.this, "Email is required", LENGTH_SHORT).show();
         }
         else {
-            getData(Phone.getText().toString());
+            getData(editText.getText().toString());
         }
+
     }
 
-    private void getData(String number) {
-
+    private void getData(String mail) {
         animationView.setVisibility(View.VISIBLE);
         Map<String, String> params = new Hashtable<String, String>();
-        params.put("number",number);
+        params.put("email_id",mail);
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_sendotp, params, new Response.Listener<JSONObject>() {
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_forgot, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 try {
-
                     String message = response.getString("message");
                     String code = response.getString("error_code");
 
                     if (code.equals("200")){
 
-                        Toasty.success(Phoneno.this, message, Toast.LENGTH_SHORT, true).show();
-
-                        int j = response.getInt("code");
-                        Intent i = new Intent(Phoneno.this,otp.class);
-                        i.putExtra("name",name);
-                        i.putExtra("email_id",email);
-                        i.putExtra("password",pass);
-                        i.putExtra("class",classes);
-                        i.putExtra("address",address);
-
-                        i.putExtra("number",number);
-                        i.putExtra("code",String.valueOf(j));
-                        startActivity(i);
+                        Toasty.success(Forgot.this, message, Toast.LENGTH_SHORT, true).show();
+                        finish();
                     }
                     else {
-                        Toasty.error(Phoneno.this, message, Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(Forgot.this, message, Toast.LENGTH_SHORT, true).show();
                         animationView.setVisibility(View.GONE);
-
                     }
 
                 } catch (JSONException e) {
                     //  loading.dismiss();
                     e.printStackTrace();
                     animationView.setVisibility(View.GONE);
-                    Toasty.error(Phoneno.this, "Error", Toast.LENGTH_SHORT, true).show();
+                    Toasty.error(Forgot.this, "Error", Toast.LENGTH_SHORT, true).show();
                 }
             }
         }
@@ -111,7 +89,7 @@ EditText Phone;
             public void onErrorResponse(VolleyError error) {
                 //loading.dismiss();
                 animationView.setVisibility(View.GONE);
-                Toasty.error(Phoneno.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(Forgot.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
             }
         });
         jsonRequest.setRetryPolicy(new RetryPolicy() {
@@ -130,7 +108,7 @@ EditText Phone;
 
             }
         });
-        RequestQueue queue = Volley.newRequestQueue(Phoneno.this);
+        RequestQueue queue = Volley.newRequestQueue(Forgot.this);
         queue.add(jsonRequest);
 
 

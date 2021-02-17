@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "588704529805",
+    "project_id": "edutouch",
+    "storage_bucket": "edutouch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588704529805:android:8bad34f1d4a66a711ed1c4",
+        "android_client_info": {
+          "package_name": "com.edu_touch.edu_hunt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588704529805-8jpp5eajm6v1i6or3ieta9ktsl3r10j4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.edu_touch.edu_hunt",
+            "certificate_hash": "b38d73864cc9183614414a7ce150d50c80876f1d"
+          }
+        },
+        {
+          "client_id": "588704529805-hpb0i2ltitnfn2djpa3pncn5c62bka0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2dCrJ-h79yXqL0oODd9SbmJUfFjf_iQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588704529805-hpb0i2ltitnfn2djpa3pncn5c62bka0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
