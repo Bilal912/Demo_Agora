@@ -10,5 +10,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="dark_browny">#B7B6B4</color>
+    <color name="greeny">#36b36d</color>
+    <color name="redy">#B22222</color>
     <color name="pinky">#FBF1E7</color>
+
+<!--    #5cfaa2  ,  #8FF2BB -->
+
 </resources>

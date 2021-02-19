@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Register">
+    tools:context=".Update">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
             <LinearLayout
                 android:id="@+id/linear"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="@drawable/orange_btm_radius"
-                android:orientation="vertical">
+                android:orientation="horizontal">
                 <TextView
                     android:onClick="back"
                     android:id="@+id/back"
@@ -28,16 +28,28 @@
                     android:layout_height="16dp"
                     android:layout_margin="20dp"
                     android:background="@drawable/back_arrow" />
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/avian_bold"
+                    android:id="@+id/temp"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UPDATE PROFILE"
+                    android:layout_marginTop="20dp"
+                    />
+
             </LinearLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/user2"
-        android:layout_below="@id/linear"
-        android:layout_marginTop="-55dp"
-        android:layout_centerHorizontal="true"
-        />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/user2"
+                android:layout_below="@id/linear"
+                android:layout_marginTop="-55dp"
+                android:layout_centerHorizontal="true"
+                />
 
             <LinearLayout
                 android:layout_marginTop="60dp"
@@ -63,6 +75,7 @@
                     />
 
                 <EditText
+                    android:enabled="false"
                     android:id="@+id/email"
                     android:inputType="textEmailAddress"
                     android:textSize="14sp"
@@ -77,7 +90,7 @@
                     android:hint="Email"
                     />
                 <EditText
-                    android:visibility="gone"
+                    android:enabled="false"
                     android:id="@+id/number"
                     android:inputType="number"
                     android:textSize="14sp"
@@ -91,8 +104,10 @@
                     android:padding="12dp"
                     android:hint="Phone no"
                     />
-
-                <LinearLayout
+                <EditText
+                    android:id="@+id/classes"
+                    android:inputType="text"
+                    android:textSize="14sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_radiuos_10dp"
@@ -100,13 +115,9 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
-                    >
-                    <Spinner
-                        android:id="@+id/spinner_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        />
-                </LinearLayout>
+                    android:padding="12dp"
+                    android:hint="Class"
+                    />
 
                 <EditText
                     android:lines="4"
@@ -126,6 +137,7 @@
                     android:hint="Address"
                     />
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/password"
                     android:inputType="textPassword"
                     android:textSize="14sp"
@@ -139,59 +151,16 @@
                     android:padding="12dp"
                     android:hint="Password"
                     />
-                <EditText
-                    android:id="@+id/confirm_password"
-                    android:inputType="textPassword"
-                    android:textSize="14sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_radiuos_10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp"
-                    android:padding="12dp"
-                    android:hint="Confirm Password"
-                    />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
-                    <CheckBox
-                        android:id="@+id/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20dp" />
-                    <TextView
-                        android:fontFamily="@font/avian_bold"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="7dp"
-                        android:id="@+id/froget1"
-                        android:textColor="@color/black"
-                        android:layout_toRightOf="@id/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="I read and agree To " />
-
-                    <TextView
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="7dp"
-                        android:fontFamily="@font/avian_bold"
-                        android:textColor="@color/color_main"
-                        android:layout_toRightOf="@id/froget1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Terms &amp; Condition" />
-
                     <com.skydoves.elasticviews.ElasticButton
                         app:button_duration="250"
                         app:button_scale="0.87"
                         android:fontFamily="@font/avian_bold"
-                        android:onClick="submit"
+                        android:onClick="edit"
                         android:layout_marginTop="20dp"
                         android:id="@+id/submit"
                         android:textStyle="bold"
@@ -199,47 +168,46 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="@color/white"
-                        android:layout_below="@id/checkbox"
                         android:layout_marginRight="20dp"
                         android:layout_width="120dp"
                         android:gravity="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/btn_radius_balck"
-                        android:text="SUBMIT"
+                        android:text="UPDATE"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="20dp" />
 
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_marginTop="30dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    >
-                    <TextView
-                        android:fontFamily="@font/avian_bold"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="7dp"
-                        android:textColor="@color/black"
-                        android:layout_toRightOf="@id/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Already Have an Account? " />
+<!--                <LinearLayout-->
+<!--                    android:layout_marginTop="30dp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:gravity="center"-->
+<!--                    >-->
+<!--                    <TextView-->
+<!--                        android:fontFamily="@font/avian_bold"-->
+<!--                        android:layout_marginLeft="3dp"-->
+<!--                        android:layout_marginTop="7dp"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:layout_toRightOf="@id/checkbox"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Already Have an Account? " />-->
 
-                    <TextView
-                        android:onClick="Login"
-                        android:fontFamily="@font/avian_bold"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="7dp"
-                        android:textColor="@color/color_main"
-                        android:layout_toRightOf="@id/froget1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" Sign in" />
+<!--                    <TextView-->
+<!--                        android:onClick="Login"-->
+<!--                        android:fontFamily="@font/avian_bold"-->
+<!--                        android:layout_marginLeft="3dp"-->
+<!--                        android:layout_marginTop="7dp"-->
+<!--                        android:textColor="@color/color_main"-->
+<!--                        android:layout_toRightOf="@id/froget1"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text=" Sign in" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
                 <View
                     android:layout_width="match_parent"
@@ -247,9 +215,21 @@
                     android:background="@android:color/transparent"
                     />
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </RelativeLayout>
+        </RelativeLayout>
     </ScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:visibility="gone"
+        android:background="@color/white"
+        android:id="@+id/anime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:lottie_rawRes="@raw/loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
 
 </RelativeLayout>

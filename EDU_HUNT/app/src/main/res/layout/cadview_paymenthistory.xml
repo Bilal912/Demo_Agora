@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="15dp"
+    android:layout_width="match_parent"
+    android:background="@drawable/pinky_radius"
+    android:layout_height="70dp"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/halka_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    <TextView
+        android:id="@+id/side"
+        android:layout_width="5dp"
+        android:layout_height="110dp"
+        android:background="@drawable/left_orange_side"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+        <LinearLayout
+            android:background="@drawable/white_stroke"
+            android:layout_margin="6dp"
+            android:id="@+id/icon"
+            android:layout_toRightOf="@id/side"
+            android:layout_centerVertical="true"
+            android:layout_width="50dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:orientation="vertical">
+            <TextView
+                android:textSize="14sp"
+                android:fontFamily="@font/avian_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7th"
+                />
+            <TextView
+                android:textSize="12sp"
+                android:fontFamily="@font/avian_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jan"
+                />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:fontFamily="@font/avian_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teacher Name : Samir"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:fontFamily="@font/avian_bold"
+            android:textSize="10sp"
+            android:textColor="@color/black"
+            android:text="There are many variations of passages \nof Lerom lpsum available"
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/avian_bold"
+            android:textSize="16sp"
+            android:textColor="@color/redy"
+            android:text="₹ -399 "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

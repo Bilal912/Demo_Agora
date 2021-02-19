@@ -38,7 +38,7 @@ import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 public class Login extends AppCompatActivity {
 EditText Email,Password;
 LottieAnimationView animationView;
-    SharedPreferences sharedPreferences;
+SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,8 @@ LottieAnimationView animationView;
 
                     if (code.equals("200")){
 
+                        String status = null;
+
                         JSONArray jsonArray = response.getJSONArray("data");
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
@@ -105,6 +107,7 @@ LottieAnimationView animationView;
                             editors.putString("phone", object.getString("contact_no"));
                             editors.putString("email", object.getString("email_id"));
                             editors.putString("status", object.getString("status"));
+                            status = object.getString("status");
                             editors.putString("created_date", object.getString("created_date"));
                             editors.putString("password", object.getString("password"));
                             editors.putString("picture", object.getString("profile_pic"));
@@ -112,13 +115,23 @@ LottieAnimationView animationView;
                             //editors.putString("name", object.getString("device_id"));
                             editors.apply();
 
+                            if (status.equals("0")){
+                                Intent intent = new Intent(Login.this,Payment.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Intent intent = new Intent(Login.this,Home.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
                         }
 
                         Toasty.success(Login.this, "Login Successfully", Toast.LENGTH_SHORT, true).show();
-
-                        Intent intent = new Intent(Login.this,Home.class);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(Login.this,Home.class);
+//                        startActivity(intent);
+//                        finish();
                     }
                     else {
                         animationView.setVisibility(View.GONE);

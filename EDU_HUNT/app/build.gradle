@@ -78,4 +78,7 @@ dependencies {
 
     //otp
     implementation 'com.chaos.view:pinview:1.4.4'
+
+    //progreessCircle
+    implementation 'com.dinuscxj:circleprogressbar:1.3.6'
 }

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Confirmation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_main"
+        >
+
+        <TextView
+            android:onClick="back"
+            android:id="@+id/back"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/back_arrow"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="20dp"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/menu"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/menu_icon"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:layout_alignParentEnd="true" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="-10dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_toLeftOf="@id/menu"
+            android:id="@+id/iv_header_img"
+            android:src="@drawable/user2"/>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:layout_below="@id/back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/top_radius"
+            >
+
+                <TextView
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/avian_bold"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_main"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:text="Confirmation"
+                    />
+            <TextView
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="There are many variations of passages of Lorem Ipsum available,\n but the majority have suffered alteration in some form, by injected humour."
+                android:layout_margin="10dp"
+                />
+
+            <com.chaos.view.PinView
+                style="@style/PinWidget.PinView"
+                android:id="@+id/pinview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:itemCount="5"
+                app:viewType="line"
+                app:cursorColor="@color/black"
+                android:inputType="number"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="Put OTP To start services"
+                />
+
+            <com.skydoves.elasticviews.ElasticButton
+                android:layout_marginTop="20dp"
+                app:button_duration="250"
+                app:button_scale="0.87"
+                android:fontFamily="@font/avian_bold"
+                android:id="@+id/confirm"
+                android:onClick="Confirmy"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:button_cornerRadius="20dp"
+                android:background="@color/color_main"
+                android:text="Continue"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

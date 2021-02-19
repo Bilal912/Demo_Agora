@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Services">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_main"
+        >
+
+        <TextView
+            android:onClick="back"
+            android:id="@+id/back"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/back_arrow"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="20dp"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:onClick="next"
+            android:id="@+id/menu"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/menu_icon"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:layout_alignParentEnd="true" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="-10dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_toLeftOf="@id/menu"
+            android:id="@+id/iv_header_img"
+            android:src="@drawable/user2"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_below="@id/back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/top_radius"
+            >
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                />-->
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                >
+                <com.dinuscxj.progressbar.CircleProgressBar
+                    app:progress_text_color="@color/white"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/custom_progress6"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:line_count="100"
+                    app:line_width="6dp"
+                    app:progress_background_color="@color/halka_white"
+                    app:progress_end_color="@color/white"
+                    app:progress_shader="sweep"
+                    app:progress_start_color="@color/greeny"
+                    app:progress_stroke_cap="round"
+                    app:progress_stroke_width="6dp"
+                    app:progress_style="solid_line" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    >
+                    <TextView
+                        android:textSize="14sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="30DAYS"
+                        android:gravity="center"
+                        android:fontFamily="@font/avian_bold"
+                        android:textColor="@color/black"
+                        />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="15 day Left"
+                        android:fontFamily="@font/avian_bold"
+                        android:textColor="@color/greeny"
+                        />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/pinky_radius"
+                android:layout_height="70dp"
+                app:cardCornerRadius="5dp"
+                app:cardBackgroundColor="@color/halka_white"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/side"
+                        android:layout_width="5dp"
+                        android:layout_height="110dp"
+                        android:background="@drawable/left_orange_side"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/icon"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:text="YOUR NEXT \nRENEWL DATE"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/side"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/icon"
+                        android:fontFamily="@font/avian_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5ht feb 2021"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:background="@drawable/dark_browny_bg"
+                        android:layout_marginRight="10dp"
+                        android:textSize="14sp"
+                        android:padding="10dp"
+                        android:text="Renew Service"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

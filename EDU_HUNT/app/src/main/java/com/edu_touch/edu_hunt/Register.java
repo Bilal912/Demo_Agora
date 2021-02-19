@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -19,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 
@@ -26,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -38,23 +42,100 @@ import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Register extends AppCompatActivity {
 EditText name,phone,email,address,classes,password,confirm_password;
+Spinner spinner;
 CheckBox checkBox;
 SharedPreferences sharedPreferences;
+    ArrayList<String> clasy;
+
     LottieAnimationView animationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        clasy = new ArrayList<>();
+        clasy.add("Class");
+
+        spinner = findViewById(R.id.spinner_id);
         checkBox = (CheckBox) findViewById(R.id.checkbox);
 //        animationView = (LottieAnimationView) findViewById(R.id.anime);
         name = (EditText) findViewById(R.id.name);
         email = (EditText) findViewById(R.id.email);
         phone = (EditText) findViewById(R.id.number);
         address = (EditText) findViewById(R.id.address);
-        classes = (EditText) findViewById(R.id.classes);
+//        classes = (EditText) findViewById(R.id.classes);
         password = (EditText) findViewById(R.id.password);
         confirm_password = (EditText) findViewById(R.id.confirm_password);
+
+        getClasses();
+
+    }
+
+    private void getClasses() {
+
+        final android.app.AlertDialog loading = new ProgressDialog(Register.this);
+        loading.setMessage("Please Wait a Moment...");
+        loading.show();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getclasses
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            clasy.add(object.getString("name"));
+                        }
+
+                        spinner.setAdapter(new ArrayAdapter<String>(Register.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                clasy));
+                        loading.dismiss();
+                    }
+                    else {
+                        loading.dismiss();
+                    }
+
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    Toast.makeText(Register.this,"Internet Issue", LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toast.makeText(Register.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
+
 
     }
 
@@ -69,9 +150,16 @@ SharedPreferences sharedPreferences;
 //        else if (TextUtils.isEmpty(phone.getText().toString())){
 //            makeText(Register.this, "Contact Number is required", LENGTH_SHORT).show();
 //        }
-        else if (TextUtils.isEmpty(classes.getText().toString())){
-            makeText(Register.this, "Class is required", LENGTH_SHORT).show();
+
+//        else if (TextUtils.isEmpty(classes.getText().toString())){
+//            makeText(Register.this, "Class is required", LENGTH_SHORT).show();
+//        }
+
+        else if (spinner.getSelectedItem().toString().equals("Class")){
+            Toast.makeText(Register.this,"Select Your Class",
+                    Toast.LENGTH_LONG).show();
         }
+
         else if (TextUtils.isEmpty(address.getText().toString())){
             makeText(Register.this, "Address is required", LENGTH_SHORT).show();
         }
@@ -90,7 +178,7 @@ SharedPreferences sharedPreferences;
                     i.putExtra("name",name.getText().toString().trim());
                     i.putExtra("email_id",email.getText().toString().trim());
                     i.putExtra("password",password.getText().toString().trim());
-                    i.putExtra("class",classes.getText().toString().trim());
+                    i.putExtra("class",spinner.getSelectedItem().toString().trim());
                     i.putExtra("address",address.getText().toString().trim());
                     startActivity(i);
 

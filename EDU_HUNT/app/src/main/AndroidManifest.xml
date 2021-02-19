@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.edu_touch.edu_hunt">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,21 +12,30 @@
         android:networkSecurityConfig="@xml/security_config"
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EDU_HUNT">
-        <activity android:name=".Forgot"></activity>
-        <activity android:name=".Listing" />
-        <activity android:name=".Home" />
-        <activity android:name=".Phoneno" />
-        <activity android:name=".otp" />
-        <activity android:name=".Register" />
-        <activity android:name=".Login" />
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.EDU_HUNT"
+        tools:targetApi="n">
+        <activity android:name=".Payment"></activity>
+        <activity android:name=".Services" />
+        <activity android:name=".Paymenthistory" />
+        <activity android:name=".Notification" />
+        <activity android:name=".Fees" />
+        <activity android:name=".Confirmation" />
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Update" />
+        <activity android:name=".Forgot" />
+        <activity android:name=".Listing" />
+        <activity android:name=".Home" />
+        <activity android:name=".Phoneno" />
+        <activity android:name=".otp" />
+        <activity android:name=".Register" />
+        <activity android:name=".Login" />
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

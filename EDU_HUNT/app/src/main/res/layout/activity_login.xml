@@ -162,7 +162,6 @@
 
     </LinearLayout>
 
-
     <com.airbnb.lottie.LottieAnimationView
         android:visibility="gone"
         android:background="@color/white"
