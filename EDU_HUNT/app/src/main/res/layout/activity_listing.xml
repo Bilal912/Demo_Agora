@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    xmlns:shimmer="http://schemas.android.com/tools"
     tools:context=".Listing">
 
     <RelativeLayout
@@ -93,7 +94,7 @@
                     android:textStyle="italic"
                     android:textSize="10sp"
                     android:textColor="@color/black"
-                    android:text="There are many variations of passages of Lerom lpsum available"
+                    android:text="There are many variations of passages of Lerom lpsum available "
                     android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,41 +113,29 @@
 
             </RelativeLayout>
 
-            <HorizontalScrollView
-                android:scrollbars="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-               <LinearLayout
-                   android:layout_marginLeft="10dp"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-            <include
-                    android:layout_margin="10dp"
-                    layout="@layout/book_two_cardview"
-                    android:layout_width="180dp"
-                    android:layout_height="220dp" />
-                   <include
-                       android:layout_margin="10dp"
-                       layout="@layout/book_two_cardview"
-                       android:layout_width="180dp"
-                       android:layout_height="220dp" />
-                   <include
-                       android:layout_margin="10dp"
-                       layout="@layout/book_two_cardview"
-                       android:layout_width="180dp"
-                       android:layout_height="220dp" />
-                   <include
-                       android:layout_margin="10dp"
-                       layout="@layout/book_two_cardview"
-                       android:layout_width="180dp"
-                       android:layout_height="220dp" />
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                shimmer:duration="500">
 
-               </LinearLayout>
-            </HorizontalScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <include layout="@layout/data_holder_top_teacher" />
+                </LinearLayout>
 
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rec_top_teacher"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -184,50 +173,35 @@
                         android:textStyle="italic"
                         android:textSize="10sp"
                         android:textColor="@color/black"
-                        android:text="There are many variations of passages of Lerom lpsum available"
+                        android:text="There are many variations of passages of Lerom lpsum available "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />
                 </LinearLayout>
             </RelativeLayout>
 
-            <HorizontalScrollView
-                android:scrollbars="horizontal"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_suby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                shimmer:duration="500">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <include layout="@layout/data_holder_subject" />
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
-                <LinearLayout
-                    android:layout_marginLeft="10dp"
-                    android:onClick="Success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                <include
-                    android:layout_margin="10dp"
-                    layout="@layout/book_cardview"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content" />
-                <include
-                    android:layout_margin="10dp"
-                    layout="@layout/book_cardview"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content" />
-                    <include
-                        android:layout_margin="10dp"
-                        layout="@layout/book_cardview"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content" />
-                    <include
-                        android:layout_margin="10dp"
-                        layout="@layout/book_cardview"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-            </HorizontalScrollView>
-
-
+                android:id="@+id/rec_subject"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -244,6 +218,8 @@
                     />
 
                 <LinearLayout
+                    android:layout_toLeftOf="@id/view_all"
+                    android:id="@+id/linear"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
@@ -254,39 +230,66 @@
                     >
                     <TextView
                         android:fontFamily="@font/avian_bold"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SEARCH TEACHER BY SUBJECT"
+                        android:text="YOUR TEACHER"
                         android:textSize="12sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         />
+
                     <TextView
                         android:textStyle="italic"
                         android:textSize="10sp"
                         android:textColor="@color/black"
-                        android:text="There are many variations of passages of Lerom lpsum available"
+                        android:text="There are many variations of passages of Lerom lpsum available "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/view_all"
+                    android:onClick="view_all"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="end"
+                    android:padding="5dp"
+                    android:background="@color/color_main"
+                    android:fontFamily="@font/avian_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIEW ALL"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
-            <include
-                android:layout_margin="15dp"
-                layout="@layout/book_now_cardview"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                shimmer:duration="500">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/data_holder_teacher" />
+                    <include layout="@layout/data_holder_teacher" />
+                    <include layout="@layout/data_holder_teacher" />
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
-            <include
-                android:layout_margin="15dp"
-                layout="@layout/book_now_cardview"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
-            <include
-                android:layout_margin="15dp"
-                layout="@layout/book_now_cardview"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="wrap_content"
+                android:id="@+id/rec_allteachers"
+                />
 
         </LinearLayout>
     </RelativeLayout>

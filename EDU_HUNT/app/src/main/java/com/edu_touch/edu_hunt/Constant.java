@@ -17,4 +17,9 @@ public class Constant {
     public static final String Base_url_getclasses = Base_url+"/get_classes";
     public static final String Base_url_getclass_group = Base_url+"/get_class_group";
 
+    public static final String Base_url_teacher_listing = Base_url+"/teacher_listing";
+
+    public static final String Base_url_getsubjects = Base_url+"/get_subjects";
+
+    public static final String Base_url_getteacherbysubject = Base_url+"/filter";
 }

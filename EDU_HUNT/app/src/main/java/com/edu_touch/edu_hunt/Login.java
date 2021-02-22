@@ -115,16 +115,16 @@ SharedPreferences sharedPreferences;
                             //editors.putString("name", object.getString("device_id"));
                             editors.apply();
 
-                            if (status.equals("0")){
-                                Intent intent = new Intent(Login.this,Payment.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                            else {
+//                            if (status.equals("0")){
+//                                Intent intent = new Intent(Login.this,Payment.class);
+//                                startActivity(intent);
+//                                finish();
+//                            }
+//                            else {
                                 Intent intent = new Intent(Login.this,Home.class);
                                 startActivity(intent);
                                 finish();
-                            }
+                            //}
 
                         }
 

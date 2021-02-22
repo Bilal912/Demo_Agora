@@ -4,6 +4,11 @@
     package="com.edu_touch.edu_hunt">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EDU_HUNT"
         tools:targetApi="n">
-        <activity android:name=".Payment"></activity>
+        <activity android:name=".Show_image"></activity>
+        <activity android:name=".Teacher_detail" />
+        <activity android:name=".Show_Teachers" />
+        <activity android:name=".Payment" />
         <activity android:name=".Services" />
         <activity android:name=".Paymenthistory" />
         <activity android:name=".Notification" />
