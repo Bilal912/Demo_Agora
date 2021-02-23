@@ -79,6 +79,12 @@ public class Teacher_Adapter extends RecyclerView.Adapter<Teacher_Adapter.Github
                 i.putExtra("board", data.get(position).getBoards());
                 i.putExtra("fee", data.get(position).getFees());
                 i.putExtra("class", data.get(position).getClass_name());
+
+                i.putExtra("subject_id", data.get(position).getSubjects_id());
+                i.putExtra("board_id", data.get(position).getBoards_id());
+                i.putExtra("class_id", data.get(position).getClass_id());
+
+
                 context.startActivity(i);
             }
         });

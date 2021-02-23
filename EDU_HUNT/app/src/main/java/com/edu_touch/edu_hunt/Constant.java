@@ -3,6 +3,7 @@ package com.edu_touch.edu_hunt;
 public class Constant {
 
     public static final String Base_url = "https://edutouchinstitute.com/api";
+
 //  https://edutouchinstitute.com/paymentGateway?amount=20&user-id=10
 
     public static final String Base_url_payment = "https://edutouchinstitute.com/paymentGateway?";
@@ -21,5 +22,11 @@ public class Constant {
 
     public static final String Base_url_getsubjects = Base_url+"/get_subjects";
 
-    public static final String Base_url_getteacherbysubject = Base_url+"/filter";
+    public static final String Base_url_paymenthistory = Base_url+"/payment_list";
+
+    public static final String Base_url_mybookings = Base_url+"/my_bookings";
+    public static final String Base_url_checkingfee = Base_url+"/get_fees";
+
+    public static final String Base_url_booking_teacher = Base_url+"/teacher_booking";
+
 }

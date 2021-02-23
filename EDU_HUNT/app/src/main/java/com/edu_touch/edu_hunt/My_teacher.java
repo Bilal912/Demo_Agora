@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -20,11 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.edu_touch.edu_hunt.Adapter.My_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Payment_History_Adapter;
-import com.edu_touch.edu_hunt.Adapter.Small_Teacher_Adapter;
-import com.edu_touch.edu_hunt.Adapter.Small_top_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Model.payment_history_model;
-import com.edu_touch.edu_hunt.Model.teacher_model;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,29 +39,31 @@ import es.dmoral.toasty.Toasty;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
-public class Paymenthistory extends AppCompatActivity {
-RecyclerView recyclerView;
+public class My_teacher extends AppCompatActivity {
+    RecyclerView recyclerView;
     LottieAnimationView animationView;
-SharedPreferences sharedPreferences;
-ArrayList<payment_history_model> arrayList;
-Payment_History_Adapter adapter;
-TextView textView;
+    SharedPreferences sharedPreferences;
+    ArrayList<payment_history_model> arrayList;
+    My_Teacher_Adapter adapter;
+    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_paymenthistory);
+        setContentView(R.layout.activity_my_teacher);
+
         animationView = findViewById(R.id.anime);
 
         textView = findViewById(R.id.no_data);
         arrayList = new ArrayList<>();
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
 
-        recyclerView = findViewById(R.id.recycler_payment);
+        recyclerView = findViewById(R.id.recycler_myteacher);
 
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(Paymenthistory.this) {
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(My_teacher.this) {
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(Paymenthistory.this) {
+                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(My_teacher.this) {
                     private static final float SPEED = 2000f;// Change this value (default=25f)
                     @Override
                     protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
@@ -79,16 +78,17 @@ TextView textView;
         recyclerView.setLayoutManager(layoutManager2);
         recyclerView.setHasFixedSize(true);
 
-        getHistory();
+        getmyteacher();
+
 
     }
 
-    private void getHistory() {
+    private void getmyteacher() {
         String avy = sharedPreferences.getString("id","null");
         Map<String, String> params = new Hashtable<String, String>();
         params.put("student_id",avy);
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_paymenthistory, params, new Response.Listener<JSONObject>() {
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_mybookings, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -96,6 +96,7 @@ TextView textView;
 
                     String message = response.getString("message");
                     String code = response.getString("error code");
+                    String imagelink = response.getString("base_url");
 
                     if (code.equals("200")){
 
@@ -105,14 +106,14 @@ TextView textView;
                         }.getType();
                         arrayList = gson.fromJson(response.getString("teachers"), listType);
 
-                        adapter = new Payment_History_Adapter(Paymenthistory.this, arrayList);
+                        adapter = new My_Teacher_Adapter(My_teacher.this, arrayList,imagelink);
                         recyclerView.setAdapter(adapter);
                         animationView.setVisibility(View.GONE);
                     }
                     else {
                         textView.setVisibility(View.VISIBLE);
                         animationView.setVisibility(View.GONE);
-                        Toasty.error(Paymenthistory.this, message, Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(My_teacher.this, message, Toast.LENGTH_SHORT, true).show();
                     }
 
                 } catch (JSONException e) {
@@ -129,7 +130,7 @@ TextView textView;
 
                 textView.setVisibility(View.VISIBLE);
                 animationView.setVisibility(View.GONE);
-                Toasty.error(Paymenthistory.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(My_teacher.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
             }
         });
         jsonRequest.setRetryPolicy(new RetryPolicy() {
@@ -148,7 +149,7 @@ TextView textView;
 
             }
         });
-        RequestQueue queue = Volley.newRequestQueue(Paymenthistory.this);
+        RequestQueue queue = Volley.newRequestQueue(My_teacher.this);
         queue.add(jsonRequest);
 
     }
@@ -156,5 +157,4 @@ TextView textView;
     public void back(View view) {
         finish();
     }
-
 }

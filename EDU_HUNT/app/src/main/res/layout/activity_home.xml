@@ -173,6 +173,7 @@
       android:orientation="horizontal"
       >
     <LinearLayout
+        android:onClick="payment_history"
         android:background="@drawable/button_radiuos_10dp"
         android:layout_width="0dp"
         android:layout_weight="30"
@@ -204,6 +205,7 @@
           android:layout_weight="8"
           />
     <LinearLayout
+        android:onClick="mytecher"
         android:background="@drawable/button_radiuos_10dp"
         android:layout_width="0dp"
         android:layout_weight="30"
@@ -241,6 +243,7 @@
                 android:orientation="horizontal"
                 >
                 <LinearLayout
+                    android:onClick="Fees"
                     android:id="@+id/write_id"
                     android:background="@drawable/button_radiuos_10dp"
                     android:layout_width="0dp"
@@ -273,6 +276,7 @@
                     android:layout_weight="8"
                     />
                 <LinearLayout
+                    android:onClick="notificationy"
                     android:id="@+id/read_id"
                     android:background="@drawable/button_radiuos_10dp"
                     android:layout_width="0dp"

@@ -28,11 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Splash extends AppCompatActivity {
-Thread t;
-    Handler handler = new Handler();
-    Runnable runnable;
-    int delay = 2500;
-
+    Thread t;
     private AlertDialog dialog;
 
     SharedPreferences sharedPreferences;
@@ -56,11 +52,21 @@ Thread t;
                                     != PackageManager.PERMISSION_GRANTED ||
                             ContextCompat.checkSelfPermission(Splash.this,
                                     android.Manifest.permission.INTERNET)
-                                    != PackageManager.PERMISSION_GRANTED
+                                    != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(Splash.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED ||
+                            ContextCompat.checkSelfPermission(Splash.this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED
                     ) {
 
                         if (ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                android.Manifest.permission.INTERNET) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+                                android.Manifest.permission.INTERNET)
+                                && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)&& ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
                                 android.Manifest.permission.ACCESS_NETWORK_STATE) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
                                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -69,6 +75,8 @@ Thread t;
                         } else {
                             ActivityCompat.requestPermissions(Splash.this,
                                     new String[]{
+                                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                             android.Manifest.permission.INTERNET,
                                             android.Manifest.permission.ACCESS_FINE_LOCATION,
                                             android.Manifest.permission.ACCESS_NETWORK_STATE,
@@ -127,9 +135,6 @@ Thread t;
 
                             if (location != null) {
 
-//                                Toast.makeText(Splash.this, location.getLatitude()+" "+location.getLongitude()
-//                                        , Toast.LENGTH_SHORT).show();
-
                                 leditor.putString("lat", String.valueOf(location.getLatitude()));
                                 leditor.putString("long", String.valueOf(location.getLongitude()));
                                 leditor.apply();
@@ -184,24 +189,29 @@ Thread t;
 
     @Override
     protected void onResume() {
-////        handler.postDelayed( runnable = new Runnable() {
-////            public void run() {
-////                //do something
-////                handler.postDelayed(runnable, delay);
-////            }
-////        }, delay);
+
         super.onResume();
 
-                if (ContextCompat.checkSelfPermission(Splash.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    gonext();
+        t = new Thread() {
+            public void run() {
+                try {
+                    t.sleep(2500);
+
+                    if (ContextCompat.checkSelfPermission(Splash.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        gonext();
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+            }
+        };t.start();
 
     }
 
     public void openPermissionScreen() {
-        // startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.fromParts("package", Splash.this.getPackageName(), null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

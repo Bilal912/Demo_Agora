@@ -1,11 +1,16 @@
 package com.edu_touch.edu_hunt;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.TextureView;
@@ -117,7 +122,23 @@ public class Home extends AppCompatActivity {
     }
 
     public void back(View view) {
-        finish();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
+        alertDialog.setMessage("Are you sure you want to exit?");
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                dialogInterface.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     public void update(View view) {
@@ -127,6 +148,47 @@ public class Home extends AppCompatActivity {
 
     public void avy(View view) {
         Intent i = new Intent(Home.this,Confirmation.class);
+        startActivity(i);
+    }
+
+    public void payment_history(View view) {
+        Intent i = new Intent(Home.this,Paymenthistory.class);
+        startActivity(i);
+    }
+
+    public void Fees(View view) {
+        Intent i = new Intent(Home.this,Fees.class);
+        startActivity(i);
+    }
+
+    public void notificationy(View view) {
+        Intent i = new Intent(Home.this,Notification.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
+        alertDialog.setMessage("Are you sure you want to exit?");
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void mytecher(View view) {
+        Intent i = new Intent(Home.this,My_teacher.class);
         startActivity(i);
     }
 }

@@ -14,6 +14,34 @@ public class teacher_model {
     public String fees;
     public String teacher_name;
 
+    public String class_id;
+    public String subjects_id;
+    public String boards_id;
+
+    public String getClass_id() {
+        return class_id;
+    }
+
+    public void setClass_id(String class_id) {
+        this.class_id = class_id;
+    }
+
+    public String getSubjects_id() {
+        return subjects_id;
+    }
+
+    public void setSubjects_id(String subjects_id) {
+        this.subjects_id = subjects_id;
+    }
+
+    public String getBoards_id() {
+        return boards_id;
+    }
+
+    public void setBoards_id(String boards_id) {
+        this.boards_id = boards_id;
+    }
+
     public String getTeacher_name() {
         return teacher_name;
     }
@@ -97,7 +125,7 @@ public class teacher_model {
         this.boards = boards;
     }
 
-    public teacher_model(String id, String teacher_code, String city, String qualification, String experience, String t_image, String address, String subjects, String boards, String class_name, String fees, String teacher_name) {
+    public teacher_model(String id, String teacher_code, String city, String qualification, String experience, String t_image, String address, String subjects, String boards, String class_name, String fees, String teacher_name, String class_id, String subjects_id, String boards_id) {
         this.id = id;
         this.teacher_code = teacher_code;
         this.city = city;
@@ -110,6 +138,9 @@ public class teacher_model {
         this.class_name = class_name;
         this.fees = fees;
         this.teacher_name = teacher_name;
+        this.class_id = class_id;
+        this.subjects_id = subjects_id;
+        this.boards_id = boards_id;
     }
 
     public String getClass_name() {

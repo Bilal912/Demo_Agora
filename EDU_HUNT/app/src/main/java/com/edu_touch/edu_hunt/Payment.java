@@ -25,6 +25,7 @@ import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 public class Payment extends AppCompatActivity {
     WebView webView;
     String amount,ID;
+    SharedPreferences sharedPreferences;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -36,9 +37,9 @@ public class Payment extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        SharedPreferences editors = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        ID = editors.getString("id", "Null");
-        amount = "20";
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        ID = sharedPreferences.getString("id", "Null");
+        amount = getIntent().getStringExtra("fee");
 
         webView.loadUrl(Constant.Base_url_payment+"amount="+amount+"20&user-id="+ID);
 
@@ -80,35 +81,41 @@ public class Payment extends AppCompatActivity {
 
         //view.loadUrl(webView.getUrl());
 
-        if (url.contains("success.php")) {
-            //parse uri
+        if (url.contains("success")) {
+
+            Toast.makeText(this, "Now You can book your Teacher", Toast.LENGTH_LONG).show();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("status", "1");
+            editor.apply();
+
+//Uri parse
 //            Uri uri= Uri.parse(webView.getUrl());
 //            transaction_id = uri.getQueryParameter("txtid");
 //            getData(transaction_id);
-
+            finish();
         }
-        else if (url.contains("failure.php")){
+        else if (url.contains("failure")){
 
-//            Toast.makeText(Payumoney.this, "Payment was not received", Toast.LENGTH_SHORT).show();
-//
-//            webView.destroy();
-//            final SweetAlertDialog pDialog = new SweetAlertDialog(Payumoney.this, SweetAlertDialog.ERROR_TYPE);
-//            pDialog.setTitleText("Error");
-//            pDialog.setContentText("Payment was not received");
-//            pDialog.setConfirmText("OK");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
-//            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                @Override
-//                public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                    Intent i = new Intent(Payumoney.this,Menu.class);
-//                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(i);
-//                    finish();
-//                }
-//            });
-//
-//            finish();
+            Toast.makeText(Payment.this, "Payment was not received", Toast.LENGTH_LONG).show();
+
+            webView.destroy();
+            final SweetAlertDialog pDialog = new SweetAlertDialog(Payment.this, SweetAlertDialog.ERROR_TYPE);
+            pDialog.setTitleText("Error");
+            pDialog.setContentText("Payment was not received");
+            pDialog.setConfirmText("OK");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    Intent i = new Intent(Payment.this,Home.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+            finish();
 
         }
 

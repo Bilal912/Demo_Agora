@@ -19,6 +19,6 @@ public class Confirmation extends AppCompatActivity {
     }
 
     public void Confirmy(View view) {
-        startActivity(new Intent(Confirmation.this,Fees.class));
+        startActivity(new Intent(Confirmation.this,Services.class));
     }
 }

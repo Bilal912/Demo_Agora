@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Paymenthistory">
+    tools:context=".My_teacher">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,22 +72,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:gravity="left"
-                    android:text="PAYMENT HISTORY"
-                    />
-
-                <TextView
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp"
-                    android:textSize="14sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_main"
-                    android:gravity="right"
-                    android:text="ALL"
-                    android:drawableTint="@color/color_main"
-                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:text="MY TEACHERS"
                     />
 
 
@@ -97,7 +82,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler_payment"
+                android:id="@+id/recycler_myteacher"
                 />
 
 

@@ -4,7 +4,7 @@
     android:layout_margin="15dp"
     android:layout_width="match_parent"
     android:background="@drawable/pinky_radius"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     app:cardCornerRadius="5dp"
     app:cardBackgroundColor="@color/halka_white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/side"
         android:layout_width="5dp"
-        android:layout_height="110dp"
+        android:layout_height="80dp"
         android:background="@drawable/left_orange_side"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -34,6 +34,7 @@
             android:padding="6dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/date"
                 android:textSize="14sp"
                 android:fontFamily="@font/avian_bold"
                 android:layout_width="wrap_content"
@@ -41,6 +42,7 @@
                 android:text="7th"
                 />
             <TextView
+                android:id="@+id/month"
                 android:textSize="12sp"
                 android:fontFamily="@font/avian_bold"
                 android:layout_width="wrap_content"
@@ -59,6 +61,7 @@
         android:orientation="vertical"
         >
         <TextView
+            android:id="@+id/t_name"
             android:fontFamily="@font/avian_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,6 +82,7 @@
     </LinearLayout>
 
         <TextView
+            android:id="@+id/amount"
             android:layout_marginRight="10dp"
             android:fontFamily="@font/avian_bold"
             android:textSize="16sp"

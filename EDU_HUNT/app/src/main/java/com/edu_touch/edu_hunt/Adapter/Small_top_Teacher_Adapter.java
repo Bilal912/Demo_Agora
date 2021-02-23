@@ -75,6 +75,9 @@ public class Small_top_Teacher_Adapter extends RecyclerView.Adapter<Small_top_Te
                 i.putExtra("experience",data.get(finalPosition1).getExperience());
                 i.putExtra("image",data.get(finalPosition1).getT_image());
                 i.putExtra("code",data.get(finalPosition1).getTeacher_code());
+                i.putExtra("subject_id", data.get(finalPosition1).getSubjects_id());
+                i.putExtra("board_id", data.get(finalPosition1).getBoards_id());
+                i.putExtra("class_id", data.get(finalPosition1).getClass_id());
 
                 i.putExtra("subject",data.get(finalPosition1).getSubjects());
                 i.putExtra("board",data.get(finalPosition1).getBoards());
