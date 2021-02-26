@@ -91,6 +91,7 @@
                         />
 
                     <TextView
+                        android:visibility="gone"
                         android:textStyle="italic"
                         android:textSize="10sp"
                         android:textColor="@color/black"

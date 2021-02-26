@@ -29,4 +29,10 @@ public class Constant {
 
     public static final String Base_url_booking_teacher = Base_url+"/teacher_booking";
 
+    public static final String Base_url_submiting_booking_otp = Base_url+"/submit_booking_otp";
+    public static final String Base_url_getstudentfee = Base_url+"/get_student_fees";
+
+    public static final String Base_url_submiting_fee = Base_url+"/submit_fees";
+
+    public static final String Base_url_checkinguser = Base_url+"/get_login_status";
 }

@@ -3,6 +3,8 @@ package com.edu_touch.edu_hunt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,13 +20,34 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.edu_touch.edu_hunt.Adapter.Fee_Adapter;
+import com.edu_touch.edu_hunt.Model.fee_model;
+import com.edu_touch.edu_hunt.volley.CustomRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Payment extends AppCompatActivity {
     WebView webView;
-    String amount,ID;
+    String amount,ID,check,fee_id,booking_id;
     SharedPreferences sharedPreferences;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -39,7 +62,15 @@ public class Payment extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         ID = sharedPreferences.getString("id", "Null");
-        amount = getIntent().getStringExtra("fee");
+        check = getIntent().getStringExtra("fee");
+        if (check.equals("Fee Deposit")){
+            amount = getIntent().getStringExtra("amount");
+            fee_id = getIntent().getStringExtra("fee_id");
+            booking_id = getIntent().getStringExtra("booking_id");
+        }
+        else {
+            amount = check;
+        }
 
         webView.loadUrl(Constant.Base_url_payment+"amount="+amount+"20&user-id="+ID);
 
@@ -83,16 +114,27 @@ public class Payment extends AppCompatActivity {
 
         if (url.contains("success")) {
 
-            Toast.makeText(this, "Now You can book your Teacher", Toast.LENGTH_LONG).show();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("status", "1");
-            editor.apply();
+            if (check.equals("Fee Deposit")){
+
+                Submittingfee();
+
+
+            }
+            else {
+                Toast.makeText(this, "Now You can book your Teacher", Toast.LENGTH_LONG).show();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("status", "1");
+                editor.apply();
+
+                finish();
+            }
+
 
 //Uri parse
 //            Uri uri= Uri.parse(webView.getUrl());
 //            transaction_id = uri.getQueryParameter("txtid");
 //            getData(transaction_id);
-            finish();
+
         }
         else if (url.contains("failure")){
 
@@ -118,6 +160,77 @@ public class Payment extends AppCompatActivity {
             finish();
 
         }
+
+    }
+
+    private void Submittingfee() {
+
+        final AlertDialog loading = new ProgressDialog(Payment.this);
+        loading.setMessage("Please Wait....");
+        loading.setCancelable(false);
+        loading.show();
+
+
+        Map<String, String> params = new Hashtable<String, String>();
+        params.put("booking_id",booking_id);
+        params.put("fees_id",fee_id);
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_submiting_fee, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    String message = response.getString("message");
+                    String code = response.getString("error_code");
+
+                    if (code.equals("200")){
+                        Toasty.success(Payment.this, message, Toast.LENGTH_SHORT, true).show();
+                        finish();
+                        loading.dismiss();
+                        Fees.loady = 1;
+
+                    }
+                    else {
+
+                        loading.dismiss();
+                        //Toasty.error(Payment.this, message, Toast.LENGTH_SHORT, true).show();
+                    }
+
+                } catch (JSONException e) {
+
+                    loading.dismiss();
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                loading.dismiss();
+                Toasty.error(Payment.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(Payment.this);
+        queue.add(jsonRequest);
+
 
     }
 

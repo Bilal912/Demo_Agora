@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.edu_touch.edu_hunt.Confirmation;
 import com.edu_touch.edu_hunt.Model.payment_history_model;
 import com.edu_touch.edu_hunt.R;
 import com.edu_touch.edu_hunt.Teacher_detail;
@@ -52,56 +55,41 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
         holder.name.setText(data.get(position).getTeacher_Name());
 
         holder.expericne.setText("Booking Date : "+data.get(position).getBooking_date());
-        holder.quali.setText(data.get(position).getClass_Groups());
-        if (data.get(position).getStudent_Name().contains("|")){
+        holder.quali.setText("Class : "+data.get(position).getClass_Groups());
+        if (data.get(position).getSubject_Name().contains("|")){
             String currentString = data.get(position).getStudent_Name();
             String[] separated = currentString.split("\\|");
-            holder.subject.setText(separated[0]);
+            holder.subject.setText("Subject : "+separated[0]);
         }
         else {
-            holder.subject.setText(data.get(position).getStudent_Name());
+            holder.subject.setText("Subject : "+data.get(position).getSubject_Name());
         }
         holder.amount.setText(context.getResources().getString(R.string.currency)+" "+data.get(position).getAmount());
 
+        if (data.get(position).getStarting_status().equals("0")){
+            holder.flag.setImageResource(R.drawable.red_flag);
+            holder.start_date.setVisibility(View.GONE);
+        }
+        else {
+            holder.start_date.setVisibility(View.VISIBLE);
+            holder.start_date.setText("Starting Date : "+data.get(position).getStarting_date());
+            holder.flag.setImageResource(R.drawable.green_flag);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (data.get(position).getStarting_status().equals("0")){
+                    Intent i = new Intent(context, Confirmation.class);
+                    i.putExtra("id",data.get(position).getId());
+                    context.startActivity(i);}
+                else {
+                    Toast.makeText(context, "Already Started", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
 
-    }
-
-    public String checkmonth(String s) {
-        String monthy = null;
-        if (s.equals("01") || s.equals("1")){
-            monthy = "Jan";
-        }
-        else if (s.equals("02") || s.equals("2")){
-            monthy = "Feb";
-        }
-        else if (s.equals("03") || s.equals("3")){
-            monthy = "Mar";
-        }else if (s.equals("04") || s.equals("4")){
-            monthy = "Apr";
-        }else if (s.equals("05") || s.equals("5")){
-            monthy = "May";
-        }else if (s.equals("06") || s.equals("6")){
-            monthy = "Jun";
-        }else if (s.equals("07") || s.equals("7")){
-            monthy = "Jul";
-        }else if (s.equals("08") || s.equals("8")){
-            monthy = "Aug";
-        }else if (s.equals("09") || s.equals("9")){
-            monthy = "Sep";
-        }else if (s.equals("010") || s.equals("10")){
-            monthy = "Oct";
-        }else if (s.equals("011") || s.equals("11")){
-            monthy = "Nov";
-        }else if (s.equals("012") || s.equals("12")){
-            monthy = "Dec";
-        }
-        return monthy;
     }
 
     @Override
@@ -112,10 +100,13 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
     public static class GithubViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView imageView;
-        TextView name,quali,expericne,subject,amount;
+        ImageView flag;
+        TextView name,quali,expericne,subject,amount,start_date;
         public GithubViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            start_date = itemView.findViewById(R.id.startdate);
+            flag = itemView.findViewById(R.id.flag_id);
             amount = itemView.findViewById(R.id.amount);
             name = itemView.findViewById(R.id.name);
             quali = itemView.findViewById(R.id.text);

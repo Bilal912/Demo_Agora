@@ -1,12 +1,17 @@
 package com.edu_touch.edu_hunt;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
@@ -46,6 +51,9 @@ public class My_teacher extends AppCompatActivity {
     ArrayList<payment_history_model> arrayList;
     My_Teacher_Adapter adapter;
     TextView textView;
+    private SwipeRefreshLayout swipeContainer;
+
+    public static int loader = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +88,28 @@ public class My_teacher extends AppCompatActivity {
 
         getmyteacher();
 
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code here
+                // To keep animation for 4 seconds
+                arrayList.clear();
+                getmyteacher();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeContainer.setRefreshing(false);
+                    }
+                }, 2000); // Delay in millis
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
     }
 
@@ -157,4 +187,18 @@ public class My_teacher extends AppCompatActivity {
     public void back(View view) {
         finish();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (loader == 1){
+            animationView.setVisibility(View.VISIBLE);
+            arrayList.clear();
+            getmyteacher();
+            loader = 0;
+        }
+    }
+
+
 }

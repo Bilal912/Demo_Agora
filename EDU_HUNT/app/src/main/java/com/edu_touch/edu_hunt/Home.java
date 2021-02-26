@@ -82,30 +82,30 @@ public class Home extends AppCompatActivity {
             sliderView.setOnSliderClickListener(new SliderView.OnSliderClickListener() {
                 @Override
                 public void onSliderClick(SliderView sliderView) {
-                    final SweetAlertDialog dialog = new SweetAlertDialog(Home.this,SweetAlertDialog.WARNING_TYPE);
-                    dialog.setTitleText("Are you sure?");
-                    dialog.setContentText("you want to logout");
-                    dialog.setConfirmText("Yes");
-                    dialog.setCancelText("No");
-                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                            SharedPreferences preferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-                            preferences.edit().clear().commit();
-
-                            Intent intent = new Intent(Home.this,MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    });
+//                    final SweetAlertDialog dialog = new SweetAlertDialog(Home.this,SweetAlertDialog.WARNING_TYPE);
+//                    dialog.setTitleText("Are you sure?");
+//                    dialog.setContentText("you want to logout");
+//                    dialog.setConfirmText("Yes");
+//                    dialog.setCancelText("No");
+//                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    dialog.show();
+//                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//
+//                            SharedPreferences preferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+//                            preferences.edit().clear().commit();
+//
+//                            Intent intent = new Intent(Home.this,MainActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(intent);
+//                        }
+//                    });
 
                 }
             });
@@ -143,11 +143,6 @@ public class Home extends AppCompatActivity {
 
     public void update(View view) {
         Intent i = new Intent(Home.this,Update.class);
-        startActivity(i);
-    }
-
-    public void avy(View view) {
-        Intent i = new Intent(Home.this,Confirmation.class);
         startActivity(i);
     }
 
@@ -190,5 +185,33 @@ public class Home extends AppCompatActivity {
     public void mytecher(View view) {
         Intent i = new Intent(Home.this,My_teacher.class);
         startActivity(i);
+    }
+
+    public void logout(View view) {
+        final SweetAlertDialog dialog = new SweetAlertDialog(Home.this,SweetAlertDialog.WARNING_TYPE);
+        dialog.setTitleText("Are you sure?");
+        dialog.setContentText("you want to logout");
+        dialog.setConfirmText("Yes");
+        dialog.setCancelText("No");
+        dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                SharedPreferences preferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+                preferences.edit().clear().commit();
+
+                Intent intent = new Intent(Home.this,MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
     }
 }

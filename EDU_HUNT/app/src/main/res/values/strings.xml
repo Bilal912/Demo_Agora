@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EDU HUNT</string>
+    <string name="app_name">Book My Teacher</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

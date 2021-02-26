@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EDU_HUNT"
         tools:targetApi="n">
-        <activity android:name=".My_teacher"></activity>
+        <activity android:name=".Warning"></activity>
+        <activity android:name=".Filter" />
+        <activity android:name=".My_teacher" />
         <activity android:name=".Show_image" />
         <activity android:name=".Teacher_detail" />
         <activity android:name=".Show_Teachers" />

@@ -52,16 +52,17 @@ public class Small_top_Teacher_Adapter extends RecyclerView.Adapter<Small_top_Te
                 .into(holder.imageView);
 
         holder.name.setText(data.get(position).getTeacher_name());
-        holder.expericne.setText(data.get(position).getExperience());
-        holder.quali.setText(data.get(position).getQualification());
+        holder.expericne.setText("Experience: "+data.get(position).getExperience());
+        holder.quali.setText("Qualification: "+data.get(position).getQualification());
         if (data.get(position).getSubjects().contains("|")){
             String currentString = data.get(position).getSubjects();
             String[] separated = currentString.split("\\|");
-            holder.subject.setText(separated[0]);
+            holder.subject.setText("Subject: "+separated[0]);
         }
         else {
-            holder.subject.setText(data.get(position).getSubjects());
+            holder.subject.setText("Subject: "+data.get(position).getSubjects());
         }
+
         int finalPosition1 = position;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

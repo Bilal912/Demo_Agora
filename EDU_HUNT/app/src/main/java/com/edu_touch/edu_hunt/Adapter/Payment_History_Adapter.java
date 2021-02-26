@@ -40,6 +40,15 @@ public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_Histor
         holder.name.setText(data.get(position).getTeacher_Name());
         holder.fee.setText(context.getResources().getString(R.string.currency)+" -"+data.get(position).getAmount());
 
+        if (data.get(position).getSubject_Name().contains("|")){
+            String currentString = data.get(position).getSubject_Name();
+            String[] separated = currentString.split("\\|");
+            holder.tempy.setText("Subject: "+separated[0]);
+        }
+        else {
+            holder.tempy.setText("Subject: "+data.get(position).getSubject_Name());
+        }
+
         String temp = data.get(position).getBooking_date();
         String[] avy = temp.split("-");
         holder.date.setText(avy[2]);
@@ -87,10 +96,11 @@ public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_Histor
 
     public static class GithubViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name,date,fee,month;
+        TextView name,date,fee,month,tempy;
         public GithubViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            tempy = itemView.findViewById(R.id.text);
             name = itemView.findViewById(R.id.t_name);
             date = itemView.findViewById(R.id.date);
             fee = itemView.findViewById(R.id.amount);

@@ -91,6 +91,7 @@
                     />
 
                 <TextView
+                    android:visibility="gone"
                     android:textStyle="italic"
                     android:textSize="10sp"
                     android:textColor="@color/black"
@@ -102,6 +103,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:onClick="filters"
                     android:id="@+id/submit"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
@@ -170,6 +172,7 @@
                         android:textStyle="bold"
                         />
                     <TextView
+                        android:visibility="gone"
                         android:textStyle="italic"
                         android:textSize="10sp"
                         android:textColor="@color/black"
@@ -242,6 +245,7 @@
                         android:textStyle="italic"
                         android:textSize="10sp"
                         android:textColor="@color/black"
+                        android:visibility="gone"
                         android:text="There are many variations of passages of Lerom lpsum available "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

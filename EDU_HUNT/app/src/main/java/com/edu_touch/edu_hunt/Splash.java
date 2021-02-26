@@ -18,12 +18,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Hashtable;
+import java.util.Map;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
@@ -102,11 +119,86 @@ public class Splash extends AppCompatActivity {
         if (Email.equals("Null")) {
             Intent i = new Intent(Splash.this, MainActivity.class);
             startActivity(i);
+            finish();
         } else {
-            Intent i = new Intent(Splash.this, Home.class);
-            startActivity(i);
+            checkuser(sharedPreferences.getString("id","Null"));
         }
-        finish();
+    }
+
+    private void checkuser(String string) {
+        Map<String, String> params = new Hashtable<String, String>();
+        params.put("std_id",string);
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_checkinguser, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    String code = response.getString("error code");
+
+                    if (code.equals("200")){
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+
+                            if (object.getString("login_status").equals("0")){
+                                SharedPreferences preferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+                                preferences.edit().clear().commit();
+
+                                Intent intent = new Intent(Splash.this,Warning.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                            else {
+                                Intent i = new Intent(Splash.this, Home.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }
+                    }
+                    else {
+//                        textView.setVisibility(View.VISIBLE);
+//                        animationView.setVisibility(View.GONE);
+//                        Toasty.error(My_teacher.this, message, Toast.LENGTH_SHORT, true).show();
+                    }
+
+                } catch (JSONException e) {
+
+//                    textView.setVisibility(View.VISIBLE);
+//                    animationView.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                animationView.setVisibility(View.GONE);
+
+                Toasty.error(Splash.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(Splash.this);
+        queue.add(jsonRequest);
+
+
     }
 
     public void getLocation(){

@@ -22,7 +22,7 @@
         <TextView
             android:textSize="10sp"
             android:textColor="@color/black"
-            android:text="There are many variations of passages of Lorem Ipsum available,\n but the majority have suffered alteration in some form, by injected humour, or randomised."
+            android:text="Demo"
             android:layout_centerVertical="true"
             android:id="@+id/text"
             android:layout_toRightOf="@id/icon"

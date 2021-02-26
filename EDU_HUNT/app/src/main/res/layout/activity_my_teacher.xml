@@ -40,11 +40,14 @@
             android:layout_toLeftOf="@id/menu"
             android:id="@+id/iv_header_img"
             android:src="@drawable/user2"/>
-
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_below="@id/back"
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
         <LinearLayout
             android:layout_marginTop="5dp"
-            android:layout_below="@id/back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -87,6 +90,9 @@
 
 
         </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </RelativeLayout>
 
     <com.airbnb.lottie.LottieAnimationView

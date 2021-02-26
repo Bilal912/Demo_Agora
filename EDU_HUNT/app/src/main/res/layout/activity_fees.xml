@@ -24,7 +24,6 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:onClick="notify"
             android:id="@+id/menu"
             android:layout_width="16dp"
             android:layout_height="16dp"
@@ -41,10 +40,14 @@
             android:layout_toLeftOf="@id/menu"
             android:id="@+id/iv_header_img"
             android:src="@drawable/user2"/>
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_below="@id/back"
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
         <LinearLayout
             android:layout_marginTop="5dp"
-            android:layout_below="@id/back"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -68,37 +71,39 @@
                 android:text="FEES"
                 />
 
-            <include
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="10dp"
-                layout="@layout/cardview_fees"
                 android:layout_width="match_parent"
-                android:layout_height="64dp" />
-            <include
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                layout="@layout/cardview_fees"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-            <include
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                layout="@layout/cardview_fees"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-            <include
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                layout="@layout/cardview_fees"
-                android:layout_width="match_parent"
-                android:layout_height="64dp" />
-
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_fees"
+                />
 
         </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:background="@color/white"
+        android:id="@+id/anime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:lottie_rawRes="@raw/loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
+
+    <TextView
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/avian_bold"
+        android:id="@+id/no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Data Found"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+
 </RelativeLayout>

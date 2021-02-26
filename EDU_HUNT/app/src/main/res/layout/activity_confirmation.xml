@@ -68,6 +68,7 @@
                 android:textSize="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
                 android:text="There are many variations of passages of Lorem Ipsum available,\n but the majority have suffered alteration in some form, by injected humour."
                 android:layout_margin="10dp"
                 />

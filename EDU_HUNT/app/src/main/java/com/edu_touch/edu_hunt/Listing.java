@@ -50,7 +50,8 @@ import es.dmoral.toasty.Toasty;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Listing extends AppCompatActivity {
-    ShimmerFrameLayout shimme_subject,subjecty_shimmer,teacher_shimmer;
+
+ShimmerFrameLayout shimme_subject,subjecty_shimmer,teacher_shimmer;
 RecyclerView recyclerView,rec_teacher,top_teachers;
 ArrayList<subject_model> sub_model;
 ArrayList<teacher_model> teacher_models;
@@ -317,6 +318,11 @@ SharedPreferences sharedPreferences;
     public void view_all(View view) {
         Intent i = new Intent(Listing.this, Show_Teachers.class);
         i.putExtra("id","ViewAll");
+        startActivity(i);
+    }
+
+    public void filters(View view) {
+        Intent i = new Intent(Listing.this, Filter.class);
         startActivity(i);
     }
 

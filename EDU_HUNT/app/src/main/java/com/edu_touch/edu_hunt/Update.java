@@ -170,4 +170,8 @@ public class Update extends AppCompatActivity {
         queue.add(jsonRequest);
 
     }
+
+    public void back(View view) {
+        finish();
+    }
 }
