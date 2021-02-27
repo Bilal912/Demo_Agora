@@ -4,7 +4,7 @@ public class Constant {
 
     public static final String Base_url = "https://edutouchinstitute.com/api";
 
-//  https://edutouchinstitute.com/paymentGateway?amount=20&user-id=10
+    public static final String image_url = "https://edutouchinstitute.com/uploads/images/";
 
     public static final String Base_url_payment = "https://edutouchinstitute.com/paymentGateway?";
 

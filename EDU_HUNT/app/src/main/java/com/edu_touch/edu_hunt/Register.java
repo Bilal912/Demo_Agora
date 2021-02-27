@@ -6,7 +6,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,16 +26,20 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -41,9 +48,15 @@ import static android.widget.Toast.makeText;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Register extends AppCompatActivity {
-EditText name,phone,email,address,classes,password,confirm_password;
+EditText name,phone,email,address,classes,password,confirm_password,city,state,zip;
 Spinner spinner;
+CircleImageView imageView;
 CheckBox checkBox;
+
+public static Bitmap bitmap = null;
+    Uri uri;
+    public static final int RESULT_LOAD_IMAGE = 1;
+
 SharedPreferences sharedPreferences;
     ArrayList<String> clasy;
 
@@ -53,9 +66,13 @@ SharedPreferences sharedPreferences;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        imageView = findViewById(R.id.image_id);
         clasy = new ArrayList<>();
         clasy.add("Class");
 
+        city = findViewById(R.id.city);
+        state = findViewById(R.id.state);
+        zip = findViewById(R.id.zip);
         spinner = findViewById(R.id.spinner_id);
         checkBox = (CheckBox) findViewById(R.id.checkbox);
 //        animationView = (LottieAnimationView) findViewById(R.id.anime);
@@ -68,6 +85,21 @@ SharedPreferences sharedPreferences;
         confirm_password = (EditText) findViewById(R.id.confirm_password);
 
         getClasses();
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    makeText(Register.this, "Can't Open Your Media", LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
     }
 
@@ -159,6 +191,15 @@ SharedPreferences sharedPreferences;
             Toast.makeText(Register.this,"Select Your Class",
                     Toast.LENGTH_LONG).show();
         }
+        else if (TextUtils.isEmpty(city.getText().toString())){
+            makeText(Register.this, "City is required", LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(state.getText().toString())){
+            makeText(Register.this, "State is required", LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(zip.getText().toString())){
+            makeText(Register.this, "ZIP is required", LENGTH_SHORT).show();
+        }
 
         else if (TextUtils.isEmpty(address.getText().toString())){
             makeText(Register.this, "Address is required", LENGTH_SHORT).show();
@@ -169,9 +210,13 @@ SharedPreferences sharedPreferences;
         else if (TextUtils.isEmpty(confirm_password.getText().toString())){
             makeText(Register.this, "Confirm Password is required", LENGTH_SHORT).show();
         }
+        else if (bitmap == null){
+            makeText(Register.this, "Picture is required", LENGTH_SHORT).show();
+        }
         else {
             if (password.getText().toString().trim().equals(confirm_password.getText().toString().trim())){
                 if (checkBox.isChecked()){
+
 //                    getData();
 
                     Intent i = new Intent(Register.this,Phoneno.class);
@@ -180,6 +225,11 @@ SharedPreferences sharedPreferences;
                     i.putExtra("password",password.getText().toString().trim());
                     i.putExtra("class",spinner.getSelectedItem().toString().trim());
                     i.putExtra("address",address.getText().toString().trim());
+
+                    i.putExtra("zip",zip.getText().toString().trim());
+                    i.putExtra("city",city.getText().toString().trim());
+                    i.putExtra("state",state.getText().toString().trim());
+
                     startActivity(i);
 
                 }
@@ -275,4 +325,23 @@ SharedPreferences sharedPreferences;
     public void Login(View view) {
         startActivity(new Intent(Register.this,Login.class));
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RESULT_LOAD_IMAGE) {
+                Picasso.get().load(data.getData()).noPlaceholder()
+                        .into(imageView);
+                uri = data.getData();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                } catch (IOException e) {
+                    makeText(Register.this,"Error Loading Image", LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
 }

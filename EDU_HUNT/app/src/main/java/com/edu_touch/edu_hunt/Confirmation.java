@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chaos.view.PinView;
 import com.edu_touch.edu_hunt.Adapter.My_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Model.payment_history_model;
@@ -33,11 +36,15 @@ import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
+
+import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Confirmation extends AppCompatActivity {
     private PinView pinView;
-
+    CircleImageView imageView;
+SharedPreferences sharedPreferences;
     String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +52,18 @@ public class Confirmation extends AppCompatActivity {
         setContentView(R.layout.activity_confirmation);
         pinView=findViewById(R.id.pinview);
 
+        imageView = findViewById(R.id.iv_header_img);
         id = getIntent().getStringExtra("id");
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String pic = sharedPreferences.getString("picture","null");
+        //Picasso.get().load(pic).into(imageView);
+        Glide.with(Confirmation.this)
+                .load(pic)
+                .centerCrop()
+                .placeholder(R.drawable.user2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(imageView);
 
         pinView.addTextChangedListener(new TextWatcher() {
             @Override

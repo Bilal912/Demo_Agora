@@ -114,8 +114,13 @@ SharedPreferences.Editor editors;
                             editors.putString("status", object.getString("status"));
                             editors.putString("created_date", object.getString("created_date"));
                             editors.putString("password", object.getString("password"));
-                            editors.putString("picture", object.getString("profile_pic"));
+                            editors.putString("picture", Constant.image_url.concat(object.getString("profile_image")));
                             editors.putString("class", object.getString("class"));
+
+                            editors.putString("city", object.getString("city"));
+                            editors.putString("state", object.getString("state"));
+                            editors.putString("zip", object.getString("zip"));
+
                             //editors.putString("name", object.getString("device_id"));
 
                             Checkuser(object.getString("id"));

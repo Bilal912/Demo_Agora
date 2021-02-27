@@ -20,6 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.edu_touch.edu_hunt.Adapter.Payment_History_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Small_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Small_top_Teacher_Adapter;
@@ -38,12 +40,14 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Paymenthistory extends AppCompatActivity {
 RecyclerView recyclerView;
+CircleImageView imageView;
     LottieAnimationView animationView;
 SharedPreferences sharedPreferences;
 ArrayList<payment_history_model> arrayList;
@@ -55,9 +59,19 @@ TextView textView;
         setContentView(R.layout.activity_paymenthistory);
         animationView = findViewById(R.id.anime);
 
+        imageView = findViewById(R.id.iv_header_img);
         textView = findViewById(R.id.no_data);
         arrayList = new ArrayList<>();
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String pic = sharedPreferences.getString("picture","null");
+        //Picasso.get().load(pic).into(imageView);
+        Glide.with(Paymenthistory.this)
+                .load(pic)
+                .centerCrop()
+                .placeholder(R.drawable.user2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(imageView);
 
         recyclerView = findViewById(R.id.recycler_payment);
 

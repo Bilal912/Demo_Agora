@@ -35,7 +35,7 @@ import static android.widget.Toast.makeText;
 public class Phoneno extends AppCompatActivity {
 EditText Phone;
     LottieAnimationView animationView;
-    String name,email,pass,classes,address;
+    String name,email,pass,classes,address,city,state,zip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,10 @@ EditText Phone;
         pass = getIntent().getStringExtra("password");
         address = getIntent().getStringExtra("address");
         classes = getIntent().getStringExtra("class");
+
+        zip = getIntent().getStringExtra("zip");
+        city = getIntent().getStringExtra("city");
+        state = getIntent().getStringExtra("state");
     }
 
     public void submit(View view) {
@@ -87,6 +91,9 @@ EditText Phone;
                         i.putExtra("password",pass);
                         i.putExtra("class",classes);
                         i.putExtra("address",address);
+                        i.putExtra("zip",zip);
+                        i.putExtra("city",city);
+                        i.putExtra("state",state);
 
                         i.putExtra("number",number);
                         i.putExtra("code",String.valueOf(j));

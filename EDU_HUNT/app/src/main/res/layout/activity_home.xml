@@ -27,8 +27,8 @@
             android:id="@+id/menu"
             android:textStyle="bold"
             android:textSize="12sp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:background="@drawable/menu_icon"
             android:layout_alignParentRight="true"
             android:layout_margin="20dp"
@@ -37,8 +37,8 @@
             android:onClick="logout"
             android:layout_marginTop="20dp"
             android:layout_marginRight="-10dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_toLeftOf="@id/menu"
             android:src="@drawable/logout"/>
 
@@ -58,7 +58,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:id="@+id/iv_header_img"
-                android:src="@drawable/user2"/>
+                android:background="@drawable/user2"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

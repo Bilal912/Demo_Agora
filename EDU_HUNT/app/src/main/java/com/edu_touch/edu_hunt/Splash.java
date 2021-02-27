@@ -88,7 +88,7 @@ public class Splash extends AppCompatActivity {
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
                                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                         ) {
-                            gonext();
+                            //gonext();
                         } else {
                             ActivityCompat.requestPermissions(Splash.this,
                                     new String[]{
@@ -257,7 +257,7 @@ public class Splash extends AppCompatActivity {
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[3] == PackageManager.PERMISSION_GRANTED
             ) {
-                gonext();
+                //gonext();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Splash.this);
                 builder.setMessage("App required some permission please enable it")

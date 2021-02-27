@@ -22,12 +22,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.smarteist.autoimageslider.DefaultSliderView;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderLayout;
 import com.smarteist.autoimageslider.SliderView;
+import com.squareup.picasso.Picasso;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
@@ -35,11 +39,14 @@ public class Home extends AppCompatActivity {
     SliderLayout sliderLayout;
     SharedPreferences sharedPreferences;
     TextView Name,Phone;
+    CircleImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        imageView = findViewById(R.id.iv_header_img);
 
         Name = findViewById(R.id.tv_header_name);
         Phone = findViewById(R.id.tv_adres_phone);
@@ -50,6 +57,16 @@ public class Home extends AppCompatActivity {
 
         setSliderViews();
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String pic = sharedPreferences.getString("picture","null");
+        //Picasso.get().load(pic).into(imageView);
+        Glide.with(Home.this)
+                .load(pic)
+                .centerCrop()
+                .placeholder(R.drawable.user2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(imageView);
+
         Name.setText(sharedPreferences.getString("name","null"));
         Phone.setText(sharedPreferences.getString("phone","null"));
 

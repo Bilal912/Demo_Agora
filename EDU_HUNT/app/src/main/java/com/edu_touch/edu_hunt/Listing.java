@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.edu_touch.edu_hunt.Adapter.Small_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Small_top_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Subject_Adapter;
@@ -45,12 +47,13 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Listing extends AppCompatActivity {
-
+CircleImageView imageView;
 ShimmerFrameLayout shimme_subject,subjecty_shimmer,teacher_shimmer;
 RecyclerView recyclerView,rec_teacher,top_teachers;
 ArrayList<subject_model> sub_model;
@@ -64,6 +67,7 @@ SharedPreferences sharedPreferences;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing);
 
+        imageView = findViewById(R.id.iv_header_img);
         teacher_shimmer = findViewById(R.id.shimmer_teacher);
         subjecty_shimmer=findViewById(R.id.shimmer_suby);
 
@@ -75,6 +79,15 @@ SharedPreferences sharedPreferences;
         rec_teacher = findViewById(R.id.rec_allteachers);
         recyclerView = findViewById(R.id.rec_subject);
         sub_model = new ArrayList<>();
+        String pic = sharedPreferences.getString("picture","null");
+        //Picasso.get().load(pic).into(imageView);
+        Glide.with(Listing.this)
+                .load(pic)
+                .centerCrop()
+                .placeholder(R.drawable.user2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(imageView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(Listing.this) {
             @Override
