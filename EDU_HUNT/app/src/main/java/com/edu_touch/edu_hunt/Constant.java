@@ -2,7 +2,9 @@ package com.edu_touch.edu_hunt;
 
 public class Constant {
 
-    public static final String Base_url = "https://edutouchinstitute.com/api";
+    public static final String main_url = "https://edutouchinstitute.com";
+
+    public static final String Base_url = main_url+"/api";
 
     public static final String image_url = "https://edutouchinstitute.com/uploads/images/";
 

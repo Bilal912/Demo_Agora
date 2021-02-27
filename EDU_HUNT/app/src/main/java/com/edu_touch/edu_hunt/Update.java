@@ -63,10 +63,19 @@ public class Update extends AppCompatActivity {
     Uri uri;
     String imagename;
     ArrayList<String> clasy,class_group,class_boards;
+
+    android.app.AlertDialog loadings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
+
+
+        loadings = new ProgressDialog(Update.this);
+        loadings.setMessage("Please Wait a Moment...");
+        loadings.show();
+
 
         class_boards = new ArrayList<>();
         class_group = new ArrayList<>();
@@ -113,6 +122,8 @@ public class Update extends AppCompatActivity {
                 .into(imageView);
 
         getClasses();
+        getClassGroup();
+        getBoard();
 
 
 
@@ -174,13 +185,13 @@ public class Update extends AppCompatActivity {
                             }
                         }
 
-                        loading.dismiss();
+                        loadings.dismiss();
                     }
                     else {
-                        loading.dismiss();
+                        loadings.dismiss();
                     }
                 } catch (JSONException e) {
-                    loading.dismiss();
+                    loadings.dismiss();
                     Toast.makeText(Update.this,"Internet Issue", LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -189,7 +200,7 @@ public class Update extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.dismiss();
+                loadings.dismiss();
                 Toast.makeText(Update.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
             }
         });

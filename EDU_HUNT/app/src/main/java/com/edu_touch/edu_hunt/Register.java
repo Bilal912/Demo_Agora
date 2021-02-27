@@ -26,7 +26,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.squareup.picasso.Picasso;
 
@@ -42,10 +41,8 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
-import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
-import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Register extends AppCompatActivity {
 EditText name,phone,email,address,classes,password,confirm_password,city,state,zip;
@@ -56,6 +53,7 @@ CheckBox checkBox;
 public static Bitmap bitmap = null;
     Uri uri;
     public static final int RESULT_LOAD_IMAGE = 1;
+    android.app.AlertDialog loadings;
 
 SharedPreferences sharedPreferences;
     ArrayList<String> clasy,class_group,class_boards;
@@ -65,6 +63,9 @@ SharedPreferences sharedPreferences;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        loadings = new ProgressDialog(Register.this);
+
 
         imageView = findViewById(R.id.image_id);
         clasy = new ArrayList<>();
@@ -93,9 +94,8 @@ SharedPreferences sharedPreferences;
         password = (EditText) findViewById(R.id.password);
         confirm_password = (EditText) findViewById(R.id.confirm_password);
 
-//        final android.app.AlertDialog loading = new ProgressDialog(Register.this);
-//        loading.setMessage("Please Wait a Moment...");
-//        loading.show();
+        loadings.setMessage("Please Wait a Moment...");
+        loadings.show();
 
         getClasses();
         getBoard();
@@ -207,14 +207,14 @@ SharedPreferences sharedPreferences;
                         spinner_classgroup.setAdapter(new ArrayAdapter<String>(Register.this,
                                 android.R.layout.simple_dropdown_item_1line,
                                 class_group));
-                        loading.dismiss();
+                        loadings.dismiss();
                     }
                     else {
-                        loading.dismiss();
+                        loadings.dismiss();
                     }
 
                 } catch (JSONException e) {
-                    loading.dismiss();
+                    loadings.dismiss();
                     Toast.makeText(Register.this,"Internet Issue", LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -223,7 +223,7 @@ SharedPreferences sharedPreferences;
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.dismiss();
+                loadings.dismiss();
                 Toast.makeText(Register.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
             }
         });
@@ -494,6 +494,5 @@ SharedPreferences sharedPreferences;
             }
         }
     }
-
 
 }
