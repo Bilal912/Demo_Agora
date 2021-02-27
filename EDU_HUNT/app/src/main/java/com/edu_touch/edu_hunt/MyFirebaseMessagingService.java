@@ -30,17 +30,14 @@ public  class MyFirebaseMessagingService extends FirebaseMessagingService {
         int type=getSharedPreferences("login_info",MODE_PRIVATE).getInt("usertype",2);
 
         RemoteMessage.Notification data = remoteMessage.getNotification();
-//        String body = data.get("message");
-//        String title = data.get("title");
-//        Toast.makeText(this, body, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, title, Toast.LENGTH_SHORT).show();
 
         Intent intent;
         if(type==2){
             intent = new Intent(getApplicationContext(), MainActivity.class);
         }
-        else
+        else {
             intent = new Intent(getApplicationContext(), MainActivity.class);
+        }
 
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 101, intent, 0);
 

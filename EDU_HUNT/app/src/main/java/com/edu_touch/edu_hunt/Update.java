@@ -56,18 +56,23 @@ import static com.edu_touch.edu_hunt.Register.RESULT_LOAD_IMAGE;
 public class Update extends AppCompatActivity {
     EditText name,phone,email,address,classes,password,city,state,zip;
     SharedPreferences sharedPreferences;
-    Spinner spinner;
+    Spinner spinner,spinner_classgroup,spinner_board;
     LottieAnimationView animationView;
     CircleImageView imageView;
     Bitmap bitmap;
     Uri uri;
     String imagename;
-    ArrayList<String> clasy;
+    ArrayList<String> clasy,class_group,class_boards;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+        class_boards = new ArrayList<>();
+        class_group = new ArrayList<>();
+
+        spinner_board = findViewById(R.id.spinner_boards);
+        spinner_classgroup = findViewById(R.id.spinner_classgroup);
         spinner = findViewById(R.id.spinner_id);
         clasy = new ArrayList<>();
         city = findViewById(R.id.city);
@@ -109,6 +114,8 @@ public class Update extends AppCompatActivity {
 
         getClasses();
 
+
+
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +143,148 @@ public class Update extends AppCompatActivity {
             }
         });
 
+    }
+    private void getBoard() {
+
+        final android.app.AlertDialog loading = new ProgressDialog(Update.this);
+        loading.setMessage("Please Wait a Moment...");
+//        loading.show();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getboard
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("Boards");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            class_boards.add(object.getString("name"));
+                        }
+                        spinner_board.setAdapter(new ArrayAdapter<String>(Update.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                class_boards));
+
+                        for (int k = 0; k < class_boards.size(); k++) {
+                            if (sharedPreferences.getString("board","null").equals(class_boards.get(k))){
+                                spinner_board.setSelection(k);
+                            }
+                        }
+
+                        loading.dismiss();
+                    }
+                    else {
+                        loading.dismiss();
+                    }
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    Toast.makeText(Update.this,"Internet Issue", LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toast.makeText(Update.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
+    }
+
+    private void getClassGroup() {
+
+        final android.app.AlertDialog loading = new ProgressDialog(Update.this);
+        loading.setMessage("Please Wait a Moment...");
+//        loading.show();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getclass_group
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            class_group.add(object.getString("group_name"));
+                        }
+
+                        spinner_classgroup.setAdapter(new ArrayAdapter<String>(Update.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                class_group));
+
+                        for (int k = 0; k < class_group.size(); k++) {
+                            if (sharedPreferences.getString("class_group","null").equals(class_group.get(k))){
+                                spinner_classgroup.setSelection(k);
+                            }
+                        }
+
+                        loading.dismiss();
+                    }
+                    else {
+                        loading.dismiss();
+                    }
+
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    Toast.makeText(Update.this,"Internet Issue", LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toast.makeText(Update.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
     }
 
     public void edit(View view) {
@@ -211,6 +360,9 @@ public class Update extends AppCompatActivity {
                         editors.putString("address", Address);
                         editors.putString("name", Name);
                         editors.putString("class", spinner.getSelectedItem().toString().trim());
+                        editors.putString("board", spinner_board.getSelectedItem().toString().trim());
+                        editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
+
                         editors.putString("city", City);
                         editors.putString("state", State);
                         editors.putString("zip", ZIP);
@@ -250,6 +402,9 @@ public class Update extends AppCompatActivity {
                 params.put("email_id",sharedPreferences.getString("email","null"));
                 params.put("class",spinner.getSelectedItem().toString().trim());
                 params.put("address",Address);
+
+                params.put("class_group",spinner_classgroup.getSelectedItem().toString().trim());
+                params.put("board",spinner_board.getSelectedItem().toString().trim());
 
                 params.put("city",City);
                 params.put("state",State);
@@ -300,6 +455,10 @@ public class Update extends AppCompatActivity {
         params.put("name",Name);
         params.put("email_id",sharedPreferences.getString("email","null"));
         params.put("class",spinner.getSelectedItem().toString().trim());
+
+        params.put("class_group",spinner_classgroup.getSelectedItem().toString().trim());
+        params.put("board",spinner_board.getSelectedItem().toString().trim());
+
         params.put("address",Address);
 
         params.put("city",City);
@@ -325,6 +484,8 @@ public class Update extends AppCompatActivity {
                         editors.putString("city", City);
                         editors.putString("state", State);
                         editors.putString("zip", ZIP);
+                        editors.putString("board", spinner_board.getSelectedItem().toString().trim());
+                        editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
 
                         editors.apply();
 

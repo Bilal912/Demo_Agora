@@ -117,6 +117,9 @@ SharedPreferences.Editor editors;
                             editors.putString("picture", Constant.image_url.concat(object.getString("profile_image")));
                             editors.putString("class", object.getString("class"));
 
+                            editors.putString("board",object.getString("board"));
+                            editors.putString("class_group",object.getString("class_group"));
+
                             editors.putString("city", object.getString("city"));
                             editors.putString("state", object.getString("state"));
                             editors.putString("zip", object.getString("zip"));

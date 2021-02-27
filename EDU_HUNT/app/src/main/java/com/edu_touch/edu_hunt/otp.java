@@ -47,7 +47,7 @@ public class otp extends AppCompatActivity {
 
     private PinView pinView;
     String code;
-    String name,email,pass,classes,address,number,city,state,zip;
+    String name,email,pass,classes,address,number,city,state,zip,board,class_group;
     LottieAnimationView animationView;
     SharedPreferences sharedPreferences;
 
@@ -57,6 +57,8 @@ public class otp extends AppCompatActivity {
         setContentView(R.layout.activity_otp);
 
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        board = getIntent().getStringExtra("board");
+        class_group = getIntent().getStringExtra("class_group");
 
         animationView = findViewById(R.id.anime);
         pinView=findViewById(R.id.pinview);
@@ -103,7 +105,6 @@ public class otp extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void makeRegisterRequest(String name, String number, String email, String pass, String address, String classes) {
@@ -117,6 +118,9 @@ public class otp extends AppCompatActivity {
         params.put("password",pass);
         params.put("class",classes);
         params.put("address",address);
+
+        params.put("board",board);
+        params.put("class_group",class_group);
 
         params.put("city",city);
         params.put("zip",zip);
@@ -241,6 +245,8 @@ public class otp extends AppCompatActivity {
                 params.put("password",pass);
                 params.put("class",classes);
                 params.put("address",address);
+                params.put("board",board);
+                params.put("class_group",class_group);
 
                 params.put("city",city);
                 params.put("zip",zip);

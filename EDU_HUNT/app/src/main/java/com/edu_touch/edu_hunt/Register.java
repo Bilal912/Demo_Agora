@@ -49,7 +49,7 @@ import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Register extends AppCompatActivity {
 EditText name,phone,email,address,classes,password,confirm_password,city,state,zip;
-Spinner spinner;
+Spinner spinner,spinner_classgroup,spinner_board;
 CircleImageView imageView;
 CheckBox checkBox;
 
@@ -58,7 +58,7 @@ public static Bitmap bitmap = null;
     public static final int RESULT_LOAD_IMAGE = 1;
 
 SharedPreferences sharedPreferences;
-    ArrayList<String> clasy;
+    ArrayList<String> clasy,class_group,class_boards;
 
     LottieAnimationView animationView;
     @Override
@@ -68,7 +68,16 @@ SharedPreferences sharedPreferences;
 
         imageView = findViewById(R.id.image_id);
         clasy = new ArrayList<>();
+        class_boards = new ArrayList<>();
+        class_group = new ArrayList<>();
+
+        spinner_board = findViewById(R.id.spinner_boards);
+        spinner_classgroup = findViewById(R.id.spinner_classgroup);
+
+        class_group.add("Class Groups");
+        class_boards.add("Boards");
         clasy.add("Class");
+
 
         city = findViewById(R.id.city);
         state = findViewById(R.id.state);
@@ -84,7 +93,15 @@ SharedPreferences sharedPreferences;
         password = (EditText) findViewById(R.id.password);
         confirm_password = (EditText) findViewById(R.id.confirm_password);
 
+//        final android.app.AlertDialog loading = new ProgressDialog(Register.this);
+//        loading.setMessage("Please Wait a Moment...");
+//        loading.show();
+
         getClasses();
+        getBoard();
+        getClassGroup();
+
+//        loading.dismiss();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,12 +119,140 @@ SharedPreferences sharedPreferences;
         });
 
     }
+    private void getBoard() {
+
+        final android.app.AlertDialog loading = new ProgressDialog(Register.this);
+        loading.setMessage("Please Wait a Moment...");
+//        loading.show();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getboard
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("Boards");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            class_boards.add(object.getString("name"));
+                        }
+                        spinner_board.setAdapter(new ArrayAdapter<String>(Register.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                class_boards));
+                        loading.dismiss();
+                    }
+                    else {
+                        loading.dismiss();
+                    }
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    Toast.makeText(Register.this,"Internet Issue", LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toast.makeText(Register.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
+    }
+
+    private void getClassGroup() {
+
+        final android.app.AlertDialog loading = new ProgressDialog(Register.this);
+        loading.setMessage("Please Wait a Moment...");
+//        loading.show();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getclass_group
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            class_group.add(object.getString("group_name"));
+                        }
+
+                        spinner_classgroup.setAdapter(new ArrayAdapter<String>(Register.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                class_group));
+                        loading.dismiss();
+                    }
+                    else {
+                        loading.dismiss();
+                    }
+
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    Toast.makeText(Register.this,"Internet Issue", LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toast.makeText(Register.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
+    }
 
     private void getClasses() {
 
         final android.app.AlertDialog loading = new ProgressDialog(Register.this);
         loading.setMessage("Please Wait a Moment...");
-        loading.show();
+//        loading.show();
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getclasses
                 , new Response.Listener<JSONObject>() {
@@ -167,8 +312,6 @@ SharedPreferences sharedPreferences;
         });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(jsonRequest);
-
-
     }
 
     public void submit(View view) {
@@ -191,6 +334,13 @@ SharedPreferences sharedPreferences;
             Toast.makeText(Register.this,"Select Your Class",
                     Toast.LENGTH_LONG).show();
         }
+        else if (spinner_board.getSelectedItem().toString().equals("Boards")){
+            Toast.makeText(Register.this,"Select Your Board",
+                    Toast.LENGTH_LONG).show();
+        }else if (spinner_classgroup.getSelectedItem().toString().equals("Class Groups")){
+            Toast.makeText(Register.this,"Select Your Class Group",
+                    Toast.LENGTH_LONG).show();
+        }
         else if (TextUtils.isEmpty(city.getText().toString())){
             makeText(Register.this, "City is required", LENGTH_SHORT).show();
         }
@@ -200,7 +350,6 @@ SharedPreferences sharedPreferences;
         else if (TextUtils.isEmpty(zip.getText().toString())){
             makeText(Register.this, "ZIP is required", LENGTH_SHORT).show();
         }
-
         else if (TextUtils.isEmpty(address.getText().toString())){
             makeText(Register.this, "Address is required", LENGTH_SHORT).show();
         }
@@ -224,6 +373,9 @@ SharedPreferences sharedPreferences;
                     i.putExtra("email_id",email.getText().toString().trim());
                     i.putExtra("password",password.getText().toString().trim());
                     i.putExtra("class",spinner.getSelectedItem().toString().trim());
+                    i.putExtra("class_group",spinner_classgroup.getSelectedItem().toString().trim());
+                    i.putExtra("board",spinner_board.getSelectedItem().toString().trim());
+
                     i.putExtra("address",address.getText().toString().trim());
 
                     i.putExtra("zip",zip.getText().toString().trim());
