@@ -47,6 +47,7 @@ public class Change_password extends AppCompatActivity {
         imageView = findViewById(R.id.iv_header_img);
 
         animationView = (LottieAnimationView) findViewById(R.id.anime);
+
         editText = findViewById(R.id.femail);
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String pic = sharedPreferences.getString("picture","null");
@@ -77,7 +78,7 @@ public class Change_password extends AppCompatActivity {
     private void getData(String pass) {
         animationView.setVisibility(View.VISIBLE);
         Map<String, String> params = new Hashtable<String, String>();
-        params.put("email_id",sharedPreferences.getString("email","null"));
+        params.put("email",sharedPreferences.getString("email","null"));
         params.put("new_pass",pass);
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_changepassword, params, new Response.Listener<JSONObject>() {
@@ -86,10 +87,9 @@ public class Change_password extends AppCompatActivity {
 
                 try {
                     String message = response.getString("message");
-                    String code = response.getString("error_code");
+                    String code = response.getString("error code");
 
                     if (code.equals("200")){
-
                         Toasty.success(Change_password.this, message, Toast.LENGTH_SHORT, true).show();
                         finish();
                     }

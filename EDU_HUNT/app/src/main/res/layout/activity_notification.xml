@@ -67,6 +67,13 @@
                 android:text="NOTIFICATION"
                 />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_notify"
+                />
+
             <include
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -81,22 +88,37 @@
                 layout="@layout/cardview_notification"
                 android:layout_width="match_parent"
                 android:layout_height="70dp" />
-            <include
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                layout="@layout/cardview_notification"
-                android:layout_width="match_parent"
-                android:layout_height="70dp" />
-            <include
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                layout="@layout/cardview_notification"
-                android:layout_width="match_parent"
-                android:layout_height="70dp" />
 
         </LinearLayout>
 
     </RelativeLayout>
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:visibility="gone"
+        android:background="@color/white"
+        android:id="@+id/anime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:lottie_rawRes="@raw/loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
+
+    <TextView
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/avian_bold"
+        android:id="@+id/no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Data Found"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+
+
+
 </RelativeLayout>

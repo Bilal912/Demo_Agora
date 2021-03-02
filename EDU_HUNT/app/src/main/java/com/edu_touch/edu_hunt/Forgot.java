@@ -77,7 +77,6 @@ EditText editText;
                     }
 
                 } catch (JSONException e) {
-                    //  loading.dismiss();
                     e.printStackTrace();
                     animationView.setVisibility(View.GONE);
                     Toasty.error(Forgot.this, "Error", Toast.LENGTH_SHORT, true).show();

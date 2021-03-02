@@ -54,7 +54,6 @@ public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_Histor
         holder.date.setText(avy[2]);
 
         holder.month.setText(checkmonth(avy[1]));
-
     }
 
     public String checkmonth(String s) {

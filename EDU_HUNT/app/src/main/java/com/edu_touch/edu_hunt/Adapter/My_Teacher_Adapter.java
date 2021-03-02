@@ -54,7 +54,8 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
 
         holder.name.setText(data.get(position).getTeacher_Name());
 
-        holder.expericne.setText("Booking Date : "+data.get(position).getBooking_date());
+        holder.expericne.setText("Booking Date : "+reversedate(data.get(position).getBooking_date()));
+
         holder.quali.setText("Class : "+data.get(position).getClass_Groups());
         if (data.get(position).getSubject_Name().contains("|")){
             String currentString = data.get(position).getStudent_Name();
@@ -72,7 +73,7 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
         }
         else {
             holder.start_date.setVisibility(View.VISIBLE);
-            holder.start_date.setText("Starting Date : "+data.get(position).getStarting_date());
+            holder.start_date.setText("Starting Date : "+reversedate(data.get(position).getStarting_date()));
             holder.flag.setImageResource(R.drawable.green_flag);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -89,16 +90,22 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
             }
         });
 
-
     }
-
     @Override
     public int getItemCount() {
         return data.size();
     }
 
-    public static class GithubViewHolder extends RecyclerView.ViewHolder{
+    public String reversedate(String s){
+        try {
+            String[] avy = s.split("-");
+            return avy[2] + "-" + avy[1] + "-" + avy[0];
+        } catch (Exception e){
+            return "-";
+        }
+    }
 
+    public static class GithubViewHolder extends RecyclerView.ViewHolder{
         CircleImageView imageView;
         ImageView flag;
         TextView name,quali,expericne,subject,amount,start_date;
@@ -113,8 +120,6 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
             expericne = itemView.findViewById(R.id.exper);
             subject = itemView.findViewById(R.id.subject);
             imageView = itemView.findViewById(R.id.icon);
-
         }
     }
 }
-
