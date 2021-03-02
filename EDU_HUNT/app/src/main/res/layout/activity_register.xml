@@ -92,8 +92,24 @@
                     android:padding="12dp"
                     android:hint="Phone no"
                     />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_radiuos_10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    >
+                    <Spinner
+                        android:id="@+id/spinner_boards"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        />
+                </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linear_class"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_radiuos_10dp"
@@ -108,7 +124,28 @@
                         android:layout_height="45dp"
                         />
                 </LinearLayout>
+
                 <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/linear_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_radiuos_10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    >
+                    <Spinner
+                        android:id="@+id/spinner_subject"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_radiuos_10dp"
@@ -119,21 +156,6 @@
                     >
                     <Spinner
                         android:id="@+id/spinner_classgroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_radiuos_10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp"
-                    >
-                    <Spinner
-                        android:id="@+id/spinner_boards"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         />

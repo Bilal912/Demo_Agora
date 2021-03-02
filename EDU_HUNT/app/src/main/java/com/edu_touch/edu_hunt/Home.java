@@ -2,9 +2,11 @@ package com.edu_touch.edu_hunt;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,6 +15,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
@@ -33,9 +39,10 @@ import com.squareup.picasso.Picasso;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.view.Gravity.TOP;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     SliderLayout sliderLayout;
     SharedPreferences sharedPreferences;
     TextView Name,Phone;
@@ -193,6 +200,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
+
                 dialogInterface.dismiss();
             }
         });
@@ -231,4 +239,64 @@ public class Home extends AppCompatActivity {
         });
 
     }
+
+    public void menu(View view) {
+
+        PopupMenu popup = new PopupMenu(Home.this, view);
+        popup.setOnMenuItemClickListener(Home.this);
+        popup.inflate(R.menu.menu_res);
+        popup.show();
+
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.edit_profile:
+
+                Intent i = new Intent(Home.this,Update.class);
+                startActivity(i);
+                return true;
+
+            case R.id.change_password:
+
+                Intent in = new Intent(Home.this,Change_password.class);
+                startActivity(in);
+                return true;
+
+            case R.id.logout:
+
+                final SweetAlertDialog dialog = new SweetAlertDialog(Home.this,SweetAlertDialog.WARNING_TYPE);
+                dialog.setTitleText("Are you sure?");
+                dialog.setContentText("you want to logout");
+                dialog.setConfirmText("Yes");
+                dialog.setCancelText("No");
+                dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+                dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                        SharedPreferences preferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+                        preferences.edit().clear().apply();
+
+                        Intent intent = new Intent(Home.this,MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                });
+
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }

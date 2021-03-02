@@ -101,6 +101,7 @@ TextView textView;
         String avy = sharedPreferences.getString("id","null");
         Map<String, String> params = new Hashtable<String, String>();
         params.put("student_id",avy);
+//        Toast.makeText(this, ""+avy, Toast.LENGTH_SHORT).show();
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_paymenthistory, params, new Response.Listener<JSONObject>() {
             @Override

@@ -44,6 +44,7 @@
             android:layout_marginRight="20dp"
             />
         <EditText
+            android:maxLength="10"
             android:id="@+id/number"
             android:fontFamily="@font/avian_bold"
             android:textColorHint="@color/black"

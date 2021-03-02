@@ -235,6 +235,10 @@ CircleImageView imageView;
                         loading.dismiss();
                         Teacher_detail.ViewDialog1 alert = new Teacher_detail.ViewDialog1();
                         alert.showDialog(Teacher_detail.this);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("status", "1");
+                        editor.apply();
+
                     }
                     else {
                         loading.dismiss();

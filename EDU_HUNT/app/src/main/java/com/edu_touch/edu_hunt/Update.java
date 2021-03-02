@@ -62,7 +62,7 @@ public class Update extends AppCompatActivity {
     Bitmap bitmap;
     Uri uri;
     String imagename;
-    ArrayList<String> clasy,class_group,class_boards;
+    ArrayList<String> clasy,class_group,class_boards,class_board_id,clasy_id;
 
     android.app.AlertDialog loadings;
 
@@ -71,6 +71,8 @@ public class Update extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+        clasy_id = new ArrayList<>();
+        class_board_id = new ArrayList<>();
 
         loadings = new ProgressDialog(Update.this);
         loadings.setMessage("Please Wait a Moment...");
@@ -121,9 +123,10 @@ public class Update extends AppCompatActivity {
                 .dontAnimate()
                 .into(imageView);
 
-        getClasses();
-        getClassGroup();
         getBoard();
+        getClasses();
+        //getClassGroup();
+
 
 
 
@@ -174,24 +177,22 @@ public class Update extends AppCompatActivity {
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
                             class_boards.add(object.getString("name"));
+                            class_board_id.add(object.getString("id"));
                         }
                         spinner_board.setAdapter(new ArrayAdapter<String>(Update.this,
                                 android.R.layout.simple_dropdown_item_1line,
                                 class_boards));
 
                         for (int k = 0; k < class_boards.size(); k++) {
-                            if (sharedPreferences.getString("board","null").equals(class_boards.get(k))){
+                            if (sharedPreferences.getString("board","null").equals(class_board_id.get(k))){
                                 spinner_board.setSelection(k);
                             }
                         }
 
-                        loadings.dismiss();
                     }
                     else {
-                        loadings.dismiss();
                     }
                 } catch (JSONException e) {
-                    loadings.dismiss();
                     Toast.makeText(Update.this,"Internet Issue", LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -200,7 +201,6 @@ public class Update extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadings.dismiss();
                 Toast.makeText(Update.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
             }
         });
@@ -370,9 +370,9 @@ public class Update extends AppCompatActivity {
                         SharedPreferences.Editor editors = sharedPreferences.edit();
                         editors.putString("address", Address);
                         editors.putString("name", Name);
-                        editors.putString("class", spinner.getSelectedItem().toString().trim());
-                        editors.putString("board", spinner_board.getSelectedItem().toString().trim());
-                        editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
+                        editors.putString("class", clasy_id.get(spinner.getSelectedItemPosition()));
+                        editors.putString("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
+                        //editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
 
                         editors.putString("city", City);
                         editors.putString("state", State);
@@ -411,11 +411,12 @@ public class Update extends AppCompatActivity {
                 Map<String, String> params = new Hashtable<String, String>();
                 params.put("name",Name);
                 params.put("email_id",sharedPreferences.getString("email","null"));
-                params.put("class",spinner.getSelectedItem().toString().trim());
                 params.put("address",Address);
 
-                params.put("class_group",spinner_classgroup.getSelectedItem().toString().trim());
-                params.put("board",spinner_board.getSelectedItem().toString().trim());
+
+                params.put("class", clasy_id.get(spinner.getSelectedItemPosition()));
+                params.put("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
+                //params.put("class_group",spinner_classgroup.getSelectedItem().toString().trim());
 
                 params.put("city",City);
                 params.put("state",State);
@@ -465,11 +466,10 @@ public class Update extends AppCompatActivity {
         Map<String, String> params = new Hashtable<String, String>();
         params.put("name",Name);
         params.put("email_id",sharedPreferences.getString("email","null"));
-        params.put("class",spinner.getSelectedItem().toString().trim());
 
-        params.put("class_group",spinner_classgroup.getSelectedItem().toString().trim());
-        params.put("board",spinner_board.getSelectedItem().toString().trim());
-
+        params.put("class", clasy_id.get(spinner.getSelectedItemPosition()));
+        params.put("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
+        //params.put("class_group",spinner_classgroup.getSelectedItem().toString().trim());
         params.put("address",Address);
 
         params.put("city",City);
@@ -491,12 +491,13 @@ public class Update extends AppCompatActivity {
                         SharedPreferences.Editor editors = sharedPreferences.edit();
                         editors.putString("address", Address);
                         editors.putString("name", Name);
-                        editors.putString("class", spinner.getSelectedItem().toString().trim());
                         editors.putString("city", City);
                         editors.putString("state", State);
                         editors.putString("zip", ZIP);
-                        editors.putString("board", spinner_board.getSelectedItem().toString().trim());
-                        editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
+
+                        editors.putString("class", clasy_id.get(spinner.getSelectedItemPosition()));
+                        editors.putString("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
+                        //editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
 
                         editors.apply();
 
@@ -592,6 +593,7 @@ public class Update extends AppCompatActivity {
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
                             clasy.add(object.getString("name"));
+                            clasy_id.add(object.getString("id"));
                         }
 
                         spinner.setAdapter(new ArrayAdapter<String>(Update.this,
@@ -599,19 +601,23 @@ public class Update extends AppCompatActivity {
                                 clasy));
 
                         for (int k = 0; k < clasy.size(); k++) {
-                            if (current_class.equals(clasy.get(k))){
+                            if (current_class.equals(clasy_id.get(k))){
                                 spinner.setSelection(k);
                             }
                         }
 
-
+                        loadings.dismiss();
                         loading.dismiss();
                     }
                     else {
+                        loadings.dismiss();
+
                         loading.dismiss();
                     }
 
                 } catch (JSONException e) {
+                    loadings.dismiss();
+
                     loading.dismiss();
                     Toast.makeText(Update.this,"Internet Issue", LENGTH_SHORT).show();
                     e.printStackTrace();
@@ -621,6 +627,8 @@ public class Update extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                loadings.dismiss();
+
                 loading.dismiss();
                 Toast.makeText(Update.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
             }

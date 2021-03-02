@@ -22,6 +22,7 @@ public class Constant {
     public static final String Base_url_teacher_listing = Base_url+"/teacher_listing";
 
     public static final String Base_url_getsubjects = Base_url+"/get_subjects";
+    public static final String Base_url_getsubjectbtclassandboard = Base_url+"/get_sub_by_class";
 
     public static final String Base_url_paymenthistory = Base_url+"/payment_list";
 
@@ -38,6 +39,8 @@ public class Constant {
     public static final String Base_url_checkinguser = Base_url+"/get_login_status";
 
     public static final String Base_url_getboard = Base_url+"/get_boards";
-    public static final String Base_url_getclass_group = Base_url+"2/get_class_group";
+    public static final String Base_url_getclass_group = Base_url+"/get_class_group";
+
+    public static final String Base_url_changepassword = Base_url+"/change_pass";
 
 }

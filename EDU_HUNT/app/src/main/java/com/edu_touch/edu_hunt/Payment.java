@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.edu_touch.edu_hunt.Adapter.Book_Now_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Fee_Adapter;
 import com.edu_touch.edu_hunt.Model.fee_model;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
@@ -47,8 +48,9 @@ import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Payment extends AppCompatActivity {
     WebView webView;
-    String amount,ID,check,fee_id,booking_id;
+    String amount,ID,check,fee_id,booking_id,class_id,subject_id,board_id,feess;
     SharedPreferences sharedPreferences;
+
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -70,9 +72,15 @@ public class Payment extends AppCompatActivity {
         }
         else {
             amount = check;
+
+            subject_id = getIntent().getStringExtra("subjects_id");
+            class_id = getIntent().getStringExtra("class_id");
+            board_id = getIntent().getStringExtra("boards_id");
+            feess = getIntent().getStringExtra("feess");
+
         }
 
-        webView.loadUrl(Constant.Base_url_payment+"amount="+amount+"20&user-id="+ID);
+        webView.loadUrl(Constant.Base_url_payment+"amount="+amount+"&user-id="+ID);
 
         webView.setWebViewClient(new WebViewClient() {
 
@@ -115,16 +123,17 @@ public class Payment extends AppCompatActivity {
         if (url.contains("success")) {
 
             if (check.equals("Fee Deposit")){
-
                 Submittingfee();
-
-
             }
             else {
-                Toast.makeText(this, "Now You can book your Teacher", Toast.LENGTH_LONG).show();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("status", "1");
-                editor.apply();
+
+                Book_Now_Adapter.clicky.onclicky(subject_id, class_id
+                        , board_id, feess);
+
+                //Toast.makeText(this, "Now You can book your Teacher", Toast.LENGTH_LONG).show();
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putString("status", "1");
+//                editor.apply();
 
                 finish();
             }
@@ -169,7 +178,6 @@ public class Payment extends AppCompatActivity {
         loading.setMessage("Please Wait....");
         loading.setCancelable(false);
         loading.show();
-
 
         Map<String, String> params = new Hashtable<String, String>();
         params.put("booking_id",booking_id);
@@ -278,4 +286,5 @@ public class Payment extends AppCompatActivity {
             webView.setVisibility(View.GONE);
         }
     }
+
 }

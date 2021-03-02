@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -62,11 +63,16 @@ Small_Teacher_Adapter adapter;
 Small_top_Teacher_Adapter top_teacher_adapter;
 Subject_Adapter subject_adapter;
 SharedPreferences sharedPreferences;
+TextView no_data,no_data1,no_data3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing);
 
+        no_data3 = findViewById(R.id.no_data3);
+        no_data = findViewById(R.id.no_data);
+        no_data1 = findViewById(R.id.no_data1);
         imageView = findViewById(R.id.iv_header_img);
         teacher_shimmer = findViewById(R.id.shimmer_teacher);
         subjecty_shimmer=findViewById(R.id.shimmer_suby);
@@ -148,8 +154,6 @@ SharedPreferences sharedPreferences;
         top_teachers.setHasFixedSize(true);
 
 
-
-
         getSubject();
         getTeachers();
 
@@ -160,8 +164,9 @@ SharedPreferences sharedPreferences;
         Map<String, String> params = new Hashtable<String, String>();
         params.put("lang",sharedPreferences.getString("lang","0"));
         params.put("lat",sharedPreferences.getString("lat","0"));
+        params.put("class_id",sharedPreferences.getString("class","0"));
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.GET, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -191,12 +196,22 @@ SharedPreferences sharedPreferences;
                     }
                     else {
 
-                        //Toasty.error(Listing.this, message, Toast.LENGTH_SHORT, true).show();
+                        no_data.setVisibility(View.VISIBLE);
+                        no_data1.setVisibility(View.VISIBLE);
+
+                        Toasty.error(Listing.this, "No Data Found", Toast.LENGTH_SHORT, true).show();
+                        shimme_subject.stopShimmer();
+                        shimme_subject.setVisibility(View.GONE);
+                        teacher_shimmer.stopShimmer();
+                        teacher_shimmer.setVisibility(View.GONE);
+
                     }
 
                 } catch (JSONException e) {
                     shimme_subject.stopShimmer();
                     shimme_subject.setVisibility(View.GONE);
+                    no_data.setVisibility(View.VISIBLE);
+                    no_data1.setVisibility(View.VISIBLE);
 
                     teacher_shimmer.stopShimmer();
                     teacher_shimmer.setVisibility(View.GONE);
@@ -209,10 +224,10 @@ SharedPreferences sharedPreferences;
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                shimme_subject.stopShimmer();
-                shimme_subject.setVisibility(View.GONE);
-                teacher_shimmer.stopShimmer();
-                teacher_shimmer.setVisibility(View.GONE);
+//                shimme_subject.stopShimmer();
+//                shimme_subject.setVisibility(View.GONE);
+//                teacher_shimmer.stopShimmer();
+//                teacher_shimmer.setVisibility(View.GONE);
 
                 Toasty.error(Listing.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
             }
@@ -240,7 +255,11 @@ SharedPreferences sharedPreferences;
 
     private void getSubject() {
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_getsubjects, null, new Response.Listener<JSONObject>() {
+        Map<String, String> params = new Hashtable<String, String>();
+        params.put("class_id",sharedPreferences.getString("class","0"));
+        params.put("board",sharedPreferences.getString("board","0"));
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_getsubjects, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -256,9 +275,9 @@ SharedPreferences sharedPreferences;
                             JSONObject object = jsonArray.getJSONObject(j);
                             subject_model s = new subject_model();
                             s.setId(object.getString("id"));
-                            s.setContent(object.getString("content"));
-                            s.setCreated_at(object.getString("created_at"));
-                            s.setStatus(object.getString("status"));
+//                            s.setContent(object.getString("content"));
+//                            s.setCreated_at(object.getString("created_at"));
+//                            s.setStatus(object.getString("status"));
                             s.setTitle(object.getString("title"));
                             sub_model.add(s);
                         }
@@ -271,11 +290,12 @@ SharedPreferences sharedPreferences;
                     }
                     else {
                         //animationView.setVisibility(View.GONE);
+                        no_data3.setVisibility(View.GONE);
                         Toasty.error(Listing.this, message, Toast.LENGTH_SHORT, true).show();
                     }
 
                 } catch (JSONException e) {
-
+                    no_data3.setVisibility(View.GONE);
                     subjecty_shimmer.stopShimmer();
                     subjecty_shimmer.setVisibility(View.GONE);
                     //  loading.dismiss();
@@ -291,7 +311,7 @@ SharedPreferences sharedPreferences;
             public void onErrorResponse(VolleyError error) {
                 //loading.dismiss();
                 //animationView.setVisibility(View.GONE);
-
+                no_data3.setVisibility(View.GONE);
                 subjecty_shimmer.stopShimmer();
                 subjecty_shimmer.setVisibility(View.GONE);
                 Toasty.error(Listing.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();

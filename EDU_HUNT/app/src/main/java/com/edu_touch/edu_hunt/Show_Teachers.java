@@ -101,7 +101,7 @@ SharedPreferences sharedPreferences;
         params.put("lang",sharedPreferences.getString("lang","0"));
         params.put("lat",sharedPreferences.getString("lat","0"));
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.GET, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -173,7 +173,7 @@ SharedPreferences sharedPreferences;
         params.put("lat",sharedPreferences.getString("lat","0"));
         params.put("subject_id",Id);
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.GET, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

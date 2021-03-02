@@ -51,10 +51,10 @@ public class Book_Now_Adapter extends RecyclerView.Adapter<Book_Now_Adapter.Gith
 
      Context context;
      ArrayList<select_model> data;
-     clicky clicky;
+     public static clicky clicky;
     public Book_Now_Adapter(Context context, ArrayList<select_model> data,clicky clicky){
         this.context = context;
-        this.clicky=clicky;
+        Book_Now_Adapter.clicky =clicky;
         this.data= data;
     }
 
@@ -83,9 +83,10 @@ public class Book_Now_Adapter extends RecyclerView.Adapter<Book_Now_Adapter.Gith
                     Toast.makeText(context, "You cannot Apply for this Subject", Toast.LENGTH_SHORT).show();
                 } else {
                     if (sharedPreferences.getString("status", "null").equals("0")) {
-                        getingfee();
+                        getingfee(data.get(position).getSubjects_id(), data.get(position).getClass_id()
+                                , data.get(position).getBoards_id(), data.get(position).getFees());
                     } else {
-                        clicky.onclicky(data.get(position).getSubjects_id(), data.get(position).getClass_id()
+                        Book_Now_Adapter.clicky.onclicky(data.get(position).getSubjects_id(), data.get(position).getClass_id()
                                 , data.get(position).getBoards_id(), data.get(position).getFees());
                     }
                 }
@@ -93,7 +94,7 @@ public class Book_Now_Adapter extends RecyclerView.Adapter<Book_Now_Adapter.Gith
         });
     }
 
-    private void getingfee() {
+    private void getingfee(String subjects_id, String class_id, String boards_id, String fees) {
 
         final AlertDialog loading = new ProgressDialog(context);
         loading.setMessage("Getting Info....");
@@ -115,6 +116,11 @@ public class Book_Now_Adapter extends RecyclerView.Adapter<Book_Now_Adapter.Gith
 
                             Intent intent = new Intent(context, Payment.class);
                             intent.putExtra("fee",object.getString("registration_fees"));
+
+                            intent.putExtra("subjects_id",subjects_id);
+                            intent.putExtra("class_id",class_id);
+                            intent.putExtra("boards_id",boards_id);
+                            intent.putExtra("feess",fees);
                             context.startActivity(intent);
                             loading.dismiss();
 

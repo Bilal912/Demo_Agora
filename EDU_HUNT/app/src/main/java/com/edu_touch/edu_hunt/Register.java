@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.edu_touch.edu_hunt.Adapter.Subject_Adapter;
+import com.edu_touch.edu_hunt.Model.subject_model;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.squareup.picasso.Picasso;
 
@@ -37,6 +41,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
@@ -46,27 +52,37 @@ import static android.widget.Toast.makeText;
 
 public class Register extends AppCompatActivity {
 EditText name,phone,email,address,classes,password,confirm_password,city,state,zip;
-Spinner spinner,spinner_classgroup,spinner_board;
+Spinner spinner,spinner_classgroup,spinner_board,spinner_subject;
 CircleImageView imageView;
 CheckBox checkBox;
-
+LinearLayout linear_class,linear_subject;
 public static Bitmap bitmap = null;
     Uri uri;
     public static final int RESULT_LOAD_IMAGE = 1;
     android.app.AlertDialog loadings;
 
-SharedPreferences sharedPreferences;
-    ArrayList<String> clasy,class_group,class_boards;
-
+    SharedPreferences sharedPreferences;
+    ArrayList<String> clasy,class_group,class_boards,subjects;
+    ArrayList<String> clasy_id,class_group_id,class_boards_id,subjects_id;
     LottieAnimationView animationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        linear_class = findViewById(R.id.linear_class);
+        linear_subject = findViewById(R.id.linear_subject);
+
+        clasy_id = new ArrayList<>();
+        class_boards_id = new ArrayList<>();
+        subjects_id = new ArrayList<>();
+        class_group_id = new ArrayList<>();
+
         loadings = new ProgressDialog(Register.this);
 
+        spinner_subject = findViewById(R.id.spinner_subject);
 
+        subjects = new ArrayList<>();
         imageView = findViewById(R.id.image_id);
         clasy = new ArrayList<>();
         class_boards = new ArrayList<>();
@@ -75,9 +91,10 @@ SharedPreferences sharedPreferences;
         spinner_board = findViewById(R.id.spinner_boards);
         spinner_classgroup = findViewById(R.id.spinner_classgroup);
 
-        class_group.add("Class Groups");
-        class_boards.add("Boards");
-        clasy.add("Class");
+        class_group.add("Select Class Groups");
+        class_boards.add("Select Boards");
+        clasy.add("Select Class");
+        subjects.add("Select Subject");
 
 
         city = findViewById(R.id.city);
@@ -97,9 +114,43 @@ SharedPreferences sharedPreferences;
         loadings.setMessage("Please Wait a Moment...");
         loadings.show();
 
-        getClasses();
         getBoard();
-        getClassGroup();
+        getClasses();
+
+//        spinner_board.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (spinner_board.getSelectedItem().toString().equals("Select Boards")){
+//                    linear_class.setVisibility(View.GONE);
+//                    linear_subject.setVisibility(View.GONE);
+//                }else {
+//                    linear_class.setVisibility(View.VISIBLE);
+//                    linear_subject.setVisibility(View.GONE);
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                if (spinner.getSelectedItem().toString().equals("Select Class")) {
+//                    linear_subject.setVisibility(View.GONE);
+//                }else {
+//                    getSubject();
+//                    linear_subject.setVisibility(View.VISIBLE);
+//                }
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+
+
+        //getSubject();
+//        getClassGroup();
 
 //        loading.dismiss();
 
@@ -138,6 +189,7 @@ SharedPreferences sharedPreferences;
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
                             class_boards.add(object.getString("name"));
+                            class_boards_id.add(object.getString("id"));
                         }
                         spinner_board.setAdapter(new ArrayAdapter<String>(Register.this,
                                 android.R.layout.simple_dropdown_item_1line,
@@ -202,6 +254,7 @@ SharedPreferences sharedPreferences;
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
                             class_group.add(object.getString("group_name"));
+                            class_group_id.add(object.getString("id"));
                         }
 
                         spinner_classgroup.setAdapter(new ArrayAdapter<String>(Register.this,
@@ -268,19 +321,20 @@ SharedPreferences sharedPreferences;
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
                             clasy.add(object.getString("name"));
+                            clasy_id.add(object.getString("id"));
                         }
 
                         spinner.setAdapter(new ArrayAdapter<String>(Register.this,
                                 android.R.layout.simple_dropdown_item_1line,
                                 clasy));
-                        loading.dismiss();
+                        loadings.dismiss();
                     }
                     else {
-                        loading.dismiss();
+                        loadings.dismiss();
                     }
 
                 } catch (JSONException e) {
-                    loading.dismiss();
+                    loadings.dismiss();
                     Toast.makeText(Register.this,"Internet Issue", LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -289,7 +343,7 @@ SharedPreferences sharedPreferences;
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.dismiss();
+                loadings.dismiss();
                 Toast.makeText(Register.this, "Connection Timed Out" ,Toast.LENGTH_LONG).show();
             }
         });
@@ -326,21 +380,21 @@ SharedPreferences sharedPreferences;
 //            makeText(Register.this, "Contact Number is required", LENGTH_SHORT).show();
 //        }
 
-//        else if (TextUtils.isEmpty(classes.getText().toString())){
-//            makeText(Register.this, "Class is required", LENGTH_SHORT).show();
-//        }
-
-        else if (spinner.getSelectedItem().toString().equals("Class")){
+        else if (spinner_board.getSelectedItem().toString().equals("Select Boards")){
+            Toast.makeText(Register.this,"Select Your Board",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if (spinner.getSelectedItem().toString().equals("Select Class")){
             Toast.makeText(Register.this,"Select Your Class",
                     Toast.LENGTH_LONG).show();
         }
-        else if (spinner_board.getSelectedItem().toString().equals("Boards")){
-            Toast.makeText(Register.this,"Select Your Board",
-                    Toast.LENGTH_LONG).show();
-        }else if (spinner_classgroup.getSelectedItem().toString().equals("Class Groups")){
-            Toast.makeText(Register.this,"Select Your Class Group",
-                    Toast.LENGTH_LONG).show();
-        }
+//        else if (spinner_subject.getSelectedItem().toString().equals("Select Subject")){
+//            makeText(Register.this, "Subject is required", LENGTH_SHORT).show();
+//        }
+//        else if (spinner_classgroup.getSelectedItem().toString().equals("Select Class Groups")){
+//            Toast.makeText(Register.this,"Select Your Class Group",
+//                    Toast.LENGTH_LONG).show();
+//        }
         else if (TextUtils.isEmpty(city.getText().toString())){
             makeText(Register.this, "City is required", LENGTH_SHORT).show();
         }
@@ -363,34 +417,39 @@ SharedPreferences sharedPreferences;
             makeText(Register.this, "Picture is required", LENGTH_SHORT).show();
         }
         else {
-            if (password.getText().toString().trim().equals(confirm_password.getText().toString().trim())){
-                if (checkBox.isChecked()){
-
+            if (isEmailValid(email.getText().toString().trim())){
+                if (password.getText().toString().trim().equals(confirm_password.getText().toString().trim())){
+                    if (checkBox.isChecked()){
 //                    getData();
 
-                    Intent i = new Intent(Register.this,Phoneno.class);
-                    i.putExtra("name",name.getText().toString().trim());
-                    i.putExtra("email_id",email.getText().toString().trim());
-                    i.putExtra("password",password.getText().toString().trim());
-                    i.putExtra("class",spinner.getSelectedItem().toString().trim());
-                    i.putExtra("class_group",spinner_classgroup.getSelectedItem().toString().trim());
-                    i.putExtra("board",spinner_board.getSelectedItem().toString().trim());
+                        Intent i = new Intent(Register.this,Phoneno.class);
+                        i.putExtra("name",name.getText().toString().trim());
+                        i.putExtra("email_id",email.getText().toString().trim());
+                        i.putExtra("password",password.getText().toString().trim());
 
-                    i.putExtra("address",address.getText().toString().trim());
+                        i.putExtra("class", clasy_id.get(spinner.getSelectedItemPosition()-1));
+                        //i.putExtra("class_group", class_group_id.get(spinner_classgroup.getSelectedItemPosition()-1));
+                        i.putExtra("board", class_boards_id.get(spinner_board.getSelectedItemPosition()-1));
+//                        i.putExtra("subject", subjects_id.get(spinner_subject.getSelectedItemPosition()-1));
 
-                    i.putExtra("zip",zip.getText().toString().trim());
-                    i.putExtra("city",city.getText().toString().trim());
-                    i.putExtra("state",state.getText().toString().trim());
-
-                    startActivity(i);
+                        i.putExtra("address",address.getText().toString().trim());
+                        i.putExtra("zip",zip.getText().toString().trim());
+                        i.putExtra("city",city.getText().toString().trim());
+                        i.putExtra("state",state.getText().toString().trim());
+                        startActivity(i);
+                    }
+                    else {
+                        makeText(Register.this, "Checkbox is unchecked", LENGTH_SHORT).show();
+                    }
 
                 }
                 else {
-                    makeText(Register.this, "Checkbox is unchecked", LENGTH_SHORT).show();
+                    makeText(Register.this, "Password not match", LENGTH_SHORT).show();
                 }
+
             }
             else {
-                makeText(Register.this, "Password not match", LENGTH_SHORT).show();
+                makeText(Register.this, "Email is not Valid", LENGTH_SHORT).show();
             }
 
         }
@@ -495,4 +554,88 @@ SharedPreferences sharedPreferences;
         }
     }
 
+    private void getSubject() {
+
+        loadings.show();
+        Map<String, String> params = new Hashtable<String, String>();
+        params.put("class_group",clasy_id.get(spinner.getSelectedItemPosition()-1));
+        params.put("board",class_boards_id.get(spinner_board.getSelectedItemPosition()-1));
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_getsubjectbtclassandboard, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    String message = response.getString("message");
+                    String code = response.getString("error code");
+
+                    if (code.equals("200")){
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            subject_model s = new subject_model();
+                            String id = object.getString("id");
+                            subjects.add(object.getString("title"));
+                            subjects_id.add(id);
+                        }
+                        spinner_subject.setAdapter(new ArrayAdapter<String>(Register.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                subjects));
+                        loadings.dismiss();
+
+                    }
+                    else {
+                        loadings.dismiss();
+                        //animationView.setVisibility(View.GONE);
+                        Toasty.error(Register.this, message, Toast.LENGTH_SHORT, true).show();
+                    }
+
+                } catch (JSONException e) {
+                    loadings.dismiss();
+                    //  loading.dismiss();
+                    e.printStackTrace();
+                    Toasty.error(Register.this, "No Data Found", Toast.LENGTH_SHORT, true).show();
+
+                    //animationView.setVisibility(View.GONE);
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //loading.dismiss();
+                //animationView.setVisibility(View.GONE);
+                loadings.dismiss();
+                Toasty.error(Register.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(Register.this);
+        queue.add(jsonRequest);
+
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 }

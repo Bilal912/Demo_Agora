@@ -40,13 +40,13 @@ public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_Histor
         holder.name.setText(data.get(position).getTeacher_Name());
         holder.fee.setText(context.getResources().getString(R.string.currency)+" -"+data.get(position).getAmount());
 
-        if (data.get(position).getSubject_Name().contains("|")){
+        if (data.get(position).getClass_Groups().contains("|")){
             String currentString = data.get(position).getSubject_Name();
             String[] separated = currentString.split("\\|");
-            holder.tempy.setText("Subject: "+separated[0]);
+            holder.tempy.setText("Class Group: "+separated[0]);
         }
         else {
-            holder.tempy.setText("Subject: "+data.get(position).getSubject_Name());
+            holder.tempy.setText("Class Group: "+data.get(position).getClass_Groups());
         }
 
         String temp = data.get(position).getBooking_date();

@@ -93,9 +93,7 @@ SharedPreferences.Editor editors;
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_login, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 try {
-
                     String message = response.getString("message");
                     String code = response.getString("error_code");
 
@@ -118,13 +116,15 @@ SharedPreferences.Editor editors;
                             editors.putString("class", object.getString("class"));
 
                             editors.putString("board",object.getString("board"));
-                            editors.putString("class_group",object.getString("class_group"));
+
+                            //editors.putString("class_group",object.getString("class_group"));
+                            //editors.putString("subject", object.getString("subject"));
+                            //editors.putString("name", object.getString("device_id"));
 
                             editors.putString("city", object.getString("city"));
                             editors.putString("state", object.getString("state"));
                             editors.putString("zip", object.getString("zip"));
 
-                            //editors.putString("name", object.getString("device_id"));
 
                             Checkuser(object.getString("id"));
 
@@ -197,6 +197,7 @@ SharedPreferences.Editor editors;
                             else {
                                 editors.apply();
                                 Intent intent = new Intent(Login.this,Home.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                                 Toasty.success(Login.this, "Login Successfully", Toast.LENGTH_SHORT, true).show();

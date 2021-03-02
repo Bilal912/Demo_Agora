@@ -34,8 +34,8 @@ import static android.widget.Toast.makeText;
 
 public class Phoneno extends AppCompatActivity {
 EditText Phone;
-    LottieAnimationView animationView;
-    String name,email,pass,classes,address,city,state,zip,class_group,board;
+    public static LottieAnimationView animationView;
+    String name,email,pass,classes,address,city,state,zip,class_group,board,subject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +44,9 @@ EditText Phone;
 
         Phone = findViewById(R.id.number);
 
+//        subject = getIntent().getStringExtra("subject");
         board = getIntent().getStringExtra("board");
-        class_group = getIntent().getStringExtra("class_group");
+        //class_group = getIntent().getStringExtra("class_group");
         name = getIntent().getStringExtra("name");
         email = getIntent().getStringExtra("email_id");
         pass = getIntent().getStringExtra("password");
@@ -71,7 +72,7 @@ EditText Phone;
 
         animationView.setVisibility(View.VISIBLE);
         Map<String, String> params = new Hashtable<String, String>();
-        params.put("number",number);
+        params.put("number","+91".concat(number));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_sendotp, params, new Response.Listener<JSONObject>() {
             @Override
@@ -90,7 +91,8 @@ EditText Phone;
                         Intent i = new Intent(Phoneno.this,otp.class);
                         i.putExtra("name",name);
                         i.putExtra("board",board);
-                        i.putExtra("class_group",class_group);
+                        //i.putExtra("class_group",class_group);
+                        //i.putExtra("subject",subject);
 
                         i.putExtra("email_id",email);
                         i.putExtra("password",pass);
@@ -100,7 +102,7 @@ EditText Phone;
                         i.putExtra("city",city);
                         i.putExtra("state",state);
 
-                        i.putExtra("number",number);
+                        i.putExtra("number","+91".concat(number));
                         i.putExtra("code",String.valueOf(j));
                         startActivity(i);
                     }

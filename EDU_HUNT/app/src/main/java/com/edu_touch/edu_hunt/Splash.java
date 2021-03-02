@@ -47,14 +47,16 @@ import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 public class Splash extends AppCompatActivity {
     Thread t;
     private AlertDialog dialog;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        sharedPreferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
 
         t = new Thread() {
             public void run() {
@@ -62,68 +64,37 @@ public class Splash extends AppCompatActivity {
                     t.sleep(2500);
 
                     if (ContextCompat.checkSelfPermission(Splash.this,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED ||
-                            ContextCompat.checkSelfPermission(Splash.this,
-                                    android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                                    != PackageManager.PERMISSION_GRANTED ||
-                            ContextCompat.checkSelfPermission(Splash.this,
-                                    android.Manifest.permission.INTERNET)
-                                    != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(Splash.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED ||
-                            ContextCompat.checkSelfPermission(Splash.this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED
-                    ) {
-
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                android.Manifest.permission.INTERNET)
-                                && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                Manifest.permission.READ_EXTERNAL_STORAGE)&& ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                android.Manifest.permission.ACCESS_NETWORK_STATE) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                android.Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
-                                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                        ) {
-                            //gonext();
-                        } else {
-                            ActivityCompat.requestPermissions(Splash.this,
-                                    new String[]{
-                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                            android.Manifest.permission.INTERNET,
-                                            android.Manifest.permission.ACCESS_FINE_LOCATION,
-                                            android.Manifest.permission.ACCESS_NETWORK_STATE,
-                                            android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                                    },
-                                    102);
-                        }
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        gonext();
+                    } else {
+                        checkLocationPermission();
                     }
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        };t.start();
+        };
+        t.start();
 
     }
 
-    public void gonext(){
+    public void gonext() {
 
-        getLocation();
-
-        String Email = sharedPreferences.getString("email","Null");
+        String Email = sharedPreferences.getString("email", "Null");
         if (Email.equals("Null")) {
+
+            getLocation();
+
             Intent i = new Intent(Splash.this, MainActivity.class);
             startActivity(i);
             finish();
-        } else {
-            checkuser(sharedPreferences.getString("id","Null"));
         }
+        else{
+        checkuser(sharedPreferences.getString("id", "Null"));
     }
+}
 
     private void checkuser(String string) {
         Map<String, String> params = new Hashtable<String, String>();
@@ -134,7 +105,6 @@ public class Splash extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-
                     String code = response.getString("error code");
 
                     if (code.equals("200")){
@@ -158,15 +128,9 @@ public class Splash extends AppCompatActivity {
                         }
                     }
                     else {
-//                        textView.setVisibility(View.VISIBLE);
-//                        animationView.setVisibility(View.GONE);
-//                        Toasty.error(My_teacher.this, message, Toast.LENGTH_SHORT, true).show();
                     }
 
                 } catch (JSONException e) {
-
-//                    textView.setVisibility(View.VISIBLE);
-//                    animationView.setVisibility(View.GONE);
                     e.printStackTrace();
                 }
             }
@@ -175,7 +139,6 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                animationView.setVisibility(View.GONE);
-
                 Toasty.error(Splash.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
             }
         });
@@ -192,13 +155,10 @@ public class Splash extends AppCompatActivity {
 
             @Override
             public void retry(VolleyError error) throws VolleyError {
-
             }
         });
         RequestQueue queue = Volley.newRequestQueue(Splash.this);
         queue.add(jsonRequest);
-
-
     }
 
     public void getLocation(){
@@ -228,12 +188,13 @@ public class Splash extends AppCompatActivity {
                             if (location != null) {
 
                                 leditor.putString("lat", String.valueOf(location.getLatitude()));
-                                leditor.putString("long", String.valueOf(location.getLongitude()));
+                                leditor.putString("lang", String.valueOf(location.getLongitude()));
                                 leditor.apply();
 
                                 location.reset();
                             }
                             else{
+
                             }
 
                         }
@@ -249,65 +210,149 @@ public class Splash extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        if (requestCode == 102) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[3] == PackageManager.PERMISSION_GRANTED
-            ) {
-                //gonext();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Splash.this);
-                builder.setMessage("App required some permission please enable it")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                openPermissionScreen();
+//    @Override
+//    protected void onResume() {
+//
+//        super.onResume();
+//
+//        t = new Thread() {
+//            public void run() {
+//                try {
+//                    t.sleep(2500);
+//
+//                    if (ContextCompat.checkSelfPermission(Splash.this,
+//                            Manifest.permission.ACCESS_FINE_LOCATION)
+//                            == PackageManager.PERMISSION_GRANTED) {
+//                        gonext();
+//                    }
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };t.start();
+//
+//    }
+
+    public void permissionrequest(){
+        if (ContextCompat.checkSelfPermission(Splash.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(Splash.this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(Splash.this,
+                        android.Manifest.permission.INTERNET)
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(Splash.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(Splash.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED
+        ) {
+
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+//                    android.Manifest.permission.INTERNET)
+//                    && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE)&& ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+//                    android.Manifest.permission.ACCESS_NETWORK_STATE) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+//                    android.Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(Splash.this,
+//                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+//            ) {
+//                gonext();
+//            } else {
+                ActivityCompat.requestPermissions(Splash.this,
+                        new String[]{
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                android.Manifest.permission.INTERNET,
+                                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                                android.Manifest.permission.ACCESS_NETWORK_STATE,
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        },
+                        102);
+                gonext();
+//            }
+        }
+        else {
+            gonext();
+        }
+
+    }
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Location Permission")
+                        .setMessage("Location Permission Is Necessary")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(Splash.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
-                        .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                                dialog.dismiss();
-                            }
-                        });
-                dialog = builder.show();
-            }
+                        .create()
+                        .show();
 
-            return;
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
         }
     }
 
     @Override
-    protected void onResume() {
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-        super.onResume();
-
-        t = new Thread() {
-            public void run() {
-                try {
-                    t.sleep(2500);
-
-                    if (ContextCompat.checkSelfPermission(Splash.this,
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
+
                         gonext();
+
+                        //Request location updates:
+                        //locationManager.requestLocationUpdates(provider, 400, 1, this);
                     }
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } else {
+
+                    checkLocationPermission();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
                 }
             }
-        };t.start();
 
+        }
     }
-
-    public void openPermissionScreen() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.fromParts("package", Splash.this.getPackageName(), null));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
 }
