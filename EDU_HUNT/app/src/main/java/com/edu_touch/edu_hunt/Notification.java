@@ -1,11 +1,14 @@
 package com.edu_touch.edu_hunt;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.edu_touch.edu_hunt.Adapter.My_Teacher_Adapter;
+import com.edu_touch.edu_hunt.Adapter.Notification_Adapter;
+import com.edu_touch.edu_hunt.Model.Notification_model;
 import com.edu_touch.edu_hunt.Model.payment_history_model;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.google.gson.Gson;
@@ -29,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +50,15 @@ SharedPreferences sharedPreferences;
 RecyclerView recyclerView;
     LottieAnimationView animationView;
 TextView textView;
+ArrayList<Notification_model> arrayList;
+Notification_Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
+        arrayList = new ArrayList<>();
         animationView = findViewById(R.id.anime);
 
         textView = findViewById(R.id.no_data);
@@ -67,6 +76,26 @@ TextView textView;
                 .dontAnimate()
                 .into(imageView);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Notification.this) {
+            @Override
+            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(Notification.this) {
+                    private static final float SPEED = 2000f;// Change this value (default=25f)
+
+                    @Override
+                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                        return SPEED / displayMetrics.densityDpi;
+                    }
+                };
+                smoothScroller.setTargetPosition(position);
+                startSmoothScroll(smoothScroller);
+            }
+        };
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
+
         getData();
 
 
@@ -78,7 +107,7 @@ TextView textView;
         Map<String, String> params = new Hashtable<String, String>();
         params.put("student_id",avy);
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_mybookings, params, new Response.Listener<JSONObject>() {
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_notification, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -91,12 +120,12 @@ TextView textView;
 
                         textView.setVisibility(View.GONE);
                         Gson gson = new Gson();
-                        Type listType = new TypeToken<List<payment_history_model>>() {
+                        Type listType = new TypeToken<List<Notification_model>>() {
                         }.getType();
 
-//                        arrayList = gson.fromJson(response.getString("teachers"), listType);
-//                        adapter = new My_Teacher_Adapter(Notification.this, arrayList,imagelink);
-//                        recyclerView.setAdapter(adapter);
+                        arrayList = gson.fromJson(response.getString("teachers"), listType);
+                        adapter = new Notification_Adapter(Notification.this, arrayList);
+                        recyclerView.setAdapter(adapter);
 
                         animationView.setVisibility(View.GONE);
                     }
@@ -107,7 +136,7 @@ TextView textView;
                     }
 
                 } catch (JSONException e) {
-
+                    //Toasty.error(Notification.this, "Internet Issue", Toast.LENGTH_SHORT, true).show();
                     textView.setVisibility(View.VISIBLE);
                     animationView.setVisibility(View.GONE);
                     e.printStackTrace();

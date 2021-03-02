@@ -100,6 +100,7 @@ SharedPreferences sharedPreferences;
         Map<String, String> params = new Hashtable<String, String>();
         params.put("lang",sharedPreferences.getString("lang","0"));
         params.put("lat",sharedPreferences.getString("lat","0"));
+        params.put("class_id",sharedPreferences.getString("class","0"));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override
@@ -172,6 +173,7 @@ SharedPreferences sharedPreferences;
         params.put("lang",sharedPreferences.getString("lang","0"));
         params.put("lat",sharedPreferences.getString("lat","0"));
         params.put("subject_id",Id);
+        params.put("class_id",sharedPreferences.getString("class","0"));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override

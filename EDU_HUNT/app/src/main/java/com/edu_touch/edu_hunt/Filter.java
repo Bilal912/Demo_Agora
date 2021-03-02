@@ -147,6 +147,8 @@ int a=0,b=0;
         loading.setMessage("Getting Teacher....");
         loading.setCancelable(false);
         //loading.show();
+
+        no_data.setVisibility(View.GONE);
         teacher_shimmer.startShimmer();
         teacher_shimmer.setVisibility(View.VISIBLE);
 
@@ -241,7 +243,10 @@ int a=0,b=0;
 
     private void getsubjectspinner() {
 
-        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_getsubjects, null, new Response.Listener<JSONObject>() {
+        Map<String, String> params = new Hashtable<String, String>();
+        params.put("class_id",sharedPreferences.getString("class","0"));
+        params.put("board",sharedPreferences.getString("board","0"));
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_getsubjects, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -326,11 +331,17 @@ int a=0,b=0;
 
                     if (code.equals("200")) {
 
+                        String current_class = sharedPreferences.getString("class","0");
+
                         JSONArray jsonArray = response.getJSONArray("teachers");
                         for (int j = 0; j < jsonArray.length(); j++) {
                             JSONObject object = jsonArray.getJSONObject(j);
-                            classes.add(object.getString("name"));
-                            class_id.add(object.getString("id"));
+
+                            if (object.getString("id").equals(current_class)){
+                                classes.add(object.getString("name"));
+                                class_id.add(object.getString("id"));
+                            }
+
                         }
 
                         classy.setAdapter(new ArrayAdapter<String>(Filter.this,

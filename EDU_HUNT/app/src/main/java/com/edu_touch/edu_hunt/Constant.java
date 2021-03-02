@@ -31,7 +31,7 @@ public class Constant {
     public static final String Base_url_changepassword = Base_url+"/change_pass";
 
 
-    public static final String Base_url_notification = Base_url+"/";
+    public static final String Base_url_notification = Base_url+"/my_notifications";
 
 
 }

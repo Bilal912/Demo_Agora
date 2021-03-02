@@ -85,7 +85,7 @@
             android:id="@+id/amount"
             android:layout_marginRight="10dp"
             android:fontFamily="@font/avian_bold"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textColor="@color/redy"
             android:text="₹ -399 "
             android:layout_width="wrap_content"

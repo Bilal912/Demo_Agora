@@ -93,6 +93,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingBottom="20dp"
             android:layout_marginTop="20dp"
             android:layout_below="@id/liear"
             android:layout_width="match_parent"

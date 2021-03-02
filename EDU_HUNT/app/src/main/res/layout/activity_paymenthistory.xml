@@ -84,8 +84,6 @@
                     android:textColor="@color/color_main"
                     android:gravity="right"
                     android:text="ALL"
-                    android:drawableTint="@color/color_main"
-                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"
                     />
 
 

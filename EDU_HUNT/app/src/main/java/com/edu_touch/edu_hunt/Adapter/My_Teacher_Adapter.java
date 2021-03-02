@@ -65,7 +65,7 @@ public class My_Teacher_Adapter extends RecyclerView.Adapter<My_Teacher_Adapter.
         else {
             holder.subject.setText("Subject : "+data.get(position).getSubject_Name());
         }
-        holder.amount.setText(context.getResources().getString(R.string.currency)+" "+data.get(position).getAmount());
+        holder.amount.setText(context.getResources().getString(R.string.currency)+" "+data.get(position).getAmount()+" ");
 
         if (data.get(position).getStarting_status().equals("0")){
             holder.flag.setImageResource(R.drawable.red_flag);

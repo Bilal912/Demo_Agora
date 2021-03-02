@@ -38,7 +38,7 @@ public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_Histor
     public void onBindViewHolder(@NonNull GithubViewHolder holder, int position) {
 
         holder.name.setText(data.get(position).getTeacher_Name());
-        holder.fee.setText(context.getResources().getString(R.string.currency)+" -"+data.get(position).getAmount());
+        holder.fee.setText(context.getResources().getString(R.string.currency)+" -"+data.get(position).getAmount()+" ");
 
         if (data.get(position).getClass_Groups().contains("|")){
             String currentString = data.get(position).getSubject_Name();
