@@ -12,6 +12,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -37,7 +39,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
@@ -49,6 +54,7 @@ public class Splash extends AppCompatActivity {
     private AlertDialog dialog;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
+    String city;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -189,6 +195,25 @@ public class Splash extends AppCompatActivity {
 
                                 leditor.putString("lat", String.valueOf(location.getLatitude()));
                                 leditor.putString("lang", String.valueOf(location.getLongitude()));
+
+                                Geocoder geocoder = new Geocoder(Splash.this, Locale.ENGLISH);
+                                try {
+                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude()
+                                            , location.getLongitude()
+                                            , 1);
+
+                                    if(addresses.size()>0) {
+                                        city = addresses.get(0).getSubAdminArea();
+                                        if(city == null) {
+                                        }
+                                        else {
+                                            leditor.putString("city", city);
+                                        }
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
                                 leditor.apply();
 
                                 location.reset();

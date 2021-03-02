@@ -77,6 +77,8 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         Name.setText(sharedPreferences.getString("name","null"));
         Phone.setText(sharedPreferences.getString("phone","null"));
 
+//        Toast.makeText(Home.this, sharedPreferences.getString("city","null")
+//                , Toast.LENGTH_SHORT).show();
 
     }
 

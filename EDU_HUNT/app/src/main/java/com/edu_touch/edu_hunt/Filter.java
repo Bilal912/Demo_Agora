@@ -157,6 +157,7 @@ int a=0,b=0;
         params.put("lat",lat);
         params.put("subject_id",s_id);
         params.put("class_id",c_id);
+        params.put("city",sharedPreferences.getString("city","0"));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override

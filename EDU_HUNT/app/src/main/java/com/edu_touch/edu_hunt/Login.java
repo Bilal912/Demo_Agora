@@ -121,7 +121,7 @@ SharedPreferences.Editor editors;
                             //editors.putString("subject", object.getString("subject"));
                             //editors.putString("name", object.getString("device_id"));
 
-                            editors.putString("city", object.getString("city"));
+                            editors.putString("user_city", object.getString("city"));
                             editors.putString("state", object.getString("state"));
                             editors.putString("zip", object.getString("zip"));
 

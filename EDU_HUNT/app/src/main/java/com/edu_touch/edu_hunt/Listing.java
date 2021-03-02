@@ -165,6 +165,7 @@ TextView no_data,no_data1,no_data3;
         params.put("lang",sharedPreferences.getString("lang","0"));
         params.put("lat",sharedPreferences.getString("lat","0"));
         params.put("class_id",sharedPreferences.getString("class","0"));
+        params.put("city",sharedPreferences.getString("city","null"));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override

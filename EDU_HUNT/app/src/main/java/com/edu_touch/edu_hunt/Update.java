@@ -107,7 +107,7 @@ public class Update extends AppCompatActivity {
         //classes.setText(sharedPreferences.getString("class","null"));
         password.setText(sharedPreferences.getString("password","null"));
 
-        city.setText(sharedPreferences.getString("city","null"));
+        city.setText(sharedPreferences.getString("user_city","null"));
         zip.setText(sharedPreferences.getString("zip","null"));
         state.setText(sharedPreferences.getString("state","null"));
 
@@ -374,7 +374,7 @@ public class Update extends AppCompatActivity {
                         editors.putString("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
                         //editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
 
-                        editors.putString("city", City);
+                        editors.putString("user_city", City);
                         editors.putString("state", State);
                         editors.putString("zip", ZIP);
                         editors.putString("picture",Constant.image_url+imagename);
@@ -491,7 +491,7 @@ public class Update extends AppCompatActivity {
                         SharedPreferences.Editor editors = sharedPreferences.edit();
                         editors.putString("address", Address);
                         editors.putString("name", Name);
-                        editors.putString("city", City);
+                        editors.putString("user_city", City);
                         editors.putString("state", State);
                         editors.putString("zip", ZIP);
 
