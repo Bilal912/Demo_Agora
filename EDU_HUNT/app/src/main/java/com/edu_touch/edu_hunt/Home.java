@@ -232,7 +232,9 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             public void onClick(SweetAlertDialog sweetAlertDialog) {
 
                 SharedPreferences preferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-                preferences.edit().clear().commit();
+                SharedPreferences.Editor editors = preferences.edit();
+                editors.putString("email", "Null");
+                editors.apply();
 
                 Intent intent = new Intent(Home.this,MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

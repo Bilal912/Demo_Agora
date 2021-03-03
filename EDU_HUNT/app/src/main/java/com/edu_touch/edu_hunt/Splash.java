@@ -98,7 +98,9 @@ public class Splash extends AppCompatActivity {
             finish();
         }
         else{
-        checkuser(sharedPreferences.getString("id", "Null"));
+            getLocation();
+
+            checkuser(sharedPreferences.getString("id", "Null"));
     }
 }
 
@@ -189,7 +191,7 @@ public class Splash extends AppCompatActivity {
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener( new OnSuccessListener<Location>() {
                         @Override
-                        public void onSuccess(android.location.Location location) {
+                        public void onSuccess(Location location) {
 
                             if (location != null) {
 
@@ -202,7 +204,9 @@ public class Splash extends AppCompatActivity {
                                             , location.getLongitude()
                                             , 1);
 
+
                                     if(addresses.size()>0) {
+
                                         city = addresses.get(0).getSubAdminArea();
                                         if(city == null) {
                                         }
@@ -219,7 +223,8 @@ public class Splash extends AppCompatActivity {
                                 location.reset();
                             }
                             else{
-
+//                                Toast.makeText(Splash.this, "No Data Found"
+//                                        , Toast.LENGTH_SHORT).show();
                             }
 
                         }

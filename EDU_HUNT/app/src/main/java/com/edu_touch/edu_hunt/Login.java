@@ -117,10 +117,6 @@ SharedPreferences.Editor editors;
 
                             editors.putString("board",object.getString("board"));
 
-                            //editors.putString("class_group",object.getString("class_group"));
-                            //editors.putString("subject", object.getString("subject"));
-                            //editors.putString("name", object.getString("device_id"));
-
                             editors.putString("user_city", object.getString("city"));
                             editors.putString("state", object.getString("state"));
                             editors.putString("zip", object.getString("zip"));
