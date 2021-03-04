@@ -153,13 +153,15 @@ TextView no_data,no_data1,no_data3;
         top_teachers.setLayoutManager(layoutManager3);
         top_teachers.setHasFixedSize(true);
 
-
         getSubject();
         getTeachers();
 
     }
 
     private void getTeachers() {
+
+//        Toast.makeText(this, sharedPreferences.getString("city","null")+
+//                " - "+sharedPreferences.getString("class","0"), Toast.LENGTH_SHORT).show();
 
         Map<String, String> params = new Hashtable<String, String>();
         params.put("lang",sharedPreferences.getString("lang","0"));

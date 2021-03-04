@@ -72,7 +72,7 @@ public class otp extends AppCompatActivity {
 
         code = getIntent().getStringExtra("code");
 
-        Toast.makeText(otp.this,code,Toast.LENGTH_LONG).show();
+//        Toast.makeText(otp.this,code,Toast.LENGTH_LONG).show();
 
         number = getIntent().getStringExtra("number");
         zip = getIntent().getStringExtra("zip");
@@ -311,5 +311,90 @@ public class otp extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Phoneno.animationView.setVisibility(View.GONE);
+    }
+
+
+    private void resendotp(String number) {
+
+        animationView.setVisibility(View.VISIBLE);
+        Map<String, String> params = new Hashtable<String, String>();
+        params.put("number", number);
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_sendotp, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    String message = response.getString("message");
+                    String code = response.getString("error_code");
+
+                    if (code.equals("200")) {
+
+                        Toasty.success(otp.this, message, Toast.LENGTH_SHORT, true).show();
+
+                        animationView.setVisibility(View.VISIBLE);
+//                        int j = response.getInt("code");
+//                        Intent i = new Intent(Phoneno.this, otp.class);
+//                        i.putExtra("name", name);
+//                        i.putExtra("board", board);
+//                        //i.putExtra("class_group",class_group);
+//                        //i.putExtra("subject",subject);
+//
+//                        i.putExtra("email_id", email);
+//                        i.putExtra("password", pass);
+//                        i.putExtra("class", classes);
+//                        i.putExtra("address", address);
+//                        i.putExtra("zip", zip);
+//                        i.putExtra("city", city);
+//                        i.putExtra("state", state);
+//
+//                        i.putExtra("number", "+91".concat(number));
+//                        i.putExtra("code", String.valueOf(j));
+//                        startActivity(i);
+                    } else {
+                        Toasty.error(otp.this, message, Toast.LENGTH_SHORT, true).show();
+                        animationView.setVisibility(View.GONE);
+
+                    }
+
+                } catch (JSONException e) {
+                    //  loading.dismiss();
+                    e.printStackTrace();
+                    animationView.setVisibility(View.GONE);
+                    Toasty.error(otp.this, "Error", Toast.LENGTH_SHORT, true).show();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //loading.dismiss();
+                animationView.setVisibility(View.GONE);
+                Toasty.error(otp.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(otp.this);
+        queue.add(jsonRequest);
+    }
+
+    public void otp_resend(View view) {
+        resendotp(number);
     }
 }
