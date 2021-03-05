@@ -2,6 +2,25 @@ package com.edu_touch.edu_hunt.Model;
 
 public class teacher_model {
     public String id;
+    public String google_lat;
+
+    public String getGoogle_lat() {
+        return google_lat;
+    }
+
+    public void setGoogle_lat(String google_lat) {
+        this.google_lat = google_lat;
+    }
+
+    public String getGoogle_long() {
+        return google_long;
+    }
+
+    public void setGoogle_long(String google_long) {
+        this.google_long = google_long;
+    }
+
+    public String google_long;
     public String teacher_code;
     public String city;
     public String qualification;
@@ -125,8 +144,10 @@ public class teacher_model {
         this.boards = boards;
     }
 
-    public teacher_model(String id, String teacher_code, String city, String qualification, String experience, String t_image, String address, String subjects, String boards, String class_name, String fees, String teacher_name, String class_id, String subjects_id, String boards_id) {
+    public teacher_model(String id, String google_lat, String google_long, String teacher_code, String city, String qualification, String experience, String t_image, String address, String subjects, String boards, String class_name, String fees, String teacher_name, String class_id, String subjects_id, String boards_id) {
         this.id = id;
+        this.google_lat = google_lat;
+        this.google_long = google_long;
         this.teacher_code = teacher_code;
         this.city = city;
         this.qualification = qualification;

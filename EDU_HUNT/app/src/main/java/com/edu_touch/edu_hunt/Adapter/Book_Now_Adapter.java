@@ -94,8 +94,8 @@ public class Book_Now_Adapter extends RecyclerView.Adapter<Book_Now_Adapter.Gith
         });
     }
 
-    private void getingfee(String subjects_id, String class_id, String boards_id, String fees) {
 
+    private void getingfee(String subjects_id, String class_id, String boards_id, String fees) {
         final AlertDialog loading = new ProgressDialog(context);
         loading.setMessage("Getting Info....");
         loading.setCancelable(false);

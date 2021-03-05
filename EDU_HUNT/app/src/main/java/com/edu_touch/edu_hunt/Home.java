@@ -9,6 +9,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,16 +30,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.smarteist.autoimageslider.DefaultSliderView;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderLayout;
 import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 import static android.view.Gravity.TOP;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
@@ -47,6 +61,7 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
     SharedPreferences sharedPreferences;
     TextView Name,Phone;
     CircleImageView imageView;
+    public static int distance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +77,7 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         sliderLayout.setIndicatorAnimation(IndicatorAnimations.FILL); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderLayout.setScrollTimeInSec(1); //set scroll delay in seconds :
 
-        setSliderViews();
+
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         String pic = sharedPreferences.getString("picture","null");
         //Picasso.get().load(pic).into(imageView);
@@ -80,6 +95,9 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 //        Toast.makeText(Home.this, sharedPreferences.getString("city","null")
 //                , Toast.LENGTH_SHORT).show();
 
+        getingfee();
+
+        setSliderViews();
     }
 
     private void setSliderViews() {
@@ -301,6 +319,76 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
             default:
                 return false;
         }
+    }
+
+    private void getingfee() {
+        Context context = Home.this;
+        final android.app.AlertDialog loading = new ProgressDialog(context);
+        loading.setMessage("Getting Info....");
+        loading.setCancelable(false);
+        //loading.show();
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_checkingfee, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    String code = response.getString("error code");
+                    if (code.equals("200")){
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+
+                            Home.distance = Integer.parseInt(object.getString("nearest"));
+
+//                            Intent intent = new Intent(context, Payment.class);
+//                            intent.putExtra("fee",object.getString("nearest"));
+//                            context.startActivity(intent);
+//                            loading.dismiss();
+
+                        }
+
+                    }
+                    else {
+                        loading.dismiss();
+                        //Toasty.error(context, message, Toast.LENGTH_SHORT, true).show();
+                    }
+
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    e.printStackTrace();
+                    //Toasty.error(context, "Error", Toast.LENGTH_SHORT, true).show();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toasty.error(context, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(jsonRequest);
+
     }
 
 }

@@ -56,6 +56,8 @@ SharedPreferences sharedPreferences;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show__teachers);
 
+        arrayList = new ArrayList<>();
+
         animationView = findViewById(R.id.anime);
         no_data = findViewById(R.id.no_data);
         textView = findViewById(R.id.icon);
@@ -116,14 +118,54 @@ SharedPreferences sharedPreferences;
 
                         no_data.setVisibility(View.GONE);
 
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<List<teacher_model>>() {
-                        }.getType();
-                        arrayList = gson.fromJson(response.getString("teachers"), listType);
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
 
-                        teacher_adapter = new Teacher_Adapter(Show_Teachers.this, arrayList);
-                        recyclerView.setAdapter(teacher_adapter);
+                            double dis = distance(Double.parseDouble(object.getString("google_lat")),
+                                    Double.parseDouble(object.getString("google_long")),
+                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
+
+                            int IntValue = (int) dis;
+
+                            if (IntValue <= Home.distance){
+
+                                teacher_model s = new teacher_model();
+                                s.setId(object.getString("id"));
+                                s.setAddress(object.getString("address"));
+                                s.setTeacher_code(object.getString("teacher_code"));
+                                s.setCity(object.getString("city"));
+                                s.setQualification(object.getString("qualification"));
+                                s.setExperience(object.getString("experience"));
+                                s.setT_image(object.getString("t_image"));
+                                s.setSubjects(object.getString("subjects"));
+                                s.setBoards(object.getString("boards"));
+                                s.setClass_name(object.getString("class_name"));
+                                s.setFees(object.getString("fees"));
+                                s.setTeacher_name(object.getString("teacher_name"));
+
+                                s.setClass_id(object.getString("class_id"));
+                                s.setBoards_id(object.getString("boards_id"));
+                                s.setSubjects_id(object.getString("subjects_id"));
+
+                                arrayList.add(s);
+
+                            }
+
+                        }
+
+                        if (arrayList == null){
+                            no_data.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            teacher_adapter = new Teacher_Adapter(Show_Teachers.this, arrayList);
+                            recyclerView.setAdapter(teacher_adapter);
+                        }
+
                         animationView.setVisibility(View.GONE);
+
+
                     }
                     else {
                         animationView.setVisibility(View.GONE);
@@ -191,15 +233,52 @@ SharedPreferences sharedPreferences;
                         no_data.setVisibility(View.GONE);
 //                        JSONArray jsonArray = response.getJSONArray("teachers");
 
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<List<teacher_model>>() {
-                        }.getType();
-                        arrayList = gson.fromJson(response.getString("teachers"), listType);
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
 
-                        teacher_adapter = new Teacher_Adapter(Show_Teachers.this, arrayList);
-                        recyclerView.setAdapter(teacher_adapter);
+                            double dis = distance(Double.parseDouble(object.getString("google_lat")),
+                                    Double.parseDouble(object.getString("google_long")),
+                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
+
+                            int IntValue = (int) dis;
+
+                            if (IntValue <= Home.distance){
+
+                                teacher_model s = new teacher_model();
+                                s.setId(object.getString("id"));
+                                s.setAddress(object.getString("address"));
+                                s.setTeacher_code(object.getString("teacher_code"));
+                                s.setCity(object.getString("city"));
+                                s.setQualification(object.getString("qualification"));
+                                s.setExperience(object.getString("experience"));
+                                s.setT_image(object.getString("t_image"));
+                                s.setSubjects(object.getString("subjects"));
+                                s.setBoards(object.getString("boards"));
+                                s.setClass_name(object.getString("class_name"));
+                                s.setFees(object.getString("fees"));
+                                s.setTeacher_name(object.getString("teacher_name"));
+
+                                s.setClass_id(object.getString("class_id"));
+                                s.setBoards_id(object.getString("boards_id"));
+                                s.setSubjects_id(object.getString("subjects_id"));
+
+                                arrayList.add(s);
+                            }
+
+                        }
+
+                        if (arrayList == null){
+                            no_data.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            teacher_adapter = new Teacher_Adapter(Show_Teachers.this, arrayList);
+                            recyclerView.setAdapter(teacher_adapter);
+                        }
 
                         animationView.setVisibility(View.GONE);
+
                     }
                     else {
                         animationView.setVisibility(View.GONE);
@@ -251,4 +330,28 @@ SharedPreferences sharedPreferences;
 
     public void back(View view) {finish();
     }
+
+    public double distance(double lat1, double lon1, double lat2, double lon2) {
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return dist;
+
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
 }

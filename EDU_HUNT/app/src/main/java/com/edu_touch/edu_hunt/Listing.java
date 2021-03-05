@@ -1,17 +1,24 @@
 package com.edu_touch.edu_hunt;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -34,6 +41,10 @@ import com.edu_touch.edu_hunt.Model.subject_model;
 import com.edu_touch.edu_hunt.Model.teacher_model;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -43,7 +54,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -153,19 +163,31 @@ TextView no_data,no_data1,no_data3;
         top_teachers.setLayoutManager(layoutManager3);
         top_teachers.setHasFixedSize(true);
 
+        if (Home.distance == 0){
+            getingfee();
+        }
+        else {
+            getTeachers();
+        }
+
         getSubject();
-        getTeachers();
 
     }
 
     private void getTeachers() {
 
-//        Toast.makeText(this, sharedPreferences.getString("city","null")+
-//                " - "+sharedPreferences.getString("class","0"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Listing.this, ""+Home.distance, Toast.LENGTH_SHORT).show();
 
         Map<String, String> params = new Hashtable<String, String>();
+
+        if (sharedPreferences.getString("lang","0").equals("0") &&
+                sharedPreferences.getString("lat","0").equals("0")){
+            getLocation();
+        }
+
         params.put("lang",sharedPreferences.getString("lang","0"));
         params.put("lat",sharedPreferences.getString("lat","0"));
+
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","null"));
 
@@ -180,16 +202,63 @@ TextView no_data,no_data1,no_data3;
 
                     if (code.equals("200")){
 
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<List<teacher_model>>() {
-                        }.getType();
-                        teacher_models = gson.fromJson(response.getString("teachers"), listType);
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
 
-                        top_teacher_adapter = new Small_top_Teacher_Adapter(Listing.this, teacher_models);
-                        top_teachers.setAdapter(top_teacher_adapter);
+                            double dis = distance(Double.parseDouble(object.getString("google_lat")),
+                                    Double.parseDouble(object.getString("google_long")),
+                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
 
-                        adapter = new Small_Teacher_Adapter(Listing.this, teacher_models);
-                        rec_teacher.setAdapter(adapter);
+                            int IntValue = (int) dis;
+
+                            if (IntValue <= Home.distance){
+
+                                teacher_model s = new teacher_model();
+                                s.setId(object.getString("id"));
+                                s.setAddress(object.getString("address"));
+                                s.setTeacher_code(object.getString("teacher_code"));
+                                s.setCity(object.getString("city"));
+                                s.setQualification(object.getString("qualification"));
+                                s.setExperience(object.getString("experience"));
+                                s.setT_image(object.getString("t_image"));
+                                s.setSubjects(object.getString("subjects"));
+                                s.setBoards(object.getString("boards"));
+                                s.setClass_name(object.getString("class_name"));
+                                s.setFees(object.getString("fees"));
+                                s.setTeacher_name(object.getString("teacher_name"));
+
+                                s.setClass_id(object.getString("class_id"));
+                                s.setBoards_id(object.getString("boards_id"));
+                                s.setSubjects_id(object.getString("subjects_id"));
+
+//                                Gson gson = new Gson();
+//                                Type listType = new TypeToken<List<teacher_model>>() {
+//                                }.getType();
+//                                teacher_models = gson.fromJson(response.getString("teachers"), listType);
+
+                                teacher_models.add(s);
+                            }
+
+                        }
+//                        Gson gson = new Gson();
+//                        Type listType = new TypeToken<List<teacher_model>>() {
+//                        }.getType();
+//                        teacher_models = gson.fromJson(response.getString("teachers"), listType);
+
+
+                        if (teacher_models == null){
+                            no_data.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            top_teacher_adapter = new Small_top_Teacher_Adapter(Listing.this, teacher_models);
+                            top_teachers.setAdapter(top_teacher_adapter);
+
+                            adapter = new Small_Teacher_Adapter(Listing.this, teacher_models);
+                            rec_teacher.setAdapter(adapter);
+                        }
+
 
                         shimme_subject.stopShimmer();
                         shimme_subject.setVisibility(View.GONE);
@@ -392,4 +461,167 @@ TextView no_data,no_data1,no_data3;
         shimme_subject.startShimmer();
 
     }
+
+
+    public void getLocation(){
+
+        SharedPreferences.Editor leditor=sharedPreferences.edit();
+
+        FusedLocationProviderClient fusedLocationClient;
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(Listing.this);
+
+        if(ActivityCompat.checkSelfPermission(Listing.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(Listing.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(this,new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION
+            },2);
+
+        }else {
+
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener( new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+
+                            if (location != null) {
+
+                                leditor.putString("lat", String.valueOf(location.getLatitude()));
+                                leditor.putString("lang", String.valueOf(location.getLongitude()));
+
+//                                Geocoder geocoder = new Geocoder(Splash.this, Locale.ENGLISH);
+//                                try {
+//                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude()
+//                                            , location.getLongitude()
+//                                            , 1);
+//
+//
+//                                    if(addresses.size()>0) {
+//
+//                                        city = addresses.get(0).getSubAdminArea();
+//                                        if(city == null) {
+//                                        }
+//                                        else {
+//                                            leditor.putString("city", city);
+//                                        }
+//                                    }
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+
+                                leditor.apply();
+
+                                location.reset();
+                            }
+                            else{
+//                                Toast.makeText(Splash.this, "No Data Found"
+//                                        , Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+
+        }
+    }
+
+    public double distance(double lat1, double lon1, double lat2, double lon2) {
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return dist;
+
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+
+    private void getingfee() {
+        Context context = Listing.this;
+        final android.app.AlertDialog loading = new ProgressDialog(context);
+        loading.setMessage("Getting Info....");
+        loading.setCancelable(false);
+        //loading.show();
+
+        CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_checkingfee, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    String code = response.getString("error code");
+                    if (code.equals("200")){
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+
+                            Home.distance = Integer.parseInt(object.getString("nearest"));
+
+                            getTeachers();
+
+                        }
+
+                    }
+                    else {
+                        loading.dismiss();
+                        //Toasty.error(context, message, Toast.LENGTH_SHORT, true).show();
+                    }
+
+                } catch (JSONException e) {
+                    loading.dismiss();
+                    e.printStackTrace();
+                    //Toasty.error(context, "Error", Toast.LENGTH_SHORT, true).show();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+                Toasty.error(context, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(jsonRequest);
+
+    }
+
 }

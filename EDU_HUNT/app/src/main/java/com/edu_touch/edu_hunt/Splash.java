@@ -174,9 +174,7 @@ public class Splash extends AppCompatActivity {
         SharedPreferences.Editor leditor=sharedPreferences.edit();
 
         FusedLocationProviderClient fusedLocationClient;
-        LocationManager locationManager;
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(Splash.this);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if(ActivityCompat.checkSelfPermission(Splash.this,
                 Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED
@@ -186,6 +184,7 @@ public class Splash extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION
             },2);
+
         }else {
 
             fusedLocationClient.getLastLocation()
@@ -266,7 +265,6 @@ public class Splash extends AppCompatActivity {
                         })
                         .create()
                         .show();
-
 
             } else {
                 // No explanation needed, we can request the permission.
