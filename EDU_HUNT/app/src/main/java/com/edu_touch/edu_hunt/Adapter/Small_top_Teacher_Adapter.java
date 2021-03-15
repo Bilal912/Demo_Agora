@@ -41,8 +41,11 @@ public class Small_top_Teacher_Adapter extends RecyclerView.Adapter<Small_top_Te
     @Override
     public void onBindViewHolder(@NonNull GithubViewHolder holder, int position) {
 
-        Random r = new Random();
-        position = r.nextInt(data.size());
+//        if(data.size()>=5){
+//            Random r = new Random();
+//            position = r.nextInt(data.size());
+//        }
+
         Glide.with(context)
                 .load(data.get(position).getT_image())
                 .centerCrop()
@@ -63,31 +66,29 @@ public class Small_top_Teacher_Adapter extends RecyclerView.Adapter<Small_top_Te
             holder.subject.setText("Subject: "+data.get(position).getSubjects());
         }
 
-        int finalPosition1 = position;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, Teacher_detail.class);
-                i.putExtra("id",data.get(finalPosition1).getId());
-                i.putExtra("name",data.get(finalPosition1).getTeacher_name());
-                i.putExtra("city",data.get(finalPosition1).getCity());
-                i.putExtra("address",data.get(finalPosition1).getAddress());
-                i.putExtra("qualification",data.get(finalPosition1).getQualification());
-                i.putExtra("experience",data.get(finalPosition1).getExperience());
-                i.putExtra("image",data.get(finalPosition1).getT_image());
-                i.putExtra("code",data.get(finalPosition1).getTeacher_code());
-                i.putExtra("subject_id", data.get(finalPosition1).getSubjects_id());
-                i.putExtra("board_id", data.get(finalPosition1).getBoards_id());
-                i.putExtra("class_id", data.get(finalPosition1).getClass_id());
+                i.putExtra("id",data.get(position).getId());
+                i.putExtra("name",data.get(position).getTeacher_name());
+                i.putExtra("city",data.get(position).getCity());
+                i.putExtra("address",data.get(position).getAddress());
+                i.putExtra("qualification",data.get(position).getQualification());
+                i.putExtra("experience",data.get(position).getExperience());
+                i.putExtra("image",data.get(position).getT_image());
+                i.putExtra("code",data.get(position).getTeacher_code());
+                i.putExtra("subject_id", data.get(position).getSubjects_id());
+                i.putExtra("board_id", data.get(position).getBoards_id());
+                i.putExtra("class_id", data.get(position).getClass_id());
 
-                i.putExtra("subject",data.get(finalPosition1).getSubjects());
-                i.putExtra("board",data.get(finalPosition1).getBoards());
-                i.putExtra("fee",data.get(finalPosition1).getFees());
-                i.putExtra("class",data.get(finalPosition1).getClass_name());
+                i.putExtra("subject",data.get(position).getSubjects());
+                i.putExtra("board",data.get(position).getBoards());
+                i.putExtra("fee",data.get(position).getFees());
+                i.putExtra("class",data.get(position).getClass_name());
                 context.startActivity(i);
             }
         });
-
 
     }
 

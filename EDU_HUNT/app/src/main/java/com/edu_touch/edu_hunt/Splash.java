@@ -45,13 +45,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+
 import es.dmoral.toasty.Toasty;
 
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Splash extends AppCompatActivity {
     Thread t;
-    private AlertDialog dialog;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     String city;
@@ -222,6 +222,7 @@ public class Splash extends AppCompatActivity {
                                 location.reset();
                             }
                             else{
+                                
 //                                Toast.makeText(Splash.this, "No Data Found"
 //                                        , Toast.LENGTH_SHORT).show();
                             }
@@ -238,6 +239,7 @@ public class Splash extends AppCompatActivity {
 
         }
     }
+
 
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
@@ -310,4 +312,6 @@ public class Splash extends AppCompatActivity {
 
         }
     }
+
+
 }

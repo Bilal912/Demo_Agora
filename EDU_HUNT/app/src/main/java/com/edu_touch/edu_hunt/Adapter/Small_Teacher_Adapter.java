@@ -41,8 +41,10 @@ public class Small_Teacher_Adapter extends RecyclerView.Adapter<Small_Teacher_Ad
     @Override
     public void onBindViewHolder(@NonNull GithubViewHolder holder, int position) {
 
-        Random r = new Random();
-        position = r.nextInt(data.size());
+        if(data.size()>=5){
+            Random r = new Random();
+            position = r.nextInt(data.size());
+        }
 
         Glide.with(context)
                 .load(data.get(position).getT_image())
@@ -93,10 +95,7 @@ public class Small_Teacher_Adapter extends RecyclerView.Adapter<Small_Teacher_Ad
 
     @Override
     public int getItemCount() {
-        if(data.size()>=5){
-            return 5;
-        }else
-            return data.size();
+        return Math.min(data.size(), 5);
     }
 
     public static class GithubViewHolder extends RecyclerView.ViewHolder{

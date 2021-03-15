@@ -537,6 +537,7 @@ public static Bitmap bitmap = null;
         startActivity(new Intent(Register.this,Login.class));
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

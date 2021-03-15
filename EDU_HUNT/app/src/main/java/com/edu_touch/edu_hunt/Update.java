@@ -556,6 +556,7 @@ public class Update extends AppCompatActivity {
         return byteArrayOutputStream.toByteArray();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -572,6 +573,7 @@ public class Update extends AppCompatActivity {
             }
         }
     }
+
     private void getClasses() {
 
         final android.app.AlertDialog loading = new ProgressDialog(Update.this);
