@@ -61,6 +61,7 @@
                 >
 
                 <EditText
+                    android:enabled="false"
                     android:id="@+id/name"
                     android:inputType="text"
                     android:textSize="14sp"

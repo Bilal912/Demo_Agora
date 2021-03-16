@@ -127,8 +127,14 @@ public class Update extends AppCompatActivity {
         getClasses();
         //getClassGroup();
 
+        spinner_board.setEnabled(false);
+        spinner_board.setClickable(false);
 
+        spinner.setEnabled(false);
+        spinner.setClickable(false);
 
+        spinner_classgroup.setEnabled(false);
+        spinner_classgroup.setClickable(false);
 
         email.setOnClickListener(new View.OnClickListener() {
             @Override
