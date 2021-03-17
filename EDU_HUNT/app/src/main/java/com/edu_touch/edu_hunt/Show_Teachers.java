@@ -100,8 +100,8 @@ SharedPreferences sharedPreferences;
 
     private void getAllteachers() {
         Map<String, String> params = new Hashtable<String, String>();
-        params.put("lang",sharedPreferences.getString("lang","0"));
-        params.put("lat",sharedPreferences.getString("lat","0"));
+        params.put("lang",sharedPreferences.getString("login_lang","0"));
+        params.put("lat",sharedPreferences.getString("login_lat","0"));
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","0"));
 
@@ -124,8 +124,8 @@ SharedPreferences sharedPreferences;
 
                             double dis = distance(Double.parseDouble(object.getString("google_lat")),
                                     Double.parseDouble(object.getString("google_long")),
-                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
-                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
+                                    Double.parseDouble(sharedPreferences.getString("login_lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("login_lang","0")));
 
                             int IntValue = (int) dis;
 
@@ -213,8 +213,8 @@ SharedPreferences sharedPreferences;
     private void getteacherbysubject(String Id, String sclass) {
 
         Map<String, String> params = new Hashtable<String, String>();
-        params.put("lang",sharedPreferences.getString("lang","0"));
-        params.put("lat",sharedPreferences.getString("lat","0"));
+        params.put("lang",sharedPreferences.getString("login_lang","0"));
+        params.put("lat",sharedPreferences.getString("login_lat","0"));
         params.put("subject_id",Id);
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","0"));
@@ -239,8 +239,8 @@ SharedPreferences sharedPreferences;
 
                             double dis = distance(Double.parseDouble(object.getString("google_lat")),
                                     Double.parseDouble(object.getString("google_long")),
-                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
-                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
+                                    Double.parseDouble(sharedPreferences.getString("login_lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("login_lang","0")));
 
                             int IntValue = (int) dis;
 

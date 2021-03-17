@@ -72,8 +72,8 @@ int a=0,b=0;
         subjects = new ArrayList<>();
         class_id = new ArrayList<>();
 
-        lat = sharedPreferences.getString("lat","0");
-        lon = sharedPreferences.getString("lang","0");
+        lat = sharedPreferences.getString("login_lat","0");
+        lon = sharedPreferences.getString("login_lang","0");
         sub_id = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_id);
         classy = findViewById(R.id.spinner_class);
@@ -183,8 +183,8 @@ int a=0,b=0;
 
                             double dis = distance(Double.parseDouble(object.getString("google_lat")),
                                     Double.parseDouble(object.getString("google_long")),
-                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
-                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
+                                    Double.parseDouble(sharedPreferences.getString("login_lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("login_lang","0")));
 
                             int IntValue = (int) dis;
 

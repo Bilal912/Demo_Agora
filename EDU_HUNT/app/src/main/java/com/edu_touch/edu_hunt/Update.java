@@ -374,6 +374,16 @@ public class Update extends AppCompatActivity {
                         Toasty.success(Update.this, "Successfully Updated", Toast.LENGTH_SHORT, true).show();
 
                         SharedPreferences.Editor editors = sharedPreferences.edit();
+
+                        JSONArray jsonArray = obj.getJSONArray("data");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+
+                            editors.putString("login_lat", object.getString("lat"));
+                            editors.putString("login_lang", object.getString("lang"));
+
+                        }
+
                         editors.putString("address", Address);
                         editors.putString("name", Name);
                         editors.putString("class", clasy_id.get(spinner.getSelectedItemPosition()));
@@ -492,9 +502,17 @@ public class Update extends AppCompatActivity {
 
                     if (code.equals("200")){
 
-                        Toasty.success(Update.this, "Successfully Updated", Toast.LENGTH_SHORT, true).show();
-
                         SharedPreferences.Editor editors = sharedPreferences.edit();
+
+                        JSONArray jsonArray = response.getJSONArray("data");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+
+                            editors.putString("login_lat", object.getString("lat"));
+                            editors.putString("login_lang", object.getString("lang"));
+
+                        }
+
                         editors.putString("address", Address);
                         editors.putString("name", Name);
                         editors.putString("user_city", City);
@@ -506,6 +524,8 @@ public class Update extends AppCompatActivity {
                         //editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
 
                         editors.apply();
+
+                        Toasty.success(Update.this, "Successfully Updated", Toast.LENGTH_SHORT, true).show();
 
                         Intent intent = new Intent(Update.this,Home.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -561,7 +581,6 @@ public class Update extends AppCompatActivity {
         b.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -146,7 +146,5 @@ EditText Phone;
         });
         RequestQueue queue = Volley.newRequestQueue(Phoneno.this);
         queue.add(jsonRequest);
-
-
     }
 }

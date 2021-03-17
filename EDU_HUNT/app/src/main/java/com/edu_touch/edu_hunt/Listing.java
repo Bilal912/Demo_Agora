@@ -180,13 +180,13 @@ TextView no_data,no_data1,no_data3;
 
         Map<String, String> params = new Hashtable<String, String>();
 
-        if (sharedPreferences.getString("lang","0").equals("0") &&
-                sharedPreferences.getString("lat","0").equals("0")){
-            getLocation();
-        }
+//        if (sharedPreferences.getString("lang","0").equals("0") &&
+//                sharedPreferences.getString("lat","0").equals("0")){
+//            getLocation();
+//        }
 
-        params.put("lang",sharedPreferences.getString("lang","0"));
-        params.put("lat",sharedPreferences.getString("lat","0"));
+        params.put("lang",sharedPreferences.getString("login_lang","0"));
+        params.put("lat",sharedPreferences.getString("login_lat","0"));
 
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","null"));
@@ -208,8 +208,8 @@ TextView no_data,no_data1,no_data3;
 
                             double dis = distance(Double.parseDouble(object.getString("google_lat")),
                                     Double.parseDouble(object.getString("google_long")),
-                                    Double.parseDouble(sharedPreferences.getString("lat","0")),
-                                    Double.parseDouble(sharedPreferences.getString("lang","0")));
+                                    Double.parseDouble(sharedPreferences.getString("login_lat","0")),
+                                    Double.parseDouble(sharedPreferences.getString("login_lang","0")));
 
                             int IntValue = (int) dis;
 

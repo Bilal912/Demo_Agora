@@ -1,14 +1,20 @@
 package com.edu_touch.edu_hunt;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -26,6 +32,10 @@ import com.android.volley.toolbox.Volley;
 import com.chaos.view.PinView;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.edu_touch.edu_hunt.volley.VolleyMultipartRequest;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +89,13 @@ public class otp extends AppCompatActivity {
         city = getIntent().getStringExtra("city");
         state = getIntent().getStringExtra("state");
 
+
+        if (sharedPreferences.getString("lang","0").equals("0") &&
+                sharedPreferences.getString("lat","0").equals("0")){
+                getLocation();
+        }
+
+
         pinView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -89,7 +106,6 @@ public class otp extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -224,7 +240,7 @@ public class otp extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     //  loading.dismiss();
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     animationView.setVisibility(View.GONE);
 //                    Toasty.error(otp.this, "Error", Toast.LENGTH_SHORT, true).show();
                 }
@@ -327,14 +343,17 @@ public class otp extends AppCompatActivity {
                 try {
 
                     String message = response.getString("message");
-                    String code = response.getString("error_code");
+                    String codey = response.getString("error_code");
 
-                    if (code.equals("200")) {
+                    if (codey.equals("200")) {
 
                         Toasty.success(otp.this, message, Toast.LENGTH_SHORT, true).show();
 
                         animationView.setVisibility(View.VISIBLE);
-//                        int j = response.getInt("code");
+                        int j = response.getInt("code");
+
+                        code = String.valueOf(j);
+
 //                        Intent i = new Intent(Phoneno.this, otp.class);
 //                        i.putExtra("name", name);
 //                        i.putExtra("board", board);
@@ -397,4 +416,49 @@ public class otp extends AppCompatActivity {
     public void otp_resend(View view) {
         resendotp(number);
     }
+
+    public void getLocation(){
+
+        SharedPreferences.Editor leditor=sharedPreferences.edit();
+
+        FusedLocationProviderClient fusedLocationClient;
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(otp.this);
+
+        if(ActivityCompat.checkSelfPermission(otp.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(otp.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(this,new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION
+            },2);
+
+        }else {
+
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener( new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+
+                            if (location != null) {
+
+                                leditor.putString("lat", String.valueOf(location.getLatitude()));
+                                leditor.putString("lang", String.valueOf(location.getLongitude()));
+                                leditor.apply();
+
+                                location.reset();
+                            }
+
+                        }
+
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
 }

@@ -121,6 +121,8 @@ SharedPreferences.Editor editors;
                             editors.putString("state", object.getString("state"));
                             editors.putString("zip", object.getString("zip"));
 
+                            editors.putString("login_lat", object.getString("lat"));
+                            editors.putString("login_lang", object.getString("lang"));
 
                             Checkuser(object.getString("id"));
 
