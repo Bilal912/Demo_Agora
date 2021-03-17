@@ -92,8 +92,13 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         Name.setText(sharedPreferences.getString("name","null"));
         Phone.setText(sharedPreferences.getString("phone","null"));
 
-//        Toast.makeText(Home.this, sharedPreferences.getString("city","null")
-//                , Toast.LENGTH_SHORT).show();
+        if (sharedPreferences.getString("login_lat","0").equals("0") &&
+                sharedPreferences.getString("login_lang","0").equals("0")){
+            Toast.makeText(this, "Please Update Your Address", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(Home.this,Update.class);
+            startActivity(i);
+
+        }
 
         getingfee();
 
