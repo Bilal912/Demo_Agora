@@ -41,7 +41,7 @@ public class Adapter_cart extends RecyclerView.Adapter<Adapter_cart.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.name.setText(ar.get(position).getName());
+        holder.name.setText(ar.get(position).getPname());
         holder.price.setText("Price: "+ar.get(position).getPprice());
         holder.category.setText(ar.get(position).getCategory());
         Picasso.get().load(ar.get(position).getImg()).into(holder.image);

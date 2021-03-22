@@ -104,14 +104,16 @@ int a=0,b=0;
         classy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                try {
                 if (a==0){
                     a=1;
                 }
                 else {
-//                    Toast.makeText(Filter.this, class_id.get(classy.getSelectedItemPosition())+" - " +
-//                            ""+ sub_id.get(subjecty.getSelectedItemPosition()), LENGTH_SHORT).show();
 
                     getTeacherfilter(class_id.get(classy.getSelectedItemPosition()).trim(), sub_id.get(subjecty.getSelectedItemPosition()).trim());
+                }
+                }
+                catch (Exception ignored){
                 }
             }
             @Override
@@ -130,8 +132,12 @@ int a=0,b=0;
 //                else {
 //                    Toast.makeText(Filter.this, class_id.get(classy.getSelectedItemPosition())+" - " +
 //                            ""+ sub_id.get(subjecty.getSelectedItemPosition()), LENGTH_SHORT).show();
+                try {
                     getTeacherfilter(class_id.get(classy.getSelectedItemPosition()).trim(), sub_id.get(subjecty.getSelectedItemPosition()).trim());
-                //}
+                    //}
+                }
+                catch (Exception ignored){
+                }
             }
 
             @Override

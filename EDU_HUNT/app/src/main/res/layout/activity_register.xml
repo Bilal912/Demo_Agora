@@ -206,10 +206,12 @@
 
 
                 <EditText
+                    android:scrollbars="vertical"
                     android:lines="4"
-                    android:id="@+id/address"
                     android:gravity="top|left"
                     android:inputType="textMultiLine"
+
+                    android:id="@+id/address"
                     android:textSize="14sp"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
@@ -219,7 +221,6 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
                     android:padding="12dp"
-                    android:scrollbars="vertical"
                     android:hint="Address"
                     />
                 <EditText

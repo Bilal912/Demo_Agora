@@ -9,6 +9,15 @@ public class Cart_model {
     String pprice;
     String quantity;
     String vendor_id;
+    String pname;
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
 
     public String getCategory() {
         return category;
