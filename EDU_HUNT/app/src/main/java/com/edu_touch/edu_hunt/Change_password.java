@@ -108,7 +108,6 @@ public class Change_password extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //loading.dismiss();
                 animationView.setVisibility(View.GONE);
                 Toasty.error(Change_password.this, "Connection Timed Out", Toast.LENGTH_SHORT, true).show();
             }
