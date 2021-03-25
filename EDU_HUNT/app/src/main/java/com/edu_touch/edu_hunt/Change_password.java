@@ -99,7 +99,6 @@ public class Change_password extends AppCompatActivity {
                     }
 
                 } catch (JSONException e) {
-                    //  loading.dismiss();
                     e.printStackTrace();
                     animationView.setVisibility(View.GONE);
                     Toasty.error(Change_password.this, "Error", Toast.LENGTH_SHORT, true).show();
