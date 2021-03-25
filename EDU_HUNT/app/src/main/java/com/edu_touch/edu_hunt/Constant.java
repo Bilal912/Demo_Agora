@@ -8,6 +8,8 @@ public class Constant {
     public static final String image_url = main_url+"/uploads/images/";
     public static final String Base_url_payment = main_url+"/paymentGateway?";
 
+    public static final String Base_url_terms = main_url+"/terms-and-conditions";
+
     public static final String Base_url_login = Base_url+"/login";
     public static final String Base_url_signup = Base_url+"/registers";
     public static final String Base_url_sendotp = Base_url+"/send_otp";

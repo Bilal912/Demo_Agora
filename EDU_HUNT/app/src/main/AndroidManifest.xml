@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EDU_HUNT"
         tools:targetApi="n">
-        <activity android:name=".Change_password"></activity>
+        <activity android:name=".Terms_and_conditions"></activity>
+        <activity android:name=".Change_password" />
         <activity android:name=".Warning" />
         <activity android:name=".Filter" />
         <activity android:name=".My_teacher" />

@@ -67,7 +67,7 @@ SharedPreferences.Editor editors;
     public void submit(View view) {
 
         if (TextUtils.isEmpty(Email.getText().toString())){
-            makeText(Login.this, "Email is required", LENGTH_SHORT).show();
+            makeText(Login.this, "Email or Phone is required", LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(Password.getText().toString())){
             makeText(Login.this, "Password is required", LENGTH_SHORT).show();

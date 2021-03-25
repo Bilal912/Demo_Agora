@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -49,19 +51,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static android.view.Gravity.TOP;
+import static android.widget.Toast.LENGTH_SHORT;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     SliderLayout sliderLayout;
     SharedPreferences sharedPreferences;
-    TextView Name,Phone;
+    TextView Name,Phone,Boardyy;
     CircleImageView imageView;
     public static int distance = 0;
+
+    SharedPreferences.Editor editors;
+
+    ArrayList<String> clasy,class_boards;
+    ArrayList<String> clasy_id,class_boards_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,13 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
 
         Name = findViewById(R.id.tv_header_name);
         Phone = findViewById(R.id.tv_adres_phone);
+
+        Boardyy = findViewById(R.id.boardy);
+
+        class_boards = new ArrayList<>();
+        clasy = new ArrayList<>();
+        clasy_id=new ArrayList<>();
+        class_boards_id=new ArrayList<>();
 
         sliderLayout = findViewById(R.id.imageSlider);
         sliderLayout.setIndicatorAnimation(IndicatorAnimations.FILL); //set indicator animation by using SliderLayout.Animations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
@@ -90,7 +107,15 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
                 .into(imageView);
 
         Name.setText(sharedPreferences.getString("name","null"));
-        Phone.setText(sharedPreferences.getString("phone","null"));
+
+        if (sharedPreferences.getString("class_name","null").equals("null")){
+            getClasses();
+            getBoard();
+        }
+        else {
+            Phone.setText("Class: "+sharedPreferences.getString("class_name","null"));
+            Boardyy.setText("Board: "+sharedPreferences.getString("board_name","null"));
+        }
 
         if (sharedPreferences.getString("login_lat","0").equals("0") &&
                 sharedPreferences.getString("login_lang","0").equals("0")){
@@ -394,6 +419,128 @@ public class Home extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(jsonRequest);
 
+    }
+
+    private void getBoard() {
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getboard
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("Boards");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            class_boards.add(object.getString("name"));
+                            class_boards_id.add(object.getString("id"));
+                        }
+
+                        String temp = sharedPreferences.getString("board","null");
+                        int temp2 = class_boards_id.indexOf(temp);
+                        editors = sharedPreferences.edit();
+                        editors.putString("board_name", class_boards.get(temp2));
+                        editors.apply();
+
+                        Boardyy.setText("Board: "+class_boards.get(temp2));
+
+
+                    }
+                    else {
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
+    }
+    private void getClasses() {
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, Constant.Base_url_getclasses
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    String code = response.getString("error code");
+
+                    if (code.equals("200")) {
+
+                        JSONArray jsonArray = response.getJSONArray("teachers");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            clasy.add(object.getString("name"));
+                            clasy_id.add(object.getString("id"));
+                        }
+
+                        String temp = sharedPreferences.getString("class","null");
+                        int temp2 = clasy_id.indexOf(temp);
+                        editors = sharedPreferences.edit();
+                        editors.putString("class_name", clasy.get(temp2));
+                        editors.apply();
+
+                        Phone.setText("Class: "+clasy.get(temp2));
+
+                    }
+                    else {
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        jsonRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonRequest);
     }
 
 }

@@ -101,7 +101,7 @@
                 android:textAlignment="center"
                 android:gravity="center"
                 android:fontFamily="@font/avian_bold"
-                android:text="POWERED  BY  EDU  TOUCH  COACHING  INSTITUTE"
+                android:text="RUN BY EDUTOUCH COACHING INSTITUTE"
                 />
             <ImageView
                 android:layout_marginTop="-10dp"

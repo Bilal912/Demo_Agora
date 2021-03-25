@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -61,14 +62,18 @@ public static Bitmap bitmap = null;
     public static final int RESULT_LOAD_IMAGE = 1;
     android.app.AlertDialog loadings;
 
+    TextView terms;
     SharedPreferences sharedPreferences;
     ArrayList<String> clasy,class_group,class_boards,subjects;
     ArrayList<String> clasy_id,class_group_id,class_boards_id,subjects_id;
     LottieAnimationView animationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        terms = findViewById(R.id.terms);
 
         linear_class = findViewById(R.id.linear_class);
         linear_subject = findViewById(R.id.linear_subject);
@@ -116,6 +121,14 @@ public static Bitmap bitmap = null;
 
         getBoard();
         getClasses();
+
+
+        terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Register.this,Terms_and_conditions.class));
+            }
+        });
 
 //        spinner_board.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -170,6 +183,7 @@ public static Bitmap bitmap = null;
         });
 
     }
+
     private void getBoard() {
 
         final android.app.AlertDialog loading = new ProgressDialog(Register.this);
