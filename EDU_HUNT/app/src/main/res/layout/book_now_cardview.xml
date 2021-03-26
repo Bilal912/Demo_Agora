@@ -25,6 +25,7 @@
         android:layout_marginLeft="10dp" />
 
     <LinearLayout
+        android:id="@+id/liney"
         android:layout_toLeftOf="@id/button"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="3dp"
@@ -94,5 +95,21 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         tools:ignore="SmallSp" />
+
+    <TextView
+        android:layout_toRightOf="@id/liney"
+        android:layout_below="@id/button"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:textSize="10sp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textColor="@color/redy"
+        android:text="Distance"
+        android:id="@+id/distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
 
 </RelativeLayout>

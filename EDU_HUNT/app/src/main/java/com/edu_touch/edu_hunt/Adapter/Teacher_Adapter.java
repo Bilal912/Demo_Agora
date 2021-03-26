@@ -50,6 +50,8 @@ public class Teacher_Adapter extends RecyclerView.Adapter<Teacher_Adapter.Github
                 .dontAnimate()
                 .into(holder.imageView);
 
+        holder.distance.setText("Distance: "+data.get(position).getDis()+"km");
+
         holder.name.setText(data.get(position).getTeacher_name());
         holder.expericne.setText("Experience: "+data.get(position).getExperience());
         holder.quali.setText("Qualification: "+data.get(position).getQualification());
@@ -99,16 +101,16 @@ public class Teacher_Adapter extends RecyclerView.Adapter<Teacher_Adapter.Github
     public static class GithubViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView imageView;
-        TextView name,quali,expericne,subject;
+        TextView name,quali,expericne,subject,distance;
         public GithubViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            distance = itemView.findViewById(R.id.distance);
             name = itemView.findViewById(R.id.name);
             quali = itemView.findViewById(R.id.text);
             expericne = itemView.findViewById(R.id.exper);
             subject = itemView.findViewById(R.id.subject);
             imageView = itemView.findViewById(R.id.icon);
-
 
         }
     }

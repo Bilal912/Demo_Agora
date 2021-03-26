@@ -38,6 +38,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -210,9 +212,13 @@ int a=0,b=0;
                                 s.setFees(object.getString("fees"));
                                 s.setTeacher_name(object.getString("teacher_name"));
 
+                                s.setDistance(IntValue);
+
                                 s.setClass_id(object.getString("class_id"));
                                 s.setBoards_id(object.getString("boards_id"));
                                 s.setSubjects_id(object.getString("subjects_id"));
+
+                                s.setDis(Float.parseFloat(String.format("%.2f", dis)));
 
                                 arrayList.add(s);
                             }
@@ -223,9 +229,16 @@ int a=0,b=0;
                             no_data.setVisibility(View.VISIBLE);
                         }
                         else {
+
+                            Collections.sort(arrayList, new Comparator<teacher_model>() {
+                                @Override
+                                public int compare(teacher_model lhs, teacher_model rhs) {
+                                    return Float.compare(lhs.getDis(), rhs.getDis());
+                                }
+                            });
+
                             teacher_adapter = new Teacher_Adapter(Filter.this, arrayList);
                             recyclerView.setAdapter(teacher_adapter);
-                            teacher_adapter.notifyDataSetChanged();
                         }
 
 

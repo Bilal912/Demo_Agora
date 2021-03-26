@@ -4,6 +4,47 @@ public class teacher_model {
     public String id;
     public String google_lat;
 
+    public int distance;
+    public float dis;
+
+    public float getDis() {
+        return dis;
+    }
+
+    public void setDis(float dis) {
+        this.dis = dis;
+    }
+
+    public teacher_model(String id, String google_lat, int distance, float dis, String google_long, String teacher_code, String city, String qualification, String experience, String t_image, String address, String subjects, String boards, String class_name, String fees, String teacher_name, String class_id, String subjects_id, String boards_id) {
+        this.id = id;
+        this.google_lat = google_lat;
+        this.distance = distance;
+        this.dis = dis;
+        this.google_long = google_long;
+        this.teacher_code = teacher_code;
+        this.city = city;
+        this.qualification = qualification;
+        this.experience = experience;
+        this.t_image = t_image;
+        this.address = address;
+        this.subjects = subjects;
+        this.boards = boards;
+        this.class_name = class_name;
+        this.fees = fees;
+        this.teacher_name = teacher_name;
+        this.class_id = class_id;
+        this.subjects_id = subjects_id;
+        this.boards_id = boards_id;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
     public String getGoogle_lat() {
         return google_lat;
     }
@@ -142,26 +183,6 @@ public class teacher_model {
 
     public void setBoards(String boards) {
         this.boards = boards;
-    }
-
-    public teacher_model(String id, String google_lat, String google_long, String teacher_code, String city, String qualification, String experience, String t_image, String address, String subjects, String boards, String class_name, String fees, String teacher_name, String class_id, String subjects_id, String boards_id) {
-        this.id = id;
-        this.google_lat = google_lat;
-        this.google_long = google_long;
-        this.teacher_code = teacher_code;
-        this.city = city;
-        this.qualification = qualification;
-        this.experience = experience;
-        this.t_image = t_image;
-        this.address = address;
-        this.subjects = subjects;
-        this.boards = boards;
-        this.class_name = class_name;
-        this.fees = fees;
-        this.teacher_name = teacher_name;
-        this.class_id = class_id;
-        this.subjects_id = subjects_id;
-        this.boards_id = boards_id;
     }
 
     public String getClass_name() {

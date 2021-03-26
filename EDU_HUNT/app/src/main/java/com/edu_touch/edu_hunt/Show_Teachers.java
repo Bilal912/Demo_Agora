@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +109,7 @@ SharedPreferences sharedPreferences;
         params.put("city",sharedPreferences.getString("city","0"));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onResponse(JSONObject response) {
 
@@ -149,6 +153,8 @@ SharedPreferences sharedPreferences;
                                 s.setBoards_id(object.getString("boards_id"));
                                 s.setSubjects_id(object.getString("subjects_id"));
 
+                                s.setDis(Float.parseFloat(String.format("%.2f", dis)));
+
                                 arrayList.add(s);
 
                             }
@@ -159,6 +165,14 @@ SharedPreferences sharedPreferences;
                             no_data.setVisibility(View.VISIBLE);
                         }
                         else {
+
+                            Collections.sort(arrayList, new Comparator<teacher_model>() {
+                                @Override
+                                public int compare(teacher_model lhs, teacher_model rhs) {
+                                    return Float.compare(lhs.getDis(), rhs.getDis());
+                                }
+                            });
+
                             teacher_adapter = new Teacher_Adapter(Show_Teachers.this, arrayList);
                             recyclerView.setAdapter(teacher_adapter);
                         }
@@ -260,6 +274,10 @@ SharedPreferences sharedPreferences;
                                 s.setFees(object.getString("fees"));
                                 s.setTeacher_name(object.getString("teacher_name"));
 
+                                s.setDis(Float.parseFloat(String.format("%.2f", dis)));
+
+                                s.setDistance(IntValue);
+
                                 s.setClass_id(object.getString("class_id"));
                                 s.setBoards_id(object.getString("boards_id"));
                                 s.setSubjects_id(object.getString("subjects_id"));
@@ -273,6 +291,14 @@ SharedPreferences sharedPreferences;
                             no_data.setVisibility(View.VISIBLE);
                         }
                         else {
+
+                            Collections.sort(arrayList, new Comparator<teacher_model>() {
+                                @Override
+                                public int compare(teacher_model lhs, teacher_model rhs) {
+                                    return Float.compare(lhs.getDis(), rhs.getDis());
+                                }
+                            });
+
                             teacher_adapter = new Teacher_Adapter(Show_Teachers.this, arrayList);
                             recyclerView.setAdapter(teacher_adapter);
                         }

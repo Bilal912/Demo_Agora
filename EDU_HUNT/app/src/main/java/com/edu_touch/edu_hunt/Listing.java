@@ -54,6 +54,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -176,14 +178,7 @@ TextView no_data,no_data1,no_data3;
 
     private void getTeachers() {
 
-//        Toast.makeText(Listing.this, ""+Home.distance, Toast.LENGTH_SHORT).show();
-
         Map<String, String> params = new Hashtable<String, String>();
-
-//        if (sharedPreferences.getString("lang","0").equals("0") &&
-//                sharedPreferences.getString("lat","0").equals("0")){
-//            getLocation();
-//        }
 
         params.put("lang",sharedPreferences.getString("login_lang","0"));
         params.put("lat",sharedPreferences.getString("login_lat","0"));
@@ -229,6 +224,10 @@ TextView no_data,no_data1,no_data3;
                                 s.setFees(object.getString("fees"));
                                 s.setTeacher_name(object.getString("teacher_name"));
 
+                                s.setDis(Float.parseFloat(String.format("%.2f", dis)));
+
+                                s.setDistance(IntValue);
+
                                 s.setClass_id(object.getString("class_id"));
                                 s.setBoards_id(object.getString("boards_id"));
                                 s.setSubjects_id(object.getString("subjects_id"));
@@ -252,6 +251,14 @@ TextView no_data,no_data1,no_data3;
                             no_data.setVisibility(View.VISIBLE);
                         }
                         else {
+
+                            Collections.sort(teacher_models, new Comparator<teacher_model>() {
+                                @Override
+                                public int compare(teacher_model lhs, teacher_model rhs) {
+                                    return Float.compare(lhs.getDis(), rhs.getDis());
+                                }
+                            });
+
                             top_teacher_adapter = new Small_top_Teacher_Adapter(Listing.this, teacher_models);
                             top_teachers.setAdapter(top_teacher_adapter);
 
