@@ -43,6 +43,7 @@ import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
+import static android.widget.Toast.LENGTH_SHORT;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Show_Teachers extends AppCompatActivity {

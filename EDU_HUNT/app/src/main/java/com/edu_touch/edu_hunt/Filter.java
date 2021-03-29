@@ -74,6 +74,8 @@ int a=0,b=0;
         subjects = new ArrayList<>();
         class_id = new ArrayList<>();
 
+        subjects.add("Select Subject");
+
         lat = sharedPreferences.getString("login_lat","0");
         lon = sharedPreferences.getString("login_lang","0");
         sub_id = new ArrayList<>();
@@ -100,51 +102,36 @@ int a=0,b=0;
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        getclassspinnner();
+        if (sharedPreferences.getString("class_name","null").equals("null")){
+            getclassspinnner();
+        }
+        else {
+            classes.add(sharedPreferences.getString("class_name","null"));
+            classy.setAdapter(new ArrayAdapter<String>(Filter.this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    classes));
+        }
+
         getsubjectspinner();
-
-        classy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                try {
-                if (a==0){
-                    a=1;
-                }
-                else {
-
-                    getTeacherfilter(class_id.get(classy.getSelectedItemPosition()).trim(), sub_id.get(subjecty.getSelectedItemPosition()).trim());
-                }
-                }
-                catch (Exception ignored){
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-
-            }
-
-        });
 
         subjecty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                if (b==0){
-//                    b=1;
-//                }
-//                else {
-//                    Toast.makeText(Filter.this, class_id.get(classy.getSelectedItemPosition())+" - " +
-//                            ""+ sub_id.get(subjecty.getSelectedItemPosition()), LENGTH_SHORT).show();
-                try {
-                    getTeacherfilter(class_id.get(classy.getSelectedItemPosition()).trim(), sub_id.get(subjecty.getSelectedItemPosition()).trim());
-                    //}
+                if (subjecty.getSelectedItem().equals("Select Subject")){
+                    teacher_shimmer.stopShimmer();
+                    teacher_shimmer.setVisibility(View.GONE);
                 }
-                catch (Exception ignored){
+                else {
+                    try {
+                        getTeacherfilter(sharedPreferences.getString("class", "null"), sub_id.get(subjecty.getSelectedItemPosition()-1));
+
+                    } catch (Exception ignored) {
+                    }
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
             }
         });
 

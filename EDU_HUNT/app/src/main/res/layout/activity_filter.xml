@@ -104,14 +104,18 @@
                 android:gravity="center_horizontal"
                 android:weightSum="2"
                 >
+
                 <Spinner
+                    android:textColor="@color/color_main"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/spinner_class"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:spinnerMode="dropdown"
+                    />
                 <Spinner
                     android:gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
