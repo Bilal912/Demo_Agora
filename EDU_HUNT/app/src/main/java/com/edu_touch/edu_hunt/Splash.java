@@ -114,7 +114,6 @@ public class Splash extends AppCompatActivity {
 
                 try {
                     String code = response.getString("error code");
-
                     if (code.equals("200")){
                         JSONArray jsonArray = response.getJSONArray("teachers");
                         for (int j = 0; j < jsonArray.length(); j++) {
@@ -136,10 +135,16 @@ public class Splash extends AppCompatActivity {
                         }
                     }
                     else {
+                        Intent i = new Intent(Splash.this, Home.class);
+                        startActivity(i);
+                        finish();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Intent i = new Intent(Splash.this, Home.class);
+                    startActivity(i);
+                    finish();
                 }
             }
         }
@@ -312,6 +317,5 @@ public class Splash extends AppCompatActivity {
 
         }
     }
-
 
 }
