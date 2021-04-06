@@ -109,6 +109,8 @@ SharedPreferences sharedPreferences;
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","0"));
 
+        params.put("board_id",sharedPreferences.getString("board","0"));
+
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @SuppressLint("DefaultLocale")
             @Override
@@ -233,6 +235,7 @@ SharedPreferences sharedPreferences;
         params.put("subject_id",Id);
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","0"));
+        params.put("board_id",sharedPreferences.getString("board","0"));
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_teacher_listing, params, new Response.Listener<JSONObject>() {
             @Override

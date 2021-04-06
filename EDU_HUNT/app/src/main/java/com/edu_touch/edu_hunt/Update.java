@@ -127,14 +127,14 @@ public class Update extends AppCompatActivity {
         getClasses();
         //getClassGroup();
 
-        spinner_board.setEnabled(false);
-        spinner_board.setClickable(false);
-
-        spinner.setEnabled(false);
-        spinner.setClickable(false);
-
-        spinner_classgroup.setEnabled(false);
-        spinner_classgroup.setClickable(false);
+//        spinner_board.setEnabled(false);
+//        spinner_board.setClickable(false);
+//
+//        spinner.setEnabled(false);
+//        spinner.setClickable(false);
+//
+//        spinner_classgroup.setEnabled(false);
+//        spinner_classgroup.setClickable(false);
 
         email.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,6 +390,11 @@ public class Update extends AppCompatActivity {
                         editors.putString("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
                         //editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
 
+                        //name of class and board
+                        editors.putString("class_name", spinner.getSelectedItem().toString());
+                        editors.putString("board_name", spinner_board.getSelectedItem().toString());
+                        /////////////////////////////////////////////////////////
+
                         editors.putString("user_city", City);
                         editors.putString("state", State);
                         editors.putString("zip", ZIP);
@@ -522,6 +527,12 @@ public class Update extends AppCompatActivity {
                         editors.putString("class", clasy_id.get(spinner.getSelectedItemPosition()));
                         editors.putString("board", class_board_id.get(spinner_board.getSelectedItemPosition()));
                         //editors.putString("class_group", spinner_classgroup.getSelectedItem().toString().trim());
+
+
+                        //name of class and board
+                        editors.putString("class_name", spinner.getSelectedItem().toString());
+                        editors.putString("board_name", spinner_board.getSelectedItem().toString());
+                        /////////////////////////////////////////////////////////
 
                         editors.apply();
 

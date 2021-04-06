@@ -182,7 +182,7 @@ TextView no_data,no_data1,no_data3;
 
         params.put("lang",sharedPreferences.getString("login_lang","0"));
         params.put("lat",sharedPreferences.getString("login_lat","0"));
-
+        params.put("board_id",sharedPreferences.getString("board","0"));
         params.put("class_id",sharedPreferences.getString("class","0"));
         params.put("city",sharedPreferences.getString("city","null"));
 
