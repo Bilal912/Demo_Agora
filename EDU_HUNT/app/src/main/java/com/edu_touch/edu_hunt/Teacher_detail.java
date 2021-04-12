@@ -188,7 +188,7 @@ CircleImageView imageView;
     }
 
     @Override
-    public void onclicky(String s, String c, String b,String fee) {
+    public void onclicky(String s, String c, String b,String fee,String transc) {
 
         sharedPreferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
         String code = "";
@@ -216,6 +216,9 @@ CircleImageView imageView;
         params.put("subject_id",s);
         params.put("class_group_id",c);
         params.put("booking_date",newDateStr);
+
+        params.put("billdesk_id",transc);
+
         params.put("teacher_otp",code);
         params.put("amount",fee);
         params.put("starting_date","000000");

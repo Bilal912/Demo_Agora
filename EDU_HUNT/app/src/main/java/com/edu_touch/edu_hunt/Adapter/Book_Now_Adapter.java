@@ -87,7 +87,7 @@ public class Book_Now_Adapter extends RecyclerView.Adapter<Book_Now_Adapter.Gith
                                 , data.get(position).getBoards_id(), data.get(position).getFees());
                     } else {
                         Book_Now_Adapter.clicky.onclicky(data.get(position).getSubjects_id(), data.get(position).getClass_id()
-                                , data.get(position).getBoards_id(), data.get(position).getFees());
+                                , data.get(position).getBoards_id(), data.get(position).getFees()," ");
                     }
                 }
             }

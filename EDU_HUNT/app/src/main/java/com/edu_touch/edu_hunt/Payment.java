@@ -51,6 +51,8 @@ public class Payment extends AppCompatActivity {
     String amount,ID,check,fee_id,booking_id,class_id,subject_id,board_id,feess;
     SharedPreferences sharedPreferences;
 
+    String transaction_id;
+
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -122,13 +124,16 @@ public class Payment extends AppCompatActivity {
 
         if (url.contains("success")) {
 
+            Uri uri= Uri.parse(webView.getUrl());
+            transaction_id = uri.getQueryParameter("id");
+
             if (check.equals("Fee Deposit")){
                 Submittingfee();
             }
             else {
 
                 Book_Now_Adapter.clicky.onclicky(subject_id, class_id
-                        , board_id, feess);
+                        , board_id, feess, transaction_id);
 
                 //Toast.makeText(this, "Now You can book your Teacher", Toast.LENGTH_LONG).show();
 //                SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -182,6 +187,7 @@ public class Payment extends AppCompatActivity {
         Map<String, String> params = new Hashtable<String, String>();
         params.put("booking_id",booking_id);
         params.put("fees_id",fee_id);
+        params.put("billdesk_id",transaction_id);
 
         CustomRequest jsonRequest = new CustomRequest(Request.Method.POST, Constant.Base_url_submiting_fee, params, new Response.Listener<JSONObject>() {
             @Override
