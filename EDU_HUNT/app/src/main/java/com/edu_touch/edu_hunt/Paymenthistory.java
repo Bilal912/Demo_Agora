@@ -25,7 +25,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.edu_touch.edu_hunt.Adapter.Payment_History_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Small_Teacher_Adapter;
 import com.edu_touch.edu_hunt.Adapter.Small_top_Teacher_Adapter;
+import com.edu_touch.edu_hunt.Adapter.Subscription_Payment_History_Adapter;
 import com.edu_touch.edu_hunt.Model.payment_history_model;
+import com.edu_touch.edu_hunt.Model.subscription_model;
 import com.edu_touch.edu_hunt.Model.teacher_model;
 import com.edu_touch.edu_hunt.volley.CustomRequest;
 import com.google.gson.Gson;
@@ -46,11 +48,15 @@ import es.dmoral.toasty.Toasty;
 import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
 
 public class Paymenthistory extends AppCompatActivity {
-RecyclerView recyclerView;
+RecyclerView recyclerView,recycler_id;
 CircleImageView imageView;
     LottieAnimationView animationView;
 SharedPreferences sharedPreferences;
+
+    ArrayList<subscription_model> ar;
+
 ArrayList<payment_history_model> arrayList;
+    Subscription_Payment_History_Adapter adapter2;
 Payment_History_Adapter adapter;
 TextView textView;
     @Override
@@ -58,6 +64,9 @@ TextView textView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paymenthistory);
         animationView = findViewById(R.id.anime);
+
+        ar=new ArrayList<>();
+        recycler_id = findViewById(R.id.recycler_id);
 
         imageView = findViewById(R.id.iv_header_img);
         textView = findViewById(R.id.no_data);
@@ -74,6 +83,24 @@ TextView textView;
                 .into(imageView);
 
         recyclerView = findViewById(R.id.recycler_payment);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Paymenthistory.this) {
+            @Override
+            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(Paymenthistory.this) {
+                    private static final float SPEED = 2000f;// Change this value (default=25f)
+                    @Override
+                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                        return SPEED / displayMetrics.densityDpi;
+                    }
+                };
+                smoothScroller.setTargetPosition(position);
+                startSmoothScroll(smoothScroller);
+            }
+        };
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recycler_id.setLayoutManager(layoutManager);
+        recycler_id.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(Paymenthistory.this) {
             @Override
@@ -93,6 +120,7 @@ TextView textView;
         recyclerView.setLayoutManager(layoutManager2);
         recyclerView.setHasFixedSize(true);
 
+
         getHistory();
 
     }
@@ -110,19 +138,45 @@ TextView textView;
                 try {
 
                     String message = response.getString("message");
-                    String code = response.getString("error code");
+                    String code = response.getString("error_code");
 
                     if (code.equals("200")){
 
                         textView.setVisibility(View.GONE);
+
                         Gson gson = new Gson();
-                        Type listType = new TypeToken<List<payment_history_model>>() {
+                        Type listType = new TypeToken<List<subscription_model>>() {
                         }.getType();
-                        arrayList = gson.fromJson(response.getString("teachers"), listType);
+                        ar = gson.fromJson(response.getString("subscription"), listType);
+
+                        adapter2 = new Subscription_Payment_History_Adapter(Paymenthistory.this, ar);
+                        recycler_id.setAdapter(adapter2);
+
+                        Gson gson2 = new Gson();
+                        Type listType2 = new TypeToken<List<payment_history_model>>() {
+                        }.getType();
+                        arrayList = gson2.fromJson(response.getString("teachers"), listType2);
 
                         adapter = new Payment_History_Adapter(Paymenthistory.this, arrayList);
                         recyclerView.setAdapter(adapter);
                         animationView.setVisibility(View.GONE);
+                    } else if (code.equals("500")){
+
+                        textView.setVisibility(View.GONE);
+
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<subscription_model>>() {
+                        }.getType();
+                        ar = gson.fromJson(response.getString("subscription"), listType);
+
+                        if (ar == null){
+                            textView.setVisibility(View.VISIBLE);
+                            animationView.setVisibility(View.GONE);
+                        }
+                        else {
+                            adapter2 = new Subscription_Payment_History_Adapter(Paymenthistory.this, ar);
+                            recycler_id.setAdapter(adapter2);
+                        }
                     }
                     else {
                         textView.setVisibility(View.VISIBLE);
@@ -131,7 +185,6 @@ TextView textView;
                     }
 
                 } catch (JSONException e) {
-
                     textView.setVisibility(View.VISIBLE);
                     animationView.setVisibility(View.GONE);
                     e.printStackTrace();

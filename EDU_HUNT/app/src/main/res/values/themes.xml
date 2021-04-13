@@ -21,6 +21,9 @@
         <item name="android:divider">@color/black</item>
     </style>
 
+    <style name="Progressbar.White" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorControlActivated">@color/color_main</item>
+    </style>
     <style name="MyDarkToolbarStyle" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="background">@color/white</item>
         <item name="android:popupBackground">@color/white</item>

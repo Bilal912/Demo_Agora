@@ -28,6 +28,13 @@
             />
     </LinearLayout>
 
+    <ProgressBar
+        android:theme="@style/Progressbar.White"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <WebView
         android:layout_below="@id/linear"
         android:layout_width="match_parent"

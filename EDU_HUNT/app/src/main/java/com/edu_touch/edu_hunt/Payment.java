@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -51,6 +53,7 @@ public class Payment extends AppCompatActivity {
     String amount,ID,check,fee_id,booking_id,class_id,subject_id,board_id,feess;
     SharedPreferences sharedPreferences;
 
+    ProgressBar progress;
     String transaction_id;
 
 
@@ -59,6 +62,8 @@ public class Payment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        progress=findViewById(R.id.progress);
 
         this.webView = (WebView) findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
@@ -82,6 +87,12 @@ public class Payment extends AppCompatActivity {
 
         }
 
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        webView.getSettings().setAppCacheEnabled(false);
+
         webView.loadUrl(Constant.Base_url_payment+"amount="+amount+"&user-id="+ID);
 
         webView.setWebViewClient(new WebViewClient() {
@@ -93,10 +104,16 @@ public class Payment extends AppCompatActivity {
                 return true;
             }
 
+            public void onPageStarted(android.webkit.WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+
+                progress.setVisibility(View.VISIBLE);
+            }
             public void onPageFinished(WebView view, String url) {
 
                 //view.loadUrl(webView.getUrl());
 
+                progress.setVisibility(View.GONE);
                 String Url = view.getUrl();
                 AdWebViewClient(Url);
 
@@ -253,6 +270,7 @@ public class Payment extends AppCompatActivity {
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
+
         } else {
             finish();
         }
@@ -271,6 +289,8 @@ public class Payment extends AppCompatActivity {
         if(item.getItemId()==android.R.id.home)
         {
             finish();
+
+            progress.setVisibility(View.GONE);
         }
         return true;
     }
@@ -290,6 +310,8 @@ public class Payment extends AppCompatActivity {
             }
         } else {
             webView.setVisibility(View.GONE);
+
+            progress.setVisibility(View.GONE);
         }
     }
 

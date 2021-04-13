@@ -93,6 +93,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/recycler_id"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/recycler_payment"
                 />
 
@@ -101,6 +107,7 @@
     </RelativeLayout>
 
     <com.airbnb.lottie.LottieAnimationView
+        android:visibility="gone"
         android:background="@color/white"
         android:id="@+id/anime"
         android:layout_width="match_parent"

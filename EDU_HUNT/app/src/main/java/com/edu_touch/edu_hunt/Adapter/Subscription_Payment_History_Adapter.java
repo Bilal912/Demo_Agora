@@ -1,7 +1,7 @@
 package com.edu_touch.edu_hunt.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.edu_touch.edu_hunt.Model.payment_history_model;
-import com.edu_touch.edu_hunt.Model.select_model;
-import com.edu_touch.edu_hunt.Payment;
+import com.edu_touch.edu_hunt.Model.subscription_model;
 import com.edu_touch.edu_hunt.R;
-import com.skydoves.elasticviews.ElasticButton;
 
 import java.util.ArrayList;
 
-public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_History_Adapter.GithubViewHolder> {
+import static android.content.Context.MODE_PRIVATE;
+import static com.edu_touch.edu_hunt.MainActivity.MY_PREFS_NAME;
+
+public class Subscription_Payment_History_Adapter extends RecyclerView.Adapter<Subscription_Payment_History_Adapter.GithubViewHolder> {
      Context context;
-     ArrayList<payment_history_model> data;
-    public Payment_History_Adapter(Context context, ArrayList<payment_history_model> data){
+     ArrayList<subscription_model> data;
+     SharedPreferences sharedPreferences;
+    public Subscription_Payment_History_Adapter(Context context, ArrayList<subscription_model> data){
         this.context = context;
         this.data= data;
+        sharedPreferences = context.getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
     }
 
     @NonNull
     @Override
-    public Payment_History_Adapter.GithubViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public Subscription_Payment_History_Adapter.GithubViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.cadview_paymenthistory,viewGroup,false);
         return new GithubViewHolder(view);
@@ -37,22 +40,14 @@ public class Payment_History_Adapter extends RecyclerView.Adapter<Payment_Histor
     @Override
     public void onBindViewHolder(@NonNull GithubViewHolder holder, int position) {
 
-        holder.name.setText(data.get(position).getTeacher_Name());
+        holder.name.setText(sharedPreferences.getString("name","null"));
         holder.fee.setText(context.getResources().getString(R.string.currency)+" "+data.get(position).getAmount()+" ");
 
-        if (data.get(position).getClass_Groups().contains("|")){
-            String currentString = data.get(position).getSubject_Name();
-            String[] separated = currentString.split("\\|");
-            holder.tempy.setText("Class Group: "+separated[0]);
-        }
-        else {
-            holder.tempy.setText("Class Group: "+data.get(position).getClass_Groups());
-        }
-
-        String temp = data.get(position).getBooking_date();
+        String temp = data.get(position).getDate();
         String[] avy = temp.split("-");
         holder.date.setText(avy[2]);
 
+        holder.tempy.setText("Subscription Payment");
         holder.month.setText(checkmonth(avy[1]));
     }
 

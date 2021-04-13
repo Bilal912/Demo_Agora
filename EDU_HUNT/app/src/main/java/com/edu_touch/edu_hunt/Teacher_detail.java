@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -237,10 +238,11 @@ CircleImageView imageView;
                         //Toasty.success(context, message, Toast.LENGTH_SHORT, true).show();
                         loading.dismiss();
                         Teacher_detail.ViewDialog1 alert = new Teacher_detail.ViewDialog1();
-                        alert.showDialog(Teacher_detail.this);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("status", "1");
                         editor.apply();
+
+                        alert.showDialog(Teacher_detail.this);
 
                     }
                     else {
@@ -290,6 +292,18 @@ CircleImageView imageView;
             dialog.setContentView(R.layout.dialogbox);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
+
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(final DialogInterface arg0) {
+
+                    Intent intent = new Intent(Teacher_detail.this,Home.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                }
+            });
+
         }
     }
 
